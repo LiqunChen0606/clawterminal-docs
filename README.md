@@ -270,6 +270,7 @@ Your connection is end-to-end encrypted and requires no port forwarding on your 
 - **iCloud Sync**: Enable iCloud sync in Settings to sync your connection profiles to all your Apple devices
 - **Favorites**: Star a connection profile to pin it to the top of the Connections list
 - **Color Tags**: Assign color tags to connection profiles for quick visual identification
+- **Home Screen Widget**: Add the **Quick Connect** widget (small or medium) to your home screen for one-tap SSH connection to your most-used profiles
 
 ---
 
