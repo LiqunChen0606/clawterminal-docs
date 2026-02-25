@@ -1,6 +1,6 @@
-# OpenClaw Terminal — Guides & Tutorials
+# ClawTerminal — Guides & Tutorials
 
-> **OpenClaw Terminal** is an iOS SSH terminal + Claude AI assistant that connects your iPhone or iPad to your Mac and remote servers.
+> **ClawTerminal** is an iOS SSH terminal + Claude AI assistant that connects your iPhone or iPad to your Mac and remote servers.
 
 [![Platform](https://img.shields.io/badge/Platform-iOS%2017%2B-blue)](https://github.com/LiqunChen0606/openclaw-terminal)
 [![Claude](https://img.shields.io/badge/AI-Claude%20Opus%204.6-purple)](https://anthropic.com)
@@ -32,7 +32,7 @@
 - (Optional) [Tailscale](https://tailscale.com) for remote access outside your local network
 
 ### First Launch
-When you open OpenClaw Terminal for the first time you will see the **Welcome Tour**. It walks you through the four main features:
+When you open ClawTerminal for the first time you will see the **Welcome Tour**. It walks you through the four main features:
 
 1. **SSH Terminal** — Full colour terminal with tmux, git, vim shortcuts
 2. **Claude AI** — Chat with Claude, run Claude Code on your Mac
@@ -51,7 +51,7 @@ Tap **Get Started** on the last page to begin, then follow the **Set Up My Mac**
 3. Note your Mac's local hostname (shown as `YourMac.local`) or IP address
 
 ### Add a Connection Profile
-1. In OpenClaw, tap the **Connections** tab (bottom bar)
+1. In ClawTerminal, tap the **Connections** tab (bottom bar)
 2. Tap **+** (top right)
 3. Fill in:
    - **Name**: e.g. "My MacBook"
@@ -88,7 +88,7 @@ Or use the **MyMac Setup Wizard** — it handles this automatically over SSH.
 
 ## 4. Claude AI Chatroom
 
-OpenClaw integrates Claude AI in two modes:
+ClawTerminal integrates Claude AI in two modes:
 
 ### Direct API Mode
 - Uses the Anthropic API directly from your device
@@ -226,7 +226,7 @@ Tap the **Upload** button (top right) to pick files from the iOS Files app and t
 
 ## 8. MCP Servers
 
-OpenClaw supports [Model Context Protocol (MCP)](https://modelcontextprotocol.io) servers, giving Claude access to external tools like file systems, databases, and APIs.
+ClawTerminal supports [Model Context Protocol (MCP)](https://modelcontextprotocol.io) servers, giving Claude access to external tools like file systems, databases, and APIs.
 
 ### Add an MCP Server
 1. Go to **Settings → MCP Servers**
@@ -253,7 +253,7 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 1. Install Tailscale on both your Mac and iPhone/iPad (free tier available)
 2. Sign in with the same account on both devices
 3. In the Tailscale app on your iPhone, find your Mac's Tailscale IP (e.g. `100.x.x.x`) or MagicDNS name (e.g. `yourMac.tailXXXX.ts.net`)
-4. In OpenClaw, use the Tailscale hostname in your connection profile
+4. In ClawTerminal, use the Tailscale hostname in your connection profile
 
 Your connection is end-to-end encrypted and requires no port forwarding on your router.
 
@@ -317,4 +317,4 @@ Found an error or want to add a tip? Open a pull request against this repo. For 
 
 ---
 
-*OpenClaw Terminal — SSH + Claude AI for iOS*
+*ClawTerminal — SSH + Claude AI for iOS*
