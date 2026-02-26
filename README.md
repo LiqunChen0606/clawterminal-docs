@@ -2,9 +2,9 @@
 
 > **ClawTerminal** is an iOS SSH terminal + Claude AI assistant that connects your iPhone or iPad to your Mac and remote servers.
 
-[![Platform](https://img.shields.io/badge/Platform-iOS%2017%2B-blue)](https://github.com/LiqunChen0606/openclaw-terminal)
+[![Platform](https://img.shields.io/badge/Platform-iOS%2017%2B-blue)](https://github.com/LiqunChen0606/clawterminal)
 [![Claude](https://img.shields.io/badge/AI-Claude%20Opus%204.6-purple)](https://anthropic.com)
-[![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP-green)](https://github.com/LiqunChen0606/openclaw-terminal)
+[![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP-green)](https://github.com/LiqunChen0606/clawterminal)
 
 ---
 
@@ -314,7 +314,7 @@ Your connection is end-to-end encrypted and requires no port forwarding on your 
 
 ## Contributing
 
-Found an error or want to add a tip? Open a pull request against this repo. For app bugs or feature requests, open an issue on the [main app repo](https://github.com/LiqunChen0606/openclaw-terminal).
+Found an error or want to add a tip? Open a pull request against this repo. For app bugs or feature requests, open an issue on the [main app repo](https://github.com/LiqunChen0606/clawterminal).
 
 ---
 
