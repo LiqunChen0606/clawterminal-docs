@@ -279,8 +279,12 @@ Your connection is end-to-end encrypted and requires no port forwarding on your 
 ### "Connection timed out" or connection keeps spinning
 - Confirm **Remote Login** is enabled on your Mac (**System Settings → General → Sharing**)
 - Run `ping YourMac.local` on another device to confirm the hostname resolves
+- Make sure your iPhone and Mac are on the **same Wi-Fi network**
 - If outside your home network, set up Tailscale (§9)
 - Check your Mac's firewall isn't blocking port 22
+
+### "Connection failed" during My Mac setup wizard
+This can happen if your Mac is only reachable via an IPv6 link-local address on your current network. ClawTerminal automatically falls back to the `.local` mDNS hostname — if you see this error, tap **Try Again**. If it persists, try entering your Mac's hostname manually (e.g. `Liquns-MacBook-Pro.local`) or use its IPv4 address from **System Settings → Wi-Fi → Details**.
 
 ### SSH key authentication fails
 - Confirm the public key was appended to `~/.ssh/authorized_keys` on the Mac
