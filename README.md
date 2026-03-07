@@ -61,6 +61,8 @@ Tap **Get Started** on the last page to begin, then follow the **Set Up My Mac**
    - **Auth Method**: Password or SSH Key (see §3)
 4. Tap **Save**, then tap the profile to connect
 
+> **Tip:** Use the **My Mac wizard** (My Mac tab → Set Up My Mac) for a guided setup that handles key generation, authorization, and Tailscale automatically.
+
 ---
 
 ## 3. SSH Keys (Recommended)
@@ -249,11 +251,24 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 
 [Tailscale](https://tailscale.com) creates a secure private network between your devices so you can SSH to your Mac from anywhere — coffee shop, hotel, cellular — without opening ports or configuring a VPN.
 
-### Setup
+### Setup via My Mac Wizard (Recommended)
+
+The My Mac setup wizard has built-in Tailscale support — no manual profile creation needed:
+
+1. Open the **My Mac** tab → tap **Set Up My Mac**
+2. On Step 2 ("Find Your Mac"), tap the **Tailscale** segment in the picker
+3. Enter your Mac's Tailscale hostname (e.g. `my-macbook.tail1234.ts.net`) and your Mac username
+4. Choose your auth method:
+   - **Password** — enter your Mac login password on the next screen. No SSH key setup required.
+   - **SSH Key** — generates a key and walks you through authorizing it on your Mac
+5. Tap **Test Connection** then **Finish**
+
+### Manual Setup
+
 1. Install Tailscale on both your Mac and iPhone/iPad (free tier available)
 2. Sign in with the same account on both devices
-3. In the Tailscale app on your iPhone, find your Mac's Tailscale IP (e.g. `100.x.x.x`) or MagicDNS name (e.g. `yourMac.tailXXXX.ts.net`)
-4. In ClawTerminal, use the Tailscale hostname in your connection profile
+3. In the Tailscale app on your iPhone, find your Mac's MagicDNS name (e.g. `yourMac.tailXXXX.ts.net`)
+4. In ClawTerminal → **Connections** tab → tap **+** → enter the Tailscale hostname
 
 Your connection is end-to-end encrypted and requires no port forwarding on your router.
 
