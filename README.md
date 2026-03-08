@@ -221,6 +221,19 @@ Browse, upload, and download files over SFTP without leaving the app:
 3. Navigate directories, tap files to preview or download
 4. Swipe left on a file to rename or delete
 
+### Long-Press Context Menu
+Long-press any file or folder in the browser to get quick actions:
+
+| Action | Available on | What it does |
+|--------|-------------|--------------|
+| **Copy Path** | Files & Folders | Copies the full absolute path (e.g. `/Users/you/Projects/myapp`) to the clipboard |
+| **Copy Name** | Files & Folders | Copies just the file or folder name |
+| **Open Folder** | Folders only | Navigates into the folder |
+
+Long-press any **breadcrumb chip** in the path bar to copy the current directory path.
+
+> **Tip:** Use **Copy Path** on a project folder, then paste it into a chatroom's **Project Directory** field (Info tab → Project directory) to point Claude at the right working directory. The project path is remembered for the entire conversation session — even after reconnects.
+
 ### Upload from Files App
 Tap the **Upload** button (top right) to pick files from the iOS Files app and transfer them to the remote server.
 
@@ -280,6 +293,9 @@ Your connection is end-to-end encrypted and requires no port forwarding on your 
 - **Theme picker**: Go to **Settings → Terminal Theme** to choose from Catppuccin, Solarized Dark, One Dark, Monokai, Gruvbox Dark
 - **Font size**: Pinch-to-zoom in the terminal adjusts font size on the fly
 - **Quick reconnect**: Recently used profiles appear on the My Mac welcome screen for one-tap reconnect
+- **Auto-reconnect after sleep**: If your phone goes to sleep and drops the SSH connection, ClawTerminal silently restores it the next time you open the app — no need to manually disconnect and reconnect
+- **Copy SFTP path → chatroom**: In the Files tab, long-press any folder → **Copy Path**, then paste it into a chatroom's **Info → Project Directory** field. Claude will use that directory for the whole conversation, even across reconnects
+- **Session continuity**: Once Claude runs its first command in a chatroom, the project directory is locked for that session. This ensures `--resume` always finds the right conversation history even after your phone sleeps
 - **Context Document**: Write project-specific instructions in the chatroom's Context Document so Claude always has the right background
 - **Auto Memory**: Enable Auto Memory in a chatroom — Claude will write a persistent memory file on your Mac and read it at the start of each session
 - **iCloud Sync**: Enable iCloud sync in Settings to sync your connection profiles to all your Apple devices
@@ -318,6 +334,8 @@ This can happen if your Mac is only reachable via an IPv6 link-local address on 
 - Ensure `claude` CLI is installed on your Mac: `which claude`
 - The CLI chatroom requires an active SSH connection to your Mac
 - Check running sessions: `tmux ls` on your Mac
+- If you see **"⚠️ Rate limit reached"** — Claude's API has temporarily throttled your account. Wait 30–60 seconds and send again. ClawTerminal detects the timeout automatically and stops waiting instead of hanging
+- If the chatroom was open while your phone slept, the connection is restored automatically on wake — you don't need to disconnect and reconnect manually
 
 ### Port forwarding not working
 - Confirm the service is actually running and bound to the expected port on the remote host
@@ -328,6 +346,10 @@ This can happen if your Mac is only reachable via an IPv6 link-local address on 
 - Close unused terminal tabs (swipe left on the tab label)
 - Heavy terminal output (e.g. `cat` of large files) is batched — give it a moment
 - Restart the SSH connection from the Connections tab if the session hangs
+
+### Chatroom lost my project directory or context after reconnect
+- This should no longer happen — ClawTerminal locks the project directory to the active Claude session ID when the first message is sent, and persists it across reconnects and app restarts
+- If it does happen, open the chatroom's **Info** tab, verify the **Project Directory** path is set correctly, then send a new message to relock it
 
 ---
 
