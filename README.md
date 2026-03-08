@@ -18,7 +18,7 @@
 6. [Port Forwarding & Tunnels](#6-port-forwarding--tunnels)
 7. [SFTP File Browser](#7-sftp-file-browser)
 8. [MCP Servers](#8-mcp-servers)
-9. [Tailscale — Remote Access Anywhere](#9-tailscale--remote-access-anywhere)
+9. [Tailscale — Remote Access Anywhere (Recommended for remote use)](#9-tailscale--remote-access-anywhere)
 10. [Tips & Tricks](#10-tips--tricks)
 11. [Troubleshooting](#11-troubleshooting)
 
@@ -262,28 +262,95 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 
 ## 9. Tailscale — Remote Access Anywhere
 
-[Tailscale](https://tailscale.com) creates a secure private network between your devices so you can SSH to your Mac from anywhere — coffee shop, hotel, cellular — without opening ports or configuring a VPN.
+[Tailscale](https://tailscale.com) creates a secure private network between your devices so you can SSH to your Mac from **anywhere** — coffee shop, hotel, cellular — without opening ports or configuring a VPN. It's the easiest way to connect ClawTerminal to your Mac remotely.
 
-### Setup via My Mac Wizard (Recommended)
+> **Best path for most users:** Tailscale + Password login. Zero terminal commands needed on your Mac.
 
-The My Mac setup wizard has built-in Tailscale support — no manual profile creation needed:
+---
 
-1. Open the **My Mac** tab → tap **Set Up My Mac**
-2. On Step 2 ("Find Your Mac"), tap the **Tailscale** segment in the picker
-3. Enter your Mac's Tailscale hostname (e.g. `my-macbook.tail1234.ts.net`) and your Mac username
-4. Choose your auth method:
-   - **Password** — enter your Mac login password on the next screen. No SSH key setup required.
-   - **SSH Key** — generates a key and walks you through authorizing it on your Mac
-5. Tap **Test Connection** then **Finish**
+### Step 1 — Install Tailscale on your Mac
 
-### Manual Setup
+1. Download **Tailscale** from the [Mac App Store](https://apps.apple.com/app/tailscale/id1475387142) or [tailscale.com/download](https://tailscale.com/download)
+2. Open Tailscale → sign in with Google, GitHub, or Microsoft account (free)
+3. Tailscale is now running. Click the menu bar icon to see your Mac's **Tailscale hostname** (looks like `your-mac.tail1234.ts.net`) — copy this
 
-1. Install Tailscale on both your Mac and iPhone/iPad (free tier available)
-2. Sign in with the same account on both devices
-3. In the Tailscale app on your iPhone, find your Mac's MagicDNS name (e.g. `yourMac.tailXXXX.ts.net`)
-4. In ClawTerminal → **Connections** tab → tap **+** → enter the Tailscale hostname
+### Step 2 — Enable Remote Login on your Mac
 
-Your connection is end-to-end encrypted and requires no port forwarding on your router.
+1. Open **System Settings → General → Sharing**
+2. Turn on **Remote Login**
+3. Make sure your macOS user account is listed under "Allow access for"
+
+> This is a one-time setup. You never need to open Terminal.
+
+### Step 3 — Install Tailscale on your iPhone/iPad
+
+1. Download **Tailscale** from the [iOS App Store](https://apps.apple.com/app/tailscale/id1470499037)
+2. Sign in with the **same account** you used on your Mac
+3. Your Mac will appear in the Tailscale device list — confirm it shows **Connected**
+
+### Step 4 — Connect in ClawTerminal (Password method — recommended)
+
+1. Open **ClawTerminal** → tap the **My Mac** tab → **Set Up My Mac**
+2. On the "Find Your Mac" step, tap **Tailscale**
+3. Enter:
+   - **Hostname**: your Mac's Tailscale hostname (e.g. `your-mac.tail1234.ts.net`)
+   - **Username**: your macOS login name (same as what you see in System Settings → Users)
+4. Choose **Password** as the auth method
+5. Enter your **macOS login password** on the next screen
+6. Tap **Test Connection** — you should see a green checkmark
+7. Tap **Finish**
+
+That's it. ClawTerminal will remember this profile and reconnect automatically after sleep.
+
+---
+
+### Alternative: SSH Key Auth (more secure, no password to re-enter)
+
+If you prefer passwordless login using an SSH key:
+
+1. Follow Steps 1–3 above to get Tailscale running
+2. In ClawTerminal → **Settings → SSH Keys** → **Generate New Key** → give it a name
+3. Tap the key → **Copy Public Key**
+4. On your Mac, open Terminal and run:
+
+```bash
+mkdir -p ~/.ssh && pbpaste >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys && chmod 700 ~/.ssh
+```
+
+5. Back in ClawTerminal → Set Up My Mac → Tailscale → enter hostname + username → choose **SSH Key** → select the key you just created
+6. Tap **Test Connection** → **Finish**
+
+---
+
+### Why Tailscale + Password beats the old way
+
+| | Local Wi-Fi only | Port forwarding | **Tailscale + Password** |
+|---|---|---|---|
+| Works outside home | ❌ | ⚠️ Risky | ✅ |
+| No router config | ✅ | ❌ | ✅ |
+| No terminal setup | ✅ | ❌ | ✅ |
+| End-to-end encrypted | ✅ | ❌ | ✅ |
+| Works on cellular | ❌ | ⚠️ | ✅ |
+
+Tailscale's free tier supports up to 3 devices — more than enough for iPhone + Mac.
+
+---
+
+### Troubleshooting Tailscale
+
+**"Connection timed out" with Tailscale hostname**
+- Open the Tailscale app on your iPhone and confirm your Mac shows **Connected** (not "Offline")
+- If your Mac is asleep, wake it first — Tailscale can't connect to a sleeping machine
+- Try using your Mac's Tailscale IP address instead of the hostname (visible in the Tailscale app)
+
+**Mac shows as offline in Tailscale**
+- On your Mac, click the Tailscale menu bar icon → **Connect**
+- Make sure Tailscale is set to launch at login: Tailscale menu → Preferences → Launch at Login
+
+**Password authentication rejected**
+- Double-check your macOS login password (not your Apple ID password)
+- Confirm **Remote Login** is still enabled in System Settings → Sharing
 
 ---
 
