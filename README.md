@@ -15,12 +15,14 @@
 3. [Tailscale — Remote Access Anywhere (Recommended for remote use)](#3-tailscale--remote-access-anywhere)
 4. [SSH Keys](#4-ssh-keys)
 5. [Claude AI Chatroom](#5-claude-ai-chatroom)
-6. [Terminal Shortcuts](#6-terminal-shortcuts)
-7. [Port Forwarding & Tunnels](#7-port-forwarding--tunnels)
-8. [SFTP File Browser](#8-sftp-file-browser)
-9. [MCP Servers](#9-mcp-servers)
-10. [Tips & Tricks](#10-tips--tricks)
-11. [Troubleshooting](#11-troubleshooting)
+6. [Skills & Marketplace](#6-skills--marketplace)
+7. [Slash Commands & @ References](#7-slash-commands---references)
+8. [Terminal Shortcuts](#8-terminal-shortcuts)
+9. [Port Forwarding & Tunnels](#9-port-forwarding--tunnels)
+10. [SFTP File Browser](#10-sftp-file-browser)
+11. [MCP Servers](#11-mcp-servers)
+12. [Tips & Tricks](#12-tips--tricks)
+13. [Troubleshooting](#13-troubleshooting)
 
 ---
 
@@ -217,10 +219,6 @@ npm install -g @anthropic-ai/claude-code
 
 Each chatroom has a **Context Document** — a free-text field injected into every system prompt. Use it to describe your project, preferences, or standing instructions.
 
-### Skills
-
-**Skills** are Markdown snippets that augment Claude's system prompt. Enable pre-built skills (code review, bash expert, etc.) or write your own in **Settings → Skills**.
-
 ### Background Jobs (`/submit`)
 
 Submit long-running tasks to run in the background while you do something else:
@@ -233,7 +231,84 @@ Progress updates appear in the **Jobs** panel. A notification fires when the tas
 
 ---
 
-## 6. Terminal Shortcuts
+## 6. Skills & Marketplace
+
+**Skills** are Markdown snippets injected into Claude's system prompt to give it specialized knowledge, project context, or standing instructions. ClawTerminal ships with a built-in marketplace of 30 curated packages.
+
+### Browse & Install from the Marketplace
+
+1. In a chatroom, tap the **Skills** button in the toolbar → **Marketplace** tab
+2. Browse by category:
+
+   | Category | What's inside |
+   |----------|--------------|
+   | **Community** | Docker, Git, Python, Node.js, Homebrew, jq, curl, SSH Power User, and more |
+   | **Anthropic Workflows** | 14 Superpowers skills (brainstorming, TDD, systematic debugging, plan execution, parallel agents, code review, git worktrees…) — auto-enabled for new chatrooms |
+   | **LSP** | TypeScript, Python, and other language-server integrations |
+
+3. Tap **Install** on any package — it appears in the **My Skills** tab
+4. Toggle skills on or off per chatroom from **My Skills**
+
+### Write a Custom Skill
+
+1. Skills button → **My Skills** → tap **+**
+2. Write Markdown — Claude reads this as system prompt context. Example:
+
+   ```markdown
+   ## My Project
+   You are working on a FastAPI backend in ~/Projects/myapp.
+   Always use async/await. Tests live in tests/. Use pytest.
+   Run `make dev` to start the dev server.
+   ```
+
+3. Tap **Save** — the skill is now available across all your chatrooms
+
+### Import a Skill
+
+- **From Files app**: Skills → My Skills → **Import** → pick any `.md` file
+- **From GitHub URL**: Skills → My Skills → **Import from URL** → paste a raw GitHub URL to a `.md` file
+
+  ```text
+  https://raw.githubusercontent.com/example/skills/main/docker.md
+  ```
+
+### Export & Share Skills
+
+Tap any skill → **Export** to save as JSON. Share with teammates and re-import with **Import**.
+
+---
+
+## 7. Slash Commands & @ References
+
+Type `/` at the start of any message in a chatroom to see available commands. These work in both API mode and CLI mode unless noted.
+
+### Slash Commands
+
+| Command | Description |
+|---------|-------------|
+| `/submit <task>` | Send a long-running task to the **background job queue** — Claude works on it while you do other things. A notification fires when done. |
+| `/resume` | Resume the most recent Claude Code CLI session for this chatroom (CLI mode only) |
+| `/plan <task>` | Switch to **plan mode** — Claude reads files and proposes a plan but cannot write or execute (CLI mode only) |
+| `/compact` | Ask Claude to summarise the conversation so far and compact the context window |
+| `/init` | Ask Claude to create a `CLAUDE.md` file in the current project directory with project-specific instructions |
+| `/model <name>` | Switch the active model mid-conversation, e.g. `/model claude-opus-4-6` |
+| `/clear` | Clear the current conversation and start fresh |
+| `/cost` | Show estimated token usage and cost for the current session |
+| `/help` | List all available slash commands |
+
+### @ File References
+
+Type `@` anywhere in your message to open the **remote file picker** — a live SSH directory browser on your Mac:
+
+1. Type `@` → a picker appears showing your Mac's file tree
+2. Navigate to the file you want to attach
+3. Tap it — the file's contents are injected as a `<file_attachment>` block in your message
+
+Claude can then read, discuss, or modify that file. Works great for attaching config files, source files, or logs without copy-pasting.
+
+---
+
+## 8. Terminal Shortcuts
 
 The shortcut bar below the terminal has four categories. Tap the pill labels to switch:
 
@@ -299,7 +374,7 @@ All tmux shortcuts send `Ctrl-B` prefix followed by the key:
 
 ---
 
-## 7. Port Forwarding & Tunnels
+## 9. Port Forwarding & Tunnels
 
 Port forwarding lets you securely access services on your Mac or remote network through the SSH tunnel.
 
@@ -326,7 +401,7 @@ Then open `http://localhost:3000` in Safari on your iPhone to hit the dev server
 
 ---
 
-## 8. SFTP File Browser
+## 10. SFTP File Browser
 
 Browse, upload, and download files over SFTP without leaving the app:
 
@@ -355,7 +430,7 @@ Tap the **Upload** button (top right) to pick files from the iOS Files app and t
 
 ---
 
-## 9. MCP Servers
+## 11. MCP Servers
 
 ClawTerminal supports [Model Context Protocol (MCP)](https://modelcontextprotocol.io) servers, giving Claude access to external tools like file systems, databases, and APIs.
 
@@ -377,7 +452,7 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 
 ---
 
-## 10. Tips & Tricks
+## 12. Tips & Tricks
 
 - **Multi-tab terminal**: Tap **+** in the Terminal tab to open multiple SSH sessions simultaneously — great for running a server in one tab and editing code in another
 - **Theme picker**: Go to **Settings → Terminal Theme** to choose from Catppuccin, Solarized Dark, One Dark, Monokai, Gruvbox Dark
@@ -395,7 +470,7 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 
 ---
 
-## 11. Troubleshooting
+## 13. Troubleshooting
 
 ### "Connection timed out" or connection keeps spinning
 
