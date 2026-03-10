@@ -496,6 +496,7 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 
 ## 12. Tips & Tricks
 
+- **Markdown in the input field**: Type markdown directly — `**bold**`, `*italic*`, `` `inline code` ``, triple backticks for code blocks, `- bullet`, `1. numbered`, `> quote`. Claude's responses render all of these natively.
 - **Multi-tab terminal**: Tap **+** in the Terminal tab to open multiple SSH sessions simultaneously — great for running a server in one tab and editing code in another
 - **Theme picker**: Go to **Settings → Terminal Theme** to choose from Catppuccin, Solarized Dark, One Dark, Monokai, Gruvbox Dark
 - **Font size**: Pinch-to-zoom in the terminal adjusts font size on the fly
