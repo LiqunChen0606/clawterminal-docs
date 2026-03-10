@@ -249,6 +249,18 @@ CLI mode is the default when you are connected to your Mac. Keep it on.
 
 Each chatroom has a **Context Document** — a free-text field injected into every system prompt. Use it to describe your project, preferences, or standing instructions.
 
+### Copying & Selecting Text from Responses
+
+**Copy the whole response:** Long-press the **Claude avatar** (the claw icon beside any response) → **Copy All**.
+
+**Select a portion of the text:** Long-press the Claude avatar → **Select Text…** — a full-screen sheet opens with the response text in a native iOS text view. Long-press any word to get iOS selection handles, drag to extend the selection, then tap **Copy** from the callout. Tap **Done** to close the sheet.
+
+> **Why a separate sheet?** iOS scroll views intercept long-press gestures before text selection can activate, so in-place word selection is unreliable inside a scrollable chat list. The sheet sidesteps this entirely with a dedicated UITextView.
+
+**Share the response:** Long-press the Claude avatar → **Share…** to send the full text to any app via the iOS share sheet.
+
+---
+
 ### Background Jobs (`/submit`)
 
 Submit long-running tasks to run in the background while you do something else — tasks can run for **up to 2 hours** on your Mac:
