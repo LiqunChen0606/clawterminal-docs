@@ -215,19 +215,49 @@ npm install -g @anthropic-ai/claude-code
 
 - Supports multi-turn conversations, tool use, MCP servers, `--resume` continuity
 
+---
+
+### Developer Setup (Recommended)
+
+Two settings dramatically improve the chatroom experience for developers. Configure these before your first session.
+
+#### Enable Tmux Chatroom Session
+
+**Settings → Claude → Tmux Chatroom Session** → toggle **ON**.
+
+Without tmux: each message runs `claude --resume` over a direct SSH exec channel. If your phone sleeps, the network blips, or iOS backgrounds the app, the channel drops and the response may be lost.
+
+With tmux enabled:
+
+- Each chatroom maps to a **named tmux session** on your Mac (visible as `claw_<room>` in `tmux ls`).
+- Claude keeps running in that tmux session even when your phone disconnects — it finishes and writes output to a file.
+- On reconnect, the app re-attaches and streams any output you missed.
+- `/submit` background jobs run in their own tmux windows and are completely immune to phone sleep or disconnection.
+
+#### Use CLI Mode (not API Mode)
+
+The chatroom has two modes, shown in the **Info (ⓘ)** panel:
+
+- **CLI mode** (recommended when connected) — runs `claude` on your Mac over SSH. Uses your Mac's Claude Code plan, the project's `CLAUDE.md`, local tools (`Bash`, `Read`, `Edit`, etc.), and full filesystem access.
+- **API mode** — calls the Anthropic API directly from the iPhone. Useful without a Mac connection, but Claude has no access to your local tools or files.
+
+CLI mode is the default when you are connected to your Mac. Keep it on.
+
+---
+
 ### Room Memory (Context Document)
 
 Each chatroom has a **Context Document** — a free-text field injected into every system prompt. Use it to describe your project, preferences, or standing instructions.
 
 ### Background Jobs (`/submit`)
 
-Submit long-running tasks to run in the background while you do something else:
+Submit long-running tasks to run in the background while you do something else — tasks can run for **up to 2 hours** on your Mac:
 
 ```text
 /submit refactor the auth module to use async/await
 ```
 
-Progress updates appear in the **Jobs** panel. A notification fires when the task completes.
+Progress updates appear in the **Jobs** panel. A notification fires when the task completes. The result is automatically injected into your next chatroom message so Claude has context without you having to paste anything.
 
 ---
 
