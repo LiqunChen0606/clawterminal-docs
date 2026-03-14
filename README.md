@@ -14,7 +14,7 @@
 2. [SSH Setup — Connect to Your Mac (Local Network)](#2-ssh-setup--connect-to-your-mac-local-network)
 3. [Tailscale — Remote Access Anywhere (Recommended for remote use)](#3-tailscale--remote-access-anywhere)
 4. [SSH Keys](#4-ssh-keys)
-5. [Claude AI Chatroom](#5-claude-ai-chatroom)
+5. [Claude AI Chatroom](#5-claude-ai-chatroom) (includes [Background Jobs](#background-jobs-submit) and [Agent Orchestration](#agent-orchestration-orchestrate))
 6. [Skills & Marketplace](#6-skills--marketplace)
 7. [Slash Commands & @ References](#7-slash-commands---references)
 8. [Terminal Shortcuts](#8-terminal-shortcuts)
@@ -273,6 +273,79 @@ Progress updates appear in the **Jobs** panel. A notification fires when the tas
 
 ---
 
+### Agent Orchestration (`/orchestrate`)
+
+For complex tasks that benefit from multiple perspectives, `/orchestrate` spawns **three parallel AI agents** that work simultaneously, then synthesizes their results into a single actionable summary.
+
+```text
+/orchestrate redesign the authentication system to use OAuth2
+```
+
+#### How it works
+
+```text
+┌─────────────────────────────────────────────────┐
+│  /orchestrate redesign auth to use OAuth2       │
+└──────────────────┬──────────────────────────────┘
+                   │
+        ┌──────────┼──────────┐
+        ▼          ▼          ▼
+  ┌──────────┐ ┌──────────┐ ┌──────────┐
+  │Researcher│ │Implementer│ │ Reviewer │
+  │  (blue)  │ │  (green)  │ │ (orange) │
+  └─────┬────┘ └─────┬────┘ └─────┬────┘
+        │             │            │
+        │   All 3 run in parallel  │
+        │   as background jobs     │
+        └──────────┬──┬────────────┘
+                   │  │
+                   ▼  ▼
+            ┌──────────────┐
+            │ Synthesizer  │
+            │  (purple)    │
+            │              │
+            │ Reads all 3  │
+            │ results and  │
+            │ posts summary│
+            └──────────────┘
+```
+
+1. **Researcher** — Analyzes the codebase, reads relevant files, identifies patterns and constraints
+2. **Implementer** — Writes the actual code changes, creates new files, modifies existing ones
+3. **Reviewer** — Reviews the proposed changes for bugs, security issues, and best practices
+
+After all three complete, a **Synthesizer** agent reads their combined output and posts a unified summary to your chatroom.
+
+#### Viewing orchestration jobs
+
+Open the **Jobs** panel to see orchestration groups. Jobs from the same `/orchestrate` command are grouped together under a collapsible header with:
+
+- A purple **Orchestration** badge
+- The original goal text
+- Role chips color-coded by agent type:
+
+| Role | Color | Purpose |
+|------|-------|---------|
+| Researcher | Blue | Codebase analysis and context gathering |
+| Implementer | Green | Code writing and file modifications |
+| Reviewer | Orange | Code review and quality checks |
+| Synthesizer | Purple | Combines all results into actionable summary |
+
+#### When to use `/orchestrate` vs `/submit`
+
+| | `/submit` | `/orchestrate` |
+|---|-----------|----------------|
+| **Agents** | 1 | 3 + synthesizer |
+| **Best for** | Single focused task | Complex multi-faceted work |
+| **Speed** | Faster (one agent) | Slower (waits for all 3) |
+| **Examples** | "fix the login bug" | "redesign the auth system" |
+| | "add unit tests for UserService" | "audit security across the app" |
+| | "update the README" | "plan and implement dark mode" |
+
+> **Tip:** Both `/submit` and `/orchestrate` respect your current `/model` selection. If you've switched to Opus via `/model claude-opus-4-6`, all spawned agents use Opus.
+
+---
+
 ## 6. Skills & Marketplace
 
 **Skills** are Markdown snippets injected into Claude's system prompt to give it specialized knowledge, project context, or standing instructions. ClawTerminal ships with a built-in marketplace of 30 curated packages.
@@ -335,7 +408,17 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/init` | Ask Claude to create a `CLAUDE.md` file in the current project directory with project-specific instructions |
 | `/model <name>` | Switch the active model mid-conversation, e.g. `/model claude-opus-4-6` |
 | `/clear` | Clear the current conversation and start fresh |
+| `/orchestrate <goal>` | Spawn **3 parallel AI agents** (Researcher, Implementer, Reviewer) plus a Synthesis agent that combines their results. See [Agent Orchestration](#agent-orchestration-orchestrate) below. |
 | `/cost` | Show estimated token usage and cost for the current session |
+| `/diff` | Show the last code changes Claude made |
+| `/context` | Display current session context (project dir, session ID, model) |
+| `/status` | Show connection state and chatroom info |
+| `/doctor` | Run diagnostics on your current setup |
+| `/export` | Export the current conversation |
+| `/copy` | Copy Claude's last response to the clipboard |
+| `/rename <name>` | Rename the current chatroom |
+| `/tasks` | List all background jobs and their status |
+| `/config` | Display current settings |
 | `/help` | List all available slash commands |
 
 ### @ File References
