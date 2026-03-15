@@ -61,7 +61,37 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 
 - iPhone or iPad running **iOS 17** or later
 - A Mac (macOS 13 Ventura or later) **OR** any SSH-accessible Linux/BSD server
+- **tmux** installed on your Mac/server (required for chatroom features)
 - (Optional) [Tailscale](https://tailscale.com) for remote access outside your local network
+
+#### Why tmux?
+
+ClawTerminal runs Claude and other CLI tools inside **tmux sessions** on your Mac. This is what makes the chatroom resilient — if your phone sleeps, disconnects, or iOS backgrounds the app, the AI keeps running in tmux and ClawTerminal picks up where it left off when you reconnect. Background jobs (`/submit`), scheduled jobs, and agent orchestration all depend on tmux.
+
+**Without tmux:** Chatroom messages fall back to direct SSH exec channels, which drop when the connection is interrupted — you may lose partial responses.
+
+#### Install tmux
+
+**macOS (Homebrew):**
+
+```bash
+brew install tmux
+```
+
+**Ubuntu / Debian:**
+
+```bash
+sudo apt install tmux
+```
+
+**Verify installation:**
+
+```bash
+tmux -V
+# Expected output: tmux 3.x (any version 2.6+ works)
+```
+
+> **Note:** tmux is usually pre-installed on most Linux servers. On macOS, you need to install it via Homebrew.
 
 ### First Launch
 
@@ -681,6 +711,7 @@ This can happen if your Mac is only reachable via an IPv6 link-local address on 
 
 ### Claude chatroom shows no response (CLI mode)
 
+- Ensure **tmux** is installed on your Mac: `which tmux` (if missing, install with `brew install tmux`)
 - Ensure `claude` CLI is installed on your Mac: `which claude`
 - The CLI chatroom requires an active SSH connection to your Mac
 - Check running sessions: `tmux ls` on your Mac
