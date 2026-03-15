@@ -23,6 +23,34 @@
 11. [MCP Servers](#11-mcp-servers)
 12. [Tips & Tricks](#12-tips--tricks)
 13. [Troubleshooting](#13-troubleshooting)
+14. [Feature Tutorials](#14-feature-tutorials)
+
+---
+
+## 📚 Feature Tutorials
+
+In-depth guides for individual ClawTerminal features. Each tutorial covers a single feature with step-by-step instructions.
+
+### New Features (Sprint 29+)
+
+| Tutorial | Description |
+|----------|-------------|
+| [Scheduling Recurring Background Jobs](tutorials/scheduled-jobs.md) | Set up hourly, daily, or weekly job schedules with automatic re-submission |
+| [Understanding Agent Checkpoints](tutorials/agent-checkpoints.md) | Track progress of long-running jobs with structured `[CHECKPOINT]` markers |
+| [Using ClawTerminal on iPad](tutorials/ipad-multi-window.md) | NavigationSplitView sidebar, Stage Manager multi-window, shared SSH sessions |
+
+### Additional Feature Tutorials
+
+| Tutorial | Description |
+|----------|-------------|
+| [AI Error Diagnosis](tutorials/ai-error-diagnosis.md) | Floating "Ask Claude" pill for instant terminal error diagnosis |
+| [Snap & Code: Camera to Code](tutorials/snap-and-code.md) | Photograph a mockup or error, Claude generates and runs code |
+| [Conversation Export (PDF/Markdown)](tutorials/conversation-export.md) | Save conversations as Markdown files or formatted PDFs |
+| [SFTP Batch Operations](tutorials/sftp-batch-operations.md) | Multi-select files for bulk download and delete |
+| [Custom Terminal Themes](tutorials/custom-terminal-themes.md) | Design custom color schemes with full 16-color ANSI palette editor |
+| [Inline Code Execution](tutorials/inline-code-execution.md) | Run code blocks from Claude's responses with one tap |
+| [Code Snippet Library](tutorials/code-snippets.md) | Save and reuse code blocks from conversations |
+| [Smart Notifications](tutorials/smart-notifications.md) | Notifications for job completion, long responses, and to-do completion |
 
 ---
 
@@ -651,6 +679,24 @@ This can happen if your Mac is only reachable via an IPv6 link-local address on 
 
 - This should no longer happen — ClawTerminal locks the project directory to the active Claude session ID when the first message is sent, and persists it across reconnects and app restarts
 - If it does happen, open the chatroom's **Info** tab, verify the **Project Directory** path is set correctly, then send a new message to relock it
+
+---
+
+## 14. Feature Tutorials
+
+See the [tutorials/](tutorials/) directory for in-depth guides on individual features:
+
+- **[Scheduling Recurring Background Jobs](tutorials/scheduled-jobs.md)** — Automate repetitive tasks with hourly, daily, weekly, or custom schedules
+- **[Understanding Agent Checkpoints](tutorials/agent-checkpoints.md)** — Track long-running job progress with `[CHECKPOINT: label]` markers
+- **[Using ClawTerminal on iPad](tutorials/ipad-multi-window.md)** — Sidebar layout, Stage Manager multi-window, shared SSH sessions
+- **[AI Error Diagnosis](tutorials/ai-error-diagnosis.md)** — One-tap terminal error diagnosis via floating "Ask Claude" pill
+- **[Snap & Code: Camera to Code](tutorials/snap-and-code.md)** — Photograph a mockup or error screen, get running code
+- **[Conversation Export](tutorials/conversation-export.md)** — Save conversations as Markdown or PDF
+- **[SFTP Batch Operations](tutorials/sftp-batch-operations.md)** — Multi-select files for bulk download and delete
+- **[Custom Terminal Themes](tutorials/custom-terminal-themes.md)** — Design your own 16-color ANSI terminal palette
+- **[Inline Code Execution](tutorials/inline-code-execution.md)** — Run code blocks from Claude's responses with one tap
+- **[Code Snippet Library](tutorials/code-snippets.md)** — Save and reuse code blocks from conversations
+- **[Smart Notifications](tutorials/smart-notifications.md)** — Intelligent alerts for job completion, long responses, and to-do completion
 
 ---
 
