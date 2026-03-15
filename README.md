@@ -36,8 +36,9 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 | Tutorial | Description |
 |----------|-------------|
 | [Scheduling Recurring Background Jobs](tutorials/scheduled-jobs.md) | Set up hourly, daily, or weekly job schedules with automatic re-submission |
-| [Understanding Agent Checkpoints](tutorials/agent-checkpoints.md) | Track progress of long-running jobs with structured `[CHECKPOINT]` markers |
+| [Understanding Agent Checkpoints](tutorials/agent-checkpoints.md) | Track progress of long-running jobs with manual `[CHECKPOINT]` markers or automatic `--ckpt` detection |
 | [Using ClawTerminal on iPad](tutorials/ipad-multi-window.md) | NavigationSplitView sidebar, Stage Manager multi-window, shared SSH sessions |
+| [Multi-CLI Tool Support](tutorials/multi-cli-tools.md) | Use Aider, Codex, or custom CLI tools alongside Claude in dedicated chatrooms |
 
 ### Additional Feature Tutorials
 
@@ -243,6 +244,21 @@ npm install -g @anthropic-ai/claude-code
 
 - Supports multi-turn conversations, tool use, MCP servers, `--resume` continuity
 
+### Multi-CLI Tool Support
+
+ClawTerminal supports multiple CLI tools beyond Claude Code. Create dedicated chatrooms for different tools:
+
+| Tool | Description |
+|------|-------------|
+| **Claude** (default) | Claude Code CLI — full tool use, MCP servers, `--resume` |
+| **Aider** | AI pair programming with git integration |
+| **Codex** | OpenAI Codex CLI |
+| **Custom** | Any CLI tool — configure the binary path and invocation command |
+
+To use a different tool: create a new chatroom → tap **Info (i)** → **CLI Tool** → select the tool. Each tool type has its own tmux session, binary path detection, and output parsing.
+
+See the [Multi-CLI Tool Support tutorial](tutorials/multi-cli-tools.md) for setup details.
+
 ---
 
 ### Developer Setup (Recommended)
@@ -296,6 +312,14 @@ Submit long-running tasks to run in the background while you do something else �
 ```text
 /submit refactor the auth module to use async/await
 ```
+
+Add `--ckpt` to enable **automatic checkpoint detection** — ClawTerminal scans the job's output for progress indicators (tool use, test results, file operations, step markers) and creates checkpoint timeline entries automatically:
+
+```text
+/submit --ckpt refactor the auth module to use async/await
+```
+
+You can also use **manual checkpoints** by asking Claude to output `[CHECKPOINT: label]` markers, or combine both approaches. See the [Agent Checkpoints tutorial](tutorials/agent-checkpoints.md) for details.
 
 Progress updates appear in the **Jobs** panel. A notification fires when the task completes. The result is automatically injected into your next chatroom message so Claude has context without you having to paste anything.
 
@@ -429,7 +453,7 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 
 | Command | Description |
 |---------|-------------|
-| `/submit <task>` | Send a long-running task to the **background job queue** — Claude works on it while you do other things. A notification fires when done. |
+| `/submit <task> [--ckpt] [--skills alias1,...]` | Send a long-running task to the **background job queue**. Add `--ckpt` for automatic checkpoint detection. A notification fires when done. |
 | `/resume` | Resume the most recent Claude Code CLI session for this chatroom (CLI mode only) |
 | `/plan <task>` | Switch to **plan mode** — Claude reads files and proposes a plan but cannot write or execute (CLI mode only) |
 | `/compact` | Ask Claude to summarise the conversation so far and compact the context window |
@@ -687,7 +711,8 @@ This can happen if your Mac is only reachable via an IPv6 link-local address on 
 See the [tutorials/](tutorials/) directory for in-depth guides on individual features:
 
 - **[Scheduling Recurring Background Jobs](tutorials/scheduled-jobs.md)** — Automate repetitive tasks with hourly, daily, weekly, or custom schedules
-- **[Understanding Agent Checkpoints](tutorials/agent-checkpoints.md)** — Track long-running job progress with `[CHECKPOINT: label]` markers
+- **[Understanding Agent Checkpoints](tutorials/agent-checkpoints.md)** — Track long-running job progress with manual `[CHECKPOINT]` markers or automatic `--ckpt` detection
+- **[Multi-CLI Tool Support](tutorials/multi-cli-tools.md)** — Use Aider, Codex, or custom CLI tools alongside Claude
 - **[Using ClawTerminal on iPad](tutorials/ipad-multi-window.md)** — Sidebar layout, Stage Manager multi-window, shared SSH sessions
 - **[AI Error Diagnosis](tutorials/ai-error-diagnosis.md)** — One-tap terminal error diagnosis via floating "Ask Claude" pill
 - **[Snap & Code: Camera to Code](tutorials/snap-and-code.md)** — Photograph a mockup or error screen, get running code

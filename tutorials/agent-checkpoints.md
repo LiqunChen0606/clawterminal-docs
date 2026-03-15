@@ -104,6 +104,55 @@ Each `[CHECKPOINT: ...]` line creates an entry in the timeline as soon as it app
 
 ---
 
+## Automatic Checkpoint Detection (`--ckpt`)
+
+Instead of asking Claude to manually output `[CHECKPOINT: ...]` markers, you can enable **automatic checkpoint detection** by adding the `--ckpt` flag to your `/submit` command:
+
+```text
+/submit --ckpt refactor the auth module to use async/await
+```
+
+When `--ckpt` is enabled, ClawTerminal scans the job's streaming output for natural progress indicators and creates checkpoint entries automatically.
+
+### What Gets Detected
+
+| Pattern | Example | Checkpoint Label |
+|---------|---------|-----------------|
+| Tool use events | Claude calls `Write(src/auth.ts)` | `Write: src/auth.ts` |
+| Checkmark lines | `✅ Tests passing` | `Tests passing` |
+| Step/Phase markers | `Step 3: Deploy` | `Step 3: Deploy` |
+| Progress keywords | `Build succeeded` | `Build succeeded` |
+| File operations | `Created file src/auth.ts` | `Created file src/auth.ts` |
+| Test results | `All tests passed` | `All tests passed` |
+| Build results | `BUILD SUCCEEDED` | `BUILD SUCCEEDED` |
+
+### Deduplication and Limits
+
+- Duplicate labels are automatically filtered --- if "Build succeeded" appears multiple times, only the first instance creates a checkpoint
+- Maximum 50 auto-checkpoints per job to prevent flooding on verbose output
+- Manual `[CHECKPOINT: ...]` markers still work alongside auto-checkpoints and always take priority
+
+### Combining Manual and Automatic
+
+You can use both approaches together:
+
+```text
+/submit --ckpt Perform a full security audit.
+Output [CHECKPOINT: phase name] after each major phase.
+```
+
+In this case, both the manual `[CHECKPOINT: ...]` markers AND the automatically detected progress indicators appear in the checkpoint timeline.
+
+### When Auto-Checkpoints Work Best
+
+Auto-checkpoints are most useful for **coding tasks** where Claude uses tools (Write, Edit, Bash) and produces structured output. For pure text tasks (math, writing, analysis), Claude typically doesn't produce the patterns that trigger auto-detection --- use manual `[CHECKPOINT: ...]` markers instead.
+
+### Visual Indicator
+
+When a job has `--ckpt` enabled, the checkpoint timeline header in Job Detail shows **"Checkpoints (auto)"** instead of just "Checkpoints", so you can tell at a glance that auto-detection is active.
+
+---
+
 ## Use Cases
 
 ### Long-Running Analysis
