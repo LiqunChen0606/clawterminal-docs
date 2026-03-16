@@ -1,10 +1,11 @@
 # ClawTerminal — Guides & Tutorials
 
-> **ClawTerminal** is an iOS SSH terminal + Claude AI assistant that connects your iPhone or iPad to your Mac and remote servers.
+> **ClawTerminal** is an iOS SSH terminal + AI chatroom (Claude, Codex, Gemini, Aider) that connects your iPhone or iPad to your Mac and remote servers.
 
-[![Platform](https://img.shields.io/badge/Platform-iOS%2017%2B-blue)](https://github.com/LiqunChen0606/clawterminal)
-[![Claude](https://img.shields.io/badge/AI-Claude%20Opus%204.6-purple)](https://anthropic.com)
-[![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP-green)](https://github.com/LiqunChen0606/clawterminal)
+[![Download on the App Store](https://img.shields.io/badge/Download-App%20Store-blue?logo=apple&logoColor=white)](https://apps.apple.com/us/app/clawterminal/id6759690902)
+[![Platform](https://img.shields.io/badge/Platform-iOS%2017%2B-blue)](https://apps.apple.com/us/app/clawterminal/id6759690902)
+[![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
+[![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
 ---
 
