@@ -39,6 +39,7 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 | [Understanding Agent Checkpoints](tutorials/agent-checkpoints.md) | Track progress of long-running jobs with manual `[CHECKPOINT]` markers or automatic `--ckpt` detection |
 | [Using ClawTerminal on iPad](tutorials/ipad-multi-window.md) | NavigationSplitView sidebar, Stage Manager multi-window, shared SSH sessions |
 | [Multi-CLI Tool Support](tutorials/multi-cli-tools.md) | Use Aider, Codex, or custom CLI tools alongside Claude in dedicated chatrooms |
+| [Cross-Session AI Memory](tutorials/cross-session-memory.md) | Persistent `/remember` facts injected into every chatroom session automatically |
 
 ### Additional Feature Tutorials
 
@@ -501,6 +502,9 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/rename <name>` | Rename the current chatroom |
 | `/tasks` | List all background jobs and their status |
 | `/config` | Display current settings |
+| `/remember <fact>` | Save a fact to **cross-session memory** — injected into every future chatroom session |
+| `/forget <keyword>` | Remove memories matching the keyword |
+| `/memories` | Open the **Memory Library** to browse, search, and manage saved memories |
 | `/help` | List all available slash commands |
 
 ### @ File References
@@ -753,6 +757,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 - **[Inline Code Execution](tutorials/inline-code-execution.md)** — Run code blocks from Claude's responses with one tap
 - **[Code Snippet Library](tutorials/code-snippets.md)** — Save and reuse code blocks from conversations
 - **[Smart Notifications](tutorials/smart-notifications.md)** — Intelligent alerts for job completion, long responses, and to-do completion
+- **[Cross-Session AI Memory](tutorials/cross-session-memory.md)** — Save facts with `/remember`, auto-injected into every chatroom session
 
 ---
 
