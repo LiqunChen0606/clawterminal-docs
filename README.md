@@ -40,6 +40,7 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 | [Using ClawTerminal on iPad](tutorials/ipad-multi-window.md) | NavigationSplitView sidebar, Stage Manager multi-window, shared SSH sessions |
 | [Multi-CLI Tool Support](tutorials/multi-cli-tools.md) | Use Aider, Codex, or custom CLI tools alongside Claude in dedicated chatrooms |
 | [Cross-Session AI Memory](tutorials/cross-session-memory.md) | Persistent `/remember` facts injected into every chatroom session automatically |
+| [Shared Chatroom (Session Sharing)](tutorials/shared-chatroom.md) | Share your AI chatroom session via room codes — guests watch in real-time |
 
 ### Additional Feature Tutorials
 
@@ -758,6 +759,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 - **[Code Snippet Library](tutorials/code-snippets.md)** — Save and reuse code blocks from conversations
 - **[Smart Notifications](tutorials/smart-notifications.md)** — Intelligent alerts for job completion, long responses, and to-do completion
 - **[Cross-Session AI Memory](tutorials/cross-session-memory.md)** — Save facts with `/remember`, auto-injected into every chatroom session
+- **[Shared Chatroom](tutorials/shared-chatroom.md)** — Share your AI session via room codes for real-time watch-only viewing
 
 ---
 
