@@ -15,7 +15,7 @@
 2. [SSH Setup — Connect to Your Mac (Local Network)](#2-ssh-setup--connect-to-your-mac-local-network)
 3. [Tailscale — Remote Access Anywhere (Recommended for remote use)](#3-tailscale--remote-access-anywhere)
 4. [SSH Keys](#4-ssh-keys)
-5. [Claude AI Chatroom](#5-claude-ai-chatroom) (includes [Background Jobs](#background-jobs-submit) and [Agent Orchestration](#agent-orchestration-orchestrate))
+5. [Claude AI Chatroom](#5-claude-ai-chatroom) (includes [Background Jobs](#background-jobs-submit), [Agent Orchestration](#agent-orchestration-orchestrate), and [Batch Multi-Agent](#batch-multi-agent-orchestration-batch))
 6. [Skills & Marketplace](#6-skills--marketplace)
 7. [Slash Commands & @ References](#7-slash-commands---references)
 8. [Terminal Shortcuts](#8-terminal-shortcuts)
@@ -31,6 +31,13 @@
 ## 📚 Feature Tutorials
 
 In-depth guides for individual ClawTerminal features. Each tutorial covers a single feature with step-by-step instructions.
+
+### New Features (Sprint 42)
+
+| Tutorial | Description |
+|----------|-------------|
+| [Batch Multi-Agent Orchestration (`/batch`)](tutorials/batch-multi-agent.md) | Commander decomposes your goal, N parallel Workers execute it, Synthesizer merges results. Supports `--agents`, `--multi`, `--ckpt`, `--skills` |
+| [Smart Commands](tutorials/smart-commands.md) | User-defined slash commands with named parameters, background auto-submit, tool overrides, skill injection, and auto-batch execution |
 
 ### New Features (Sprint 29+)
 
@@ -431,6 +438,56 @@ Open the **Jobs** panel to see orchestration groups. Jobs from the same `/orches
 
 ---
 
+### Batch Multi-Agent Orchestration (`/batch`)
+
+`/batch` is the next evolution of agent orchestration. A **Commander** agent decomposes your goal into subtasks, **N parallel Workers** execute them simultaneously, and a **Synthesizer** merges their results into a single actionable summary.
+
+```text
+/batch --agents 4 implement the new payment flow
+```
+
+#### Flags
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--agents N` | Number of parallel worker agents (2–10) | `3` |
+| `--multi` | Cross-tool assignment — Commander assigns Claude, Codex, Gemini, or Aider to each subtask based on its strengths | off |
+| `--ckpt` | Enable automatic checkpoint detection on all worker jobs | off |
+| `--skills alias1,...` | Attach named skills to all worker agents | none |
+
+#### `--multi`: Cross-Tool Assignment
+
+When `--multi` is set, ClawTerminal SSHs to your Mac and detects which CLI tools are installed. The Commander then assigns each subtask to the best-suited tool:
+
+| Tool | Strengths |
+|------|-----------|
+| **Claude** | Code reasoning, architecture, documentation |
+| **Codex** | Focused code generation and completions |
+| **Gemini** | Long-context analysis, large file reads |
+| **Aider** | Git-integrated refactoring, multi-file edits |
+
+```text
+/batch --agents 4 --multi migrate the database schema from Postgres to SQLite
+```
+
+#### Viewing batch jobs
+
+Open the **Jobs** panel to see the batch group. The Commander, all Workers (color-coded blue), and the Synthesizer (purple) appear under a collapsible group header showing the original goal and overall status. Tap any job to view its assigned subtask, output, tool assignment, and checkpoint timeline.
+
+#### When to use `/batch` vs `/orchestrate` vs `/submit`
+
+| | `/submit` | `/orchestrate` | `/batch` |
+|---|-----------|----------------|----------|
+| **Agents** | 1 | 3 (fixed roles) | 2–10 (dynamic) |
+| **Task decomposition** | You write the task | Fixed: Researcher / Implementer / Reviewer | Commander decomposes dynamically |
+| **Multi-tool** | No | No | Yes (`--multi`) |
+| **Checkpoints** | `--ckpt` | Not supported | `--ckpt` |
+| **Best for** | Single focused task | Multi-perspective review | Complex goals needing flexible decomposition |
+
+See the [Batch Multi-Agent Orchestration tutorial](tutorials/batch-multi-agent.md) for a full walkthrough.
+
+---
+
 ## 6. Skills & Marketplace
 
 **Skills** are Markdown snippets injected into Claude's system prompt to give it specialized knowledge, project context, or standing instructions. ClawTerminal ships with a built-in marketplace of 30 curated packages.
@@ -494,6 +551,7 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/model <name>` | Switch the active model mid-conversation, e.g. `/model claude-opus-4-6` |
 | `/clear` | Clear the current conversation and start fresh |
 | `/orchestrate <goal>` | Spawn **3 parallel AI agents** (Researcher, Implementer, Reviewer) plus a Synthesis agent that combines their results. See [Agent Orchestration](#agent-orchestration-orchestrate) below. |
+| `/batch <goal> [--agents N] [--multi] [--ckpt] [--skills alias,...]` | Spawn a **Commander + N Worker agents + Synthesizer**. Commander decomposes the goal dynamically. `--multi` assigns different tools (Claude/Codex/Gemini/Aider) to different subtasks. See [Batch Multi-Agent Orchestration](#batch-multi-agent-orchestration-batch). |
 | `/cost` | Show estimated token usage and cost for the current session |
 | `/diff` | Show the last code changes Claude made |
 | `/context` | Display current session context (project dir, session ID, model) |
@@ -747,6 +805,8 @@ This can happen if your Mac is only reachable via an IPv6 link-local address on 
 
 See the [tutorials/](tutorials/) directory for in-depth guides on individual features:
 
+- **[Batch Multi-Agent Orchestration (`/batch`)](tutorials/batch-multi-agent.md)** — Commander + N parallel Workers + Synthesizer, with `--agents`, `--multi` cross-tool assignment, `--ckpt`, and `--skills` flags
+- **[Smart Commands](tutorials/smart-commands.md)** — User-defined slash commands with named parameters, background auto-submit, tool overrides, skill injection, and auto-batch execution
 - **[Scheduling Recurring Background Jobs](tutorials/scheduled-jobs.md)** — Automate repetitive tasks with hourly, daily, weekly, or custom schedules
 - **[Understanding Agent Checkpoints](tutorials/agent-checkpoints.md)** — Track long-running job progress with manual `[CHECKPOINT]` markers or automatic `--ckpt` detection
 - **[Multi-CLI Tool Support](tutorials/multi-cli-tools.md)** — Use Aider, Codex, or custom CLI tools alongside Claude
