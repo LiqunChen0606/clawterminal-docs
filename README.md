@@ -1,15 +1,49 @@
 # ClawTerminal — Guides & Tutorials
 
-> **ClawTerminal** is an iOS SSH terminal + AI chatroom (Claude, Codex, Gemini, Aider) that connects your iPhone or iPad to your Mac and remote servers.
+> **ClawTerminal** (also known as **CatClaw**) is an iOS SSH terminal + AI chatroom (Claude, Codex, Gemini, Aider) that connects your iPhone, iPad, or Apple Watch to your Mac and remote servers. Run AI agents, manage files, schedule jobs, and collaborate — all from your pocket.
 
 [![Download on the App Store](https://img.shields.io/badge/Download-App%20Store-blue?logo=apple&logoColor=white)](https://apps.apple.com/us/app/clawterminal/id6759690902)
-[![Platform](https://img.shields.io/badge/Platform-iOS%2017%2B-blue)](https://apps.apple.com/us/app/clawterminal/id6759690902)
-[![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
-[![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
+[![Platform](https://img.shields.io/badge/Platform-iOS%2017%2B%20%7C%20iPadOS%20%7C%20watchOS-blue)](https://apps.apple.com/us/app/clawterminal/id6759690902)
+[![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
+[![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
+
+---
+
+## Why ClawTerminal vs Claude Code Remote Control / Channels
+
+Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "Channels" (Slack/Discord bridge). ClawTerminal takes a fundamentally different approach: a native iOS app with direct SSH and tmux-based session management. Here is how they compare:
+
+| Feature | ClawTerminal | Claude Code Remote Control | Claude Code Channels |
+|---------|-------------|---------------------------|---------------------|
+| **Session persistence** | tmux survives Mac sleep, app backgrounding, SSH drops — pick up right where you left off | Dies when terminal closes | Dies when bridge process dies |
+| **Mac sleep resilience** | SSH auto-reconnects, tmux session persists with full output | Process suspends, WebSocket drops | Bridge dies, must restart |
+| **Real terminal** | Full PTY — vim, htop, tmux, interactive programs | No (command execution only) | No |
+| **File browser** | SFTP with batch operations, upload/download, breadcrumb navigation | No | No |
+| **Multi-tool AI** | Claude + Codex + Gemini + Aider in dedicated chatrooms | Claude only | Claude only |
+| **Multi-agent orchestration** | `/batch --agents N` with Commander + Workers + Synthesizer, cross-tool assignment | Background agents (desktop only) | No |
+| **Scheduled/recurring jobs** | Hourly, daily, weekly recurring with auto-submission | No | No |
+| **Security model** | End-to-end SSH encryption, keys stored in iOS Keychain | Localhost only (requires SSH tunnel to reach claude.ai) | Code passes through third-party platforms (Slack, Discord) |
+| **Setup** | Just SSH credentials (password or key) | CLI install + tunnel configuration | Bot token + bridge setup + runtime |
+| **Native mobile app** | Full iOS/iPadOS/watchOS app, optimized for touch | Web browser on claude.ai | Messaging app (Slack/Discord) |
+| **Offline / local network** | Works on local WiFi without internet (SSH only) | Requires active claude.ai connection | Requires platform API |
+| **watchOS** | Voice dictation to submit jobs + monitor progress from wrist | No | No |
+| **iPad** | Split view sidebar, Stage Manager multi-window, shared SSH sessions | No | No |
+| **Code snippets** | Save, search, run from a persistent library | No | No |
+| **AI autocomplete** | Ghost text suggestions in terminal as you type | No | No |
+| **AI error diagnosis** | Floating "Ask Claude" pill auto-detects terminal errors | No | No |
+| **Cross-session memory** | `/remember` facts persist across all sessions | No | No |
+| **Shared chatroom** | Host/join via room codes, real-time guest viewing | No | No |
+| **Conversation export** | PDF and Markdown export with share sheet | No | No |
+| **Port forwarding** | Local, remote, and dynamic SOCKS5 tunnels | No (tunnel is one-way) | No |
+| **Mosh transport** | UDP-based Mosh for high-latency connections | No | No |
+
+**Bottom line:** ClawTerminal is a full mobile development environment. Claude Code Remote Control and Channels are remote interfaces to a single tool. If you want persistent, resilient, multi-tool AI access from your phone or tablet with real terminal capabilities, ClawTerminal is purpose-built for that.
 
 ---
 
 ## 📖 Table of Contents
+
+- [Why ClawTerminal vs Claude Code Remote Control / Channels](#why-clawterminal-vs-claude-code-remote-control--channels)
 
 1. [Getting Started](#1-getting-started)
 2. [SSH Setup — Connect to Your Mac (Local Network)](#2-ssh-setup--connect-to-your-mac-local-network)
@@ -17,14 +51,15 @@
 4. [SSH Keys](#4-ssh-keys)
 5. [Claude AI Chatroom](#5-claude-ai-chatroom) (includes [Background Jobs](#background-jobs-submit), [Agent Orchestration](#agent-orchestration-orchestrate), and [Batch Multi-Agent](#batch-multi-agent-orchestration-batch))
 6. [Skills & Marketplace](#6-skills--marketplace)
-7. [Slash Commands & @ References](#7-slash-commands---references)
-8. [Terminal Shortcuts](#8-terminal-shortcuts)
-9. [Port Forwarding & Tunnels](#9-port-forwarding--tunnels)
-10. [SFTP File Browser](#10-sftp-file-browser)
-11. [MCP Servers](#11-mcp-servers)
-12. [Tips & Tricks](#12-tips--tricks)
-13. [Troubleshooting](#13-troubleshooting)
-14. [Feature Tutorials](#14-feature-tutorials)
+7. [Smart Commands](#7-smart-commands)
+8. [Slash Commands & @ References](#8-slash-commands---references)
+9. [Terminal Shortcuts](#9-terminal-shortcuts)
+10. [Port Forwarding & Tunnels](#10-port-forwarding--tunnels)
+11. [SFTP File Browser](#11-sftp-file-browser)
+12. [MCP Servers](#12-mcp-servers)
+13. [Tips & Tricks](#13-tips--tricks)
+14. [Troubleshooting](#14-troubleshooting)
+15. [Feature Tutorials](#15-feature-tutorials)
 
 ---
 
@@ -103,16 +138,22 @@ tmux -V
 
 > **Note:** tmux is usually pre-installed on most Linux servers. On macOS, you need to install it via Homebrew.
 
-### First Launch
+### First Launch & Welcome Tour
 
-When you open ClawTerminal for the first time you will see the **Welcome Tour**. It walks you through the four main features:
+When you open ClawTerminal for the first time you will see the **Welcome Tour** -- an 8-page interactive walkthrough covering all major features:
 
-1. **SSH Terminal** — Full colour terminal with tmux, git, vim shortcuts
-2. **Claude AI** — Chat with Claude, run Claude Code on your Mac
-3. **My Mac Mode** — One-tap connect to your own Mac with AI integration
-4. **Background Jobs** — Submit long-running tasks and get notified when done
+1. **Welcome to CatClaw** — Overview of the app and what it does
+2. **Powerful SSH Terminal** — PTY, tabs, autocomplete, error diagnosis, Mosh, port forwarding
+3. **Multi-Tool AI Chatroom** — Claude, Codex, Gemini, Aider with tool-call cards, diffs, thinking blocks, memory, skills, and commands
+4. **Background Jobs & Agents** — `/submit`, `/batch` with N parallel agents, scheduled jobs, checkpoints
+5. **SFTP File Browser** — Visual file management, batch operations, Snap & Code
+6. **My Mac Workspace** — Auto-detect via Bonjour, auto-key setup, dual terminal + AI mode, Tailscale
+7. **iPad, Watch & Beyond** — Split view, multi-window, watchOS dictation, shared chatrooms, relay server
+8. **Ready to Go** — Links to Settings and a reminder that you can revisit the tour
 
 Tap **Get Started** on the last page to begin, then follow the **Set Up My Mac** wizard.
+
+> **Revisit the tour anytime:** Go to **Settings → About → Welcome Tour** to replay it.
 
 ---
 
@@ -134,7 +175,7 @@ Tap **Get Started** on the last page to begin, then follow the **Set Up My Mac**
    - **Name**: e.g. "My MacBook"
    - **Hostname**: `YourMac.local` or IP address
    - **Port**: `22` (default)
-   - **Username**: your macOS login name (run `whoami` in Terminal to confirm)
+   - **Username**: your macOS login name (run `whoami` in Terminal to confirm). ClawTerminal auto-detects the correct username from your Mac's Bonjour advertisement when connecting via WiFi -- it no longer defaults to "mobile"
    - **Auth Method**: Password or SSH Key (see §4)
 4. Tap **Save**, then tap the profile to connect
 
@@ -535,7 +576,41 @@ Tap any skill → **Export** to save as JSON. Share with teammates and re-import
 
 ---
 
-## 7. Slash Commands & @ References
+## 7. Smart Commands
+
+ClawTerminal lets you define your own `/command` shortcuts that go beyond simple text templates. **Smart Commands** support:
+
+- **Named parameters** with optional defaults — e.g. `/deploy production feature-x`
+- **Run in Background** — auto-submit as a `/submit` background job
+- **Tool Override** — force a specific CLI tool (Claude/Codex/Gemini/Aider) regardless of chatroom default
+- **Skill Aliases** — auto-attach skills to the command's system prompt
+- **Agent Count** — auto-run as `/batch --agents N` with Commander + Workers + Synthesizer
+
+### Creating a Smart Command
+
+1. Type `/` in any chatroom to open the slash command palette
+2. Tap **Manage Commands** (or go to the Commands section in the toolbar)
+3. Tap **+** to create a new command
+4. Fill in the name, template with `{paramName}` placeholders, parameters, and optional smart fields
+5. Tap **Save**
+
+### Example: One-Tap Full Audit
+
+| Field | Value |
+|-------|-------|
+| Name | `fullaudit` |
+| Template | `Perform a comprehensive audit of {scope}: security, performance, code quality, and test coverage.` |
+| Parameters | `scope` (default: `the entire codebase`) |
+| Agent Count | 4 |
+| Run in Background | Yes |
+
+Now `/fullaudit` spawns 4 parallel agents that audit your codebase, and `/fullaudit src/payments/` focuses on a subdirectory.
+
+See the [Smart Commands tutorial](tutorials/smart-commands.md) for a full reference and more examples.
+
+---
+
+## 8. Slash Commands & @ References
 
 Type `/` at the start of any message in a chatroom to see available commands. These work in both API mode and CLI mode unless noted.
 
@@ -579,9 +654,11 @@ Claude can then read, discuss, or modify that file. Works great for attaching co
 
 ---
 
-## 8. Terminal Shortcuts
+## 9. Terminal Shortcuts
 
-The shortcut bar below the terminal has four categories. Tap the pill labels to switch:
+The shortcut bar below the terminal has four categories. Tap the pill labels to switch.
+
+> **Dismiss keyboard:** Tap the **chevron-down button** at the right edge of the extended keyboard bar to dismiss the keyboard without losing focus. This is available in both the terminal and the chatroom input.
 
 ### Shell
 
@@ -645,7 +722,7 @@ All tmux shortcuts send `Ctrl-B` prefix followed by the key:
 
 ---
 
-## 9. Port Forwarding & Tunnels
+## 10. Port Forwarding & Tunnels
 
 Port forwarding lets you securely access services on your Mac or remote network through the SSH tunnel.
 
@@ -672,7 +749,7 @@ Then open `http://localhost:3000` in Safari on your iPhone to hit the dev server
 
 ---
 
-## 10. SFTP File Browser
+## 11. SFTP File Browser
 
 Browse, upload, and download files over SFTP without leaving the app:
 
@@ -701,7 +778,7 @@ Tap the **Upload** button (top right) to pick files from the iOS Files app and t
 
 ---
 
-## 11. MCP Servers
+## 12. MCP Servers
 
 ClawTerminal supports [Model Context Protocol (MCP)](https://modelcontextprotocol.io) servers, giving Claude access to external tools like file systems, databases, and APIs.
 
@@ -723,7 +800,7 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 
 ---
 
-## 12. Tips & Tricks
+## 13. Tips & Tricks
 
 - **Markdown in the input field**: Type markdown directly — `**bold**`, `*italic*`, `` `inline code` ``, triple backticks for code blocks, `- bullet`, `1. numbered`, `> quote`. Claude's responses render all of these natively.
 - **Multi-tab terminal**: Tap **+** in the Terminal tab to open multiple SSH sessions simultaneously — great for running a server in one tab and editing code in another
@@ -739,10 +816,16 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Favorites**: Star a connection profile to pin it to the top of the Connections list
 - **Color Tags**: Assign color tags to connection profiles for quick visual identification
 - **Home Screen Widget**: Add the **Quick Connect** widget (small or medium) to your home screen for one-tap SSH connection to your most-used profiles
+- **Mosh transport**: For high-latency or unreliable connections, switch a profile's transport to **Mosh** (connection form → Transport). Mosh uses UDP for instant local echo and survives IP changes
+- **watchOS companion**: Open the ClawTerminal Watch app to dictate jobs via Siri, monitor running jobs, and see completion status — all from your wrist
+- **Message pinning**: Long-press any message → **Pin** to keep important messages accessible. Use the pin filter in the banner to show only pinned messages
+- **Welcome Tour**: Revisit the 8-page onboarding walkthrough anytime from **Settings → About → Welcome Tour**
+- **SSH config import**: Import connection profiles from your Mac's `~/.ssh/config` file via the ellipsis menu in the My Mac header — no manual re-entry needed
+- **Relay server**: Enable the relay server in Settings to collaborate with teammates via shared chatroom room codes
 
 ---
 
-## 13. Troubleshooting
+## 14. Troubleshooting
 
 ### "Connection timed out" or connection keeps spinning
 
@@ -801,7 +884,7 @@ This can happen if your Mac is only reachable via an IPv6 link-local address on 
 
 ---
 
-## 14. Feature Tutorials
+## 15. Feature Tutorials
 
 See the [tutorials/](tutorials/) directory for in-depth guides on individual features:
 
