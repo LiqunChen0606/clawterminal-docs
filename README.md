@@ -21,6 +21,7 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 | **File browser** | SFTP with batch operations, upload/download, breadcrumb navigation | No | No |
 | **Multi-tool AI** | Claude + Codex + Gemini + Aider in dedicated chatrooms | Claude only | Claude only |
 | **Multi-agent orchestration** | `/batch --agents N` with Commander + Workers + Synthesizer, cross-tool assignment | Background agents (desktop only) | No |
+| **Agent Teams** | `/team` — wave-based orchestration with visual command center, animated flow graph, discovery feed, per-agent status cards | Desktop-only CLI text output | No |
 | **Scheduled/recurring jobs** | Hourly, daily, weekly recurring with auto-submission | No | No |
 | **Security model** | End-to-end SSH encryption, keys stored in iOS Keychain | Localhost only (requires SSH tunnel to reach claude.ai) | Code passes through third-party platforms (Slack, Discord) |
 | **Setup** | Just SSH credentials (password or key) | CLI install + tunnel configuration | Bot token + bridge setup + runtime |
@@ -49,7 +50,7 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 2. [SSH Setup — Connect to Your Mac (Local Network)](#2-ssh-setup--connect-to-your-mac-local-network)
 3. [Tailscale — Remote Access Anywhere (Recommended for remote use)](#3-tailscale--remote-access-anywhere)
 4. [SSH Keys](#4-ssh-keys)
-5. [Claude AI Chatroom](#5-claude-ai-chatroom) (includes [Background Jobs](#background-jobs-submit), [Agent Orchestration](#agent-orchestration-orchestrate), and [Batch Multi-Agent](#batch-multi-agent-orchestration-batch))
+5. [Claude AI Chatroom](#5-claude-ai-chatroom) (includes [Background Jobs](#background-jobs-submit), [Agent Orchestration](#agent-orchestration-orchestrate), [Batch Multi-Agent](#batch-multi-agent-orchestration-batch), and [Agent Teams](#agent-teams-team))
 6. [Skills & Marketplace](#6-skills--marketplace)
 7. [Smart Commands](#7-smart-commands)
 8. [Slash Commands & @ References](#8-slash-commands---references)
@@ -66,6 +67,12 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 ## 📚 Feature Tutorials
 
 In-depth guides for individual ClawTerminal features. Each tutorial covers a single feature with step-by-step instructions.
+
+### New Features (Sprint 43)
+
+| Tutorial | Description |
+|----------|-------------|
+| [Agent Teams (`/team`)](tutorials/agent-teams.md) | Wave-based orchestration: Research → Implement → Review waves with parallel agents, discovery propagation between waves, visual command center with animated flow graph and live discovery feed |
 
 ### New Features (Sprint 42)
 
@@ -529,6 +536,79 @@ See the [Batch Multi-Agent Orchestration tutorial](tutorials/batch-multi-agent.m
 
 ---
 
+### Agent Teams (`/team`)
+
+`/team` is the most structured form of multi-agent work in ClawTerminal. A **Commander** agent decomposes your goal into a series of **waves** — sequential phases where multiple agents run in parallel. Discoveries from each wave are automatically extracted and injected into the next wave's prompts, so every stage builds on what was learned before.
+
+```text
+/team Write a Python calculator with add, subtract, multiply, divide, input validation, and a REPL loop
+```
+
+#### How waves work
+
+```text
+┌──────────────────────────────────────────────────┐
+│  /team Write a Python calculator…                │
+└────────────────────┬─────────────────────────────┘
+                     │ Commander decomposes goal
+                     │
+          ┌──────────▼──────────┐
+          │    Wave 1: Research  │  (parallel agents)
+          │  Agent A  │ Agent B  │
+          └──────────┬──────────┘
+                     │ Discoveries extracted
+                     ▼
+          ┌──────────────────────┐
+          │  Wave 2: Implement   │  (parallel agents)
+          │  Agent C  │ Agent D  │  ← receives Wave 1 discoveries
+          └──────────┬──────────┘
+                     │ Discoveries extracted
+                     ▼
+          ┌──────────────────────┐
+          │   Wave 3: Review     │  (parallel agents)
+          │  Agent E  │ Agent F  │  ← receives Wave 1 + 2 discoveries
+          └──────────┬──────────┘
+                     │
+                     ▼
+               Final summary
+               posted to chatroom
+```
+
+1. **Wave 1 — Research**: Agents explore the codebase, gather context, and identify constraints. Their discoveries (key findings, file paths, design decisions) are extracted automatically.
+2. **Wave 2 — Implementation**: Agents receive the Research wave's discoveries and implement the solution. Their output (files created, patterns used, edge cases found) is extracted for the next wave.
+3. **Wave 3 — Review**: Agents receive all prior discoveries and review the implementation for correctness, security, and quality.
+
+#### Flags
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--multi` | Cross-tool assignment — Commander assigns Claude, Codex, Gemini, or Aider to agents based on their strengths within each wave | off |
+
+#### Visual Command Center
+
+While a team is running, the **Team** toolbar button opens the **Visual Command Center** — a full-screen view showing:
+
+- **Animated flow graph** — pulsing nodes for each agent and wave, animated data-flow lines showing discoveries moving between waves
+- **Live discovery feed** — real-time stream of discoveries extracted from completed agents
+- **Per-agent status cards** — progress ring, current status (queued / running / completed / failed), assigned tool, and a preview of recent output
+
+The Team toolbar button is always visible in the chatroom toolbar. When no team is running, tapping it shows an empty state with usage instructions.
+
+#### When to use `/team` vs `/batch` vs `/orchestrate`
+
+| | `/orchestrate` | `/batch` | `/team` |
+|---|----------------|----------|---------|
+| **Structure** | Fixed 3 roles | Dynamic decomposition | Wave-based sequential phases |
+| **Parallelism** | All 3 at once | All workers at once | Parallel within each wave |
+| **Knowledge sharing** | None | None | Discoveries flow between waves |
+| **Multi-tool** | No | `--multi` | `--multi` |
+| **Visual UI** | Jobs panel only | Jobs panel only | Animated command center |
+| **Best for** | Quick multi-perspective review | Flexible parallel execution | Complex tasks where each phase informs the next |
+
+See the [Agent Teams tutorial](tutorials/agent-teams.md) for a full walkthrough with examples.
+
+---
+
 ## 6. Skills & Marketplace
 
 **Skills** are Markdown snippets injected into Claude's system prompt to give it specialized knowledge, project context, or standing instructions. ClawTerminal ships with a built-in marketplace of 30 curated packages.
@@ -627,6 +707,7 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/clear` | Clear the current conversation and start fresh |
 | `/orchestrate <goal>` | Spawn **3 parallel AI agents** (Researcher, Implementer, Reviewer) plus a Synthesis agent that combines their results. See [Agent Orchestration](#agent-orchestration-orchestrate) below. |
 | `/batch <goal> [--agents N] [--multi] [--ckpt] [--skills alias,...]` | Spawn a **Commander + N Worker agents + Synthesizer**. Commander decomposes the goal dynamically. `--multi` assigns different tools (Claude/Codex/Gemini/Aider) to different subtasks. See [Batch Multi-Agent Orchestration](#batch-multi-agent-orchestration-batch). |
+| `/team <goal> [--multi]` | Wave-based orchestration — Commander decomposes into sequential waves (Research → Implement → Review), agents run in parallel within each wave, discoveries propagate between waves. Visual command center with animated flow graph and live discovery feed. See [Agent Teams](#agent-teams-team). |
 | `/cost` | Show estimated token usage and cost for the current session |
 | `/diff` | Show the last code changes Claude made |
 | `/context` | Display current session context (project dir, session ID, model) |
@@ -822,6 +903,8 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Welcome Tour**: Revisit the 8-page onboarding walkthrough anytime from **Settings → About → Welcome Tour**
 - **SSH config import**: Import connection profiles from your Mac's `~/.ssh/config` file via the ellipsis menu in the My Mac header — no manual re-entry needed
 - **Relay server**: Enable the relay server in Settings to collaborate with teammates via shared chatroom room codes
+- **Agent Teams toolbar button**: The **Team** button is always visible in the chatroom toolbar. Tap it during a `/team` run to open the Visual Command Center (animated flow graph, discovery feed, per-agent status). When no team is running, it shows an empty state with instructions.
+- **Memories toolbar button**: There is one **Memories** button (brain icon) in the chatroom toolbar — it opens the Memory Library to browse, search, and manage all saved memories. Use `/remember`, `/forget`, and `/memories` commands or tap the brain icon directly.
 
 ---
 
@@ -888,6 +971,7 @@ This can happen if your Mac is only reachable via an IPv6 link-local address on 
 
 See the [tutorials/](tutorials/) directory for in-depth guides on individual features:
 
+- **[Agent Teams (`/team`)](tutorials/agent-teams.md)** — Wave-based orchestration with Research → Implement → Review phases, discovery propagation between waves, and visual command center with animated flow graph
 - **[Batch Multi-Agent Orchestration (`/batch`)](tutorials/batch-multi-agent.md)** — Commander + N parallel Workers + Synthesizer, with `--agents`, `--multi` cross-tool assignment, `--ckpt`, and `--skills` flags
 - **[Smart Commands](tutorials/smart-commands.md)** — User-defined slash commands with named parameters, background auto-submit, tool overrides, skill injection, and auto-batch execution
 - **[Scheduling Recurring Background Jobs](tutorials/scheduled-jobs.md)** — Automate repetitive tasks with hourly, daily, weekly, or custom schedules
