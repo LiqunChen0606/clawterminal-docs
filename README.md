@@ -88,6 +88,19 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 
 In-depth guides for individual ClawTerminal features. Each tutorial covers a single feature with step-by-step instructions.
 
+### Bug Fixes & Improvements (Post-Sprint 43)
+
+| Area | Fix |
+|------|-----|
+| **SSH auto-reconnect** | Latency monitor now retries 3x with 15-second backoff before giving up. `ensureHealthySSH()` actively triggers a reconnect rather than just waiting. |
+| **Claude CLI "not logged in"** | App detects auth errors and shows step-by-step recovery: go to the Terminal tab, run `claude`, type `/login`. |
+| **Skills injection** | App-only skills (e.g. Marketplace packs that use iOS-side callbacks) injected into the CLI preamble now include a disclaimer so Claude CLI does not try to invoke them as tools. |
+| **Background job cross-context** | `/submit` and `/batch` jobs now inject the 3 most recently completed job results into new jobs, so agents can reference prior work without manual copy-paste. |
+| **First-time setup** | A connection failure during the My Mac wizard no longer flips back to the first wizard page. Instead it shows an inline error message with a **Retry** button so you can fix the issue without re-entering details. |
+| **File picker** | Two separate `.fileImporter` modifiers were merged into one (SwiftUI only supports one per view). The attachment dialog now correctly opens the iOS Files app for markdown, code, PDFs, and other file types. |
+| **WiFi/Tailscale username** | The Username field no longer pre-fills "mobile". It shows empty with a `whoami` tip — run `whoami` in Terminal on your Mac and enter the result. |
+| **Terminal keyboard dismiss** | The chevron-down button is now present on the extended keyboard bar (terminal mode), consistent with the chatroom input bar. |
+
 ### New Features (Sprint 43)
 
 | Tutorial | Description |
@@ -202,7 +215,7 @@ Tap **Get Started** on the last page to begin, then follow the **Set Up My Mac**
    - **Name**: e.g. "My MacBook"
    - **Hostname**: `YourMac.local` or IP address
    - **Port**: `22` (default)
-   - **Username**: your macOS login name (run `whoami` in Terminal to confirm). ClawTerminal auto-detects the correct username from your Mac's Bonjour advertisement when connecting via WiFi -- it no longer defaults to "mobile"
+   - **Username**: your macOS login name. Run `whoami` in Terminal on your Mac to confirm it. The field starts empty — ClawTerminal no longer pre-fills "mobile".
    - **Auth Method**: Password or SSH Key (see §4)
 4. Tap **Save**, then tap the profile to connect
 
@@ -244,7 +257,7 @@ Tap **Get Started** on the last page to begin, then follow the **Set Up My Mac**
 2. On the "Find Your Mac" step, tap **Tailscale**
 3. Enter:
    - **Hostname**: your Mac's Tailscale hostname (e.g. `your-mac.tail1234.ts.net`)
-   - **Username**: your macOS login name (same as what you see in System Settings → Users)
+   - **Username**: your macOS login name (run `whoami` in Terminal on your Mac — the field starts empty; do not leave it blank)
 4. Choose **Password** as the auth method
 5. Enter your **macOS login password** on the next screen
 6. Tap **Test Connection** — you should see a green checkmark
@@ -873,9 +886,20 @@ Long-press any **breadcrumb chip** in the path bar to copy the current directory
 
 > **Tip:** Use **Copy Path** on a project folder, then paste it into a chatroom's **Project Directory** field (Info tab → Project directory) to point Claude at the right working directory. The project path is remembered for the entire conversation session — even after reconnects.
 
+### Create a Folder or File
+
+Tap the green **+** button in the breadcrumb bar to create new items in the current directory:
+
+| Option | What happens |
+|--------|-------------|
+| **New Folder** | Prompts for a folder name, creates it, and navigates into it |
+| **New File** | Prompts for a file name, creates an empty file, and auto-opens the inline text editor |
+
+This lets you scaffold a new project structure or create config files entirely from your iPhone without opening a terminal session.
+
 ### Upload from Files App
 
-Tap the **Upload** button (top right) to pick files from the iOS Files app and transfer them to the remote server.
+Tap the **Upload** button (top right) to pick files from the iOS Files app and transfer them to the remote server. Supported types include Markdown, source code, PDFs, images, and any file type the iOS Files app can browse.
 
 ---
 
@@ -923,8 +947,10 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Welcome Tour**: Revisit the 8-page onboarding walkthrough anytime from **Settings → About → Welcome Tour**
 - **SSH config import**: Import connection profiles from your Mac's `~/.ssh/config` file via the ellipsis menu in the My Mac header — no manual re-entry needed
 - **Relay server**: Enable the relay server in Settings to collaborate with teammates via shared chatroom room codes
-- **Agent Teams toolbar button**: The **Team** button is always visible in the chatroom toolbar. Tap it during a `/team` run to open the Visual Command Center (animated flow graph, discovery feed, per-agent status). When no team is running, it shows an empty state with instructions.
-- **Memories toolbar button**: There is one **Memories** button (brain icon) in the chatroom toolbar — it opens the Memory Library to browse, search, and manage all saved memories. Use `/remember`, `/forget`, and `/memories` commands or tap the brain icon directly.
+- **Agent Teams toolbar button**: The **Team** button is always visible in the chatroom toolbar. Tap it during a `/team` run to open the Visual Command Center (animated flow graph, discovery feed, per-agent status). When no team is running, it shows an empty state with usage instructions — you do not need a team running to find the button.
+- **Memories toolbar button**: The chatroom toolbar has a single **Memories** button (brain icon) that opens the Memory Library. Earlier versions had two separate memory tabs — these are now merged. Use `/remember`, `/forget`, and `/memories` commands or tap the brain icon directly.
+- **SFTP create folder/file**: Tap the green **+** button in the SFTP breadcrumb bar to create a new folder or file directly from your iPhone without opening a terminal session.
+- **Background job context**: Completed job results are automatically available to subsequent jobs. Use `/submit "build on the refactoring from the previous job"` and the last 3 completed results are injected into the new job's context automatically.
 
 ---
 
@@ -967,6 +993,17 @@ This can happen if your Mac is only reachable via an IPv6 link-local address on 
 - Check running sessions: `tmux ls` on your Mac
 - If you see **"⚠️ Rate limit reached"** — Claude's API has temporarily throttled your account. Wait 30–60 seconds and send again. ClawTerminal detects the timeout automatically and stops waiting instead of hanging
 - If the chatroom was open while your phone slept, the connection is restored automatically on wake — you don't need to disconnect and reconnect manually
+
+### "Claude is not logged in" or auth error in chatroom
+
+ClawTerminal detects when the Claude CLI reports that you are not authenticated and shows a step-by-step recovery prompt inline. To fix it:
+
+1. Tap the **Terminal** tab to open a raw SSH session to your Mac
+2. Run `claude` to start the Claude CLI interactively
+3. Type `/login` and follow the browser OAuth flow
+4. Return to the chatroom — it will work on the next message
+
+This only needs to be done once per Mac. The session token is stored in Claude CLI's local config and survives restarts.
 
 ### Port forwarding not working
 
