@@ -45,6 +45,7 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 ## 📖 Table of Contents
 
 - [Why ClawTerminal vs Claude Code Remote Control / Channels](#why-clawterminal-vs-claude-code-remote-control--channels)
+- [Examples](#-examples) — copy-paste-ready examples for every feature
 
 1. [Getting Started](#1-getting-started)
 2. [SSH Setup — Connect to Your Mac (Local Network)](#2-ssh-setup--connect-to-your-mac-local-network)
@@ -61,6 +62,25 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 13. [Tips & Tricks](#13-tips--tricks)
 14. [Troubleshooting](#14-troubleshooting)
 15. [Feature Tutorials](#15-feature-tutorials)
+
+---
+
+## 💡 Examples
+
+Practical, copy-paste-ready examples for every ClawTerminal feature. Each file covers a specific area with real-world scenarios you can try immediately.
+
+| Example | What's inside |
+|---------|---------------|
+| [SSH Terminal](examples/ssh-terminal.md) | Connect via WiFi, Tailscale, Mosh; SSH config import; port forwarding; extended keyboard shortcuts |
+| [AI Chatroom](examples/ai-chatroom.md) | CLI vs API mode, model switching, plan mode, compact, export |
+| [Background Jobs](examples/background-jobs.md) | `/submit` one-shot jobs, `--ckpt` checkpoints, `--skills` injection, scheduled jobs |
+| [Batch Agents](examples/batch-agents.md) | `/batch` with agent count, checkpoints, multi-tool, and skills flags |
+| [Agent Teams](examples/agent-teams.md) | `/team` wave-based orchestration, `--multi` cross-tool, Visual Command Center |
+| [Smart Commands](examples/smart-commands.md) | Custom slash commands with parameters, background auto-submit, tool overrides, skill injection |
+| [Memory & Skills](examples/memory-skills.md) | `/remember`, `/forget`, `/memories`; enabling skills; per-message skills |
+| [SFTP & Files](examples/sftp-files.md) | Browse, download, batch delete, Snap & Code workflow |
+| [Collaboration](examples/collaboration.md) | Host/join shared rooms, relay server setup, guest watch view |
+| [Slash Commands Reference](examples/slash-commands-reference.md) | Every slash command with syntax, flags, and examples — grouped by category |
 
 ---
 
