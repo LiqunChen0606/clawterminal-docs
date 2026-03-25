@@ -683,6 +683,29 @@ See the [Agent Teams tutorial](tutorials/agent-teams.md) for a full walkthrough 
   https://raw.githubusercontent.com/example/skills/main/docker.md
   ```
 
+### Save Tokens with `--skills` (Per-Message Injection)
+
+Globally enabled skills are injected into **every** message, which consumes tokens even when irrelevant. For skills you only need occasionally, use **per-message injection** instead:
+
+1. **Disable** the skill globally (toggle off in My Skills)
+2. **Set an alias** — tap the skill → give it a short alias like `tdd`, `debug`, or `docker`
+3. **Inject on demand** — append `--skills alias` to any message:
+
+   ```
+   Fix the auth bug --skills tdd,debug
+   ```
+
+   Or with `/submit` and `/batch`:
+
+   ```
+   /submit Refactor the API layer --skills tdd
+   /batch --agents 3 --skills security Build payment flow
+   ```
+
+This way the skill content is only sent when you need it — saving tokens on every other message. This is especially important for large skills (like the Anthropic Superpowers pack) that can add thousands of tokens per turn.
+
+**Tip:** Keep small, always-relevant skills enabled globally (e.g., project context). Keep large, task-specific skills as aliases for on-demand use.
+
 ### Export & Share Skills
 
 Tap any skill → **Export** to save as JSON. Share with teammates and re-import with **Import**.
