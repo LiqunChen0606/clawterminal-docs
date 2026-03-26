@@ -7,6 +7,8 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
+**Latest Version:** v1.1.0 (March 25, 2026) — Agent Teams, /batch multi-agent, smart commands, SFTP create, SSH reconnect resilience.
+
 ---
 
 ## Why ClawTerminal vs Claude Code Remote Control / Channels
@@ -974,6 +976,10 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Memories toolbar button**: The chatroom toolbar has a single **Memories** button (brain icon) that opens the Memory Library. Earlier versions had two separate memory tabs — these are now merged. Use `/remember`, `/forget`, and `/memories` commands or tap the brain icon directly.
 - **SFTP create folder/file**: Tap the green **+** button in the SFTP breadcrumb bar to create a new folder or file directly from your iPhone without opening a terminal session.
 - **Background job context**: Completed job results are automatically available to subsequent jobs. Use `/submit "build on the refactoring from the previous job"` and the last 3 completed results are injected into the new job's context automatically.
+
+### Keep Your Mac Awake for SSH
+
+Your Mac must stay awake for SSH connections to work. In **Mac System Settings**, search for **"Prevent automatic sleeping when the display is off"** and toggle it **ON**. This keeps your Mac accessible even with the lid closed, as long as it's plugged into power.
 
 ---
 
