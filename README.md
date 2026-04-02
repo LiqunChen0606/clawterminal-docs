@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.1.0 (March 26, 2026) — Sprint 44: iPhone slide-out drawer sidebar, iPad sidebar fix, Agent Teams discovery improvements, adaptive background job polling, jobs UX improvements, /help redesign, background heartbeat notifications.
+**Latest Version:** v1.1.1 (April 2, 2026) — LIVE on the App Store in 80+ countries worldwide. Sprint 44: iPhone slide-out drawer sidebar, iPad sidebar fix, Agent Teams discovery improvements, adaptive background job polling, jobs UX improvements, /help redesign, background heartbeat notifications.
 
 ---
 
@@ -64,6 +64,7 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 13. [Tips & Tricks](#13-tips--tricks)
 14. [Troubleshooting](#14-troubleshooting)
 15. [Feature Tutorials](#15-feature-tutorials)
+- [Version History](#version-history)
 
 ---
 
@@ -1089,6 +1090,16 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 - **[Smart Notifications](tutorials/smart-notifications.md)** — Intelligent alerts for job completion, long responses, and to-do completion
 - **[Cross-Session AI Memory](tutorials/cross-session-memory.md)** — Save facts with `/remember`, auto-injected into every chatroom session
 - **[Shared Chatroom](tutorials/shared-chatroom.md)** — Share your AI session via room codes for real-time watch-only viewing
+
+---
+
+## Version History
+
+| Version | Date | Highlights |
+|---------|------|------------|
+| **v1.0** | March 16, 2026 | Initial release (US/Canada). SSH terminal, Claude AI chatroom, SFTP, background jobs, scheduled jobs, iPad multi-window, watchOS companion. |
+| **v1.1.0** | March 25, 2026 | Agent Teams (`/team`), `/batch` multi-agent orchestration, smart commands, SFTP create folder/file, 8-page welcome tour, SSH auto-reconnect hardening, cross-session memory improvements. |
+| **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide** (expanded from initial US/Canada launch). |
 
 ---
 
