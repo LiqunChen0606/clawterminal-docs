@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.1.0 (March 26, 2026) — Sprint 44: iPhone slide-out drawer sidebar, iPad sidebar fix, Agent Teams discovery improvements, adaptive background job polling.
+**Latest Version:** v1.1.0 (March 26, 2026) — Sprint 44: iPhone slide-out drawer sidebar, iPad sidebar fix, Agent Teams discovery improvements, adaptive background job polling, jobs UX improvements, /help redesign, background heartbeat notifications.
 
 ---
 
@@ -98,6 +98,11 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 | **iPad Sidebar Fix** | The `NavigationSplitView` detail view now properly updates when switching tabs in the sidebar. Previously, tapping a different sidebar row could leave the detail view stale. |
 | **Agent Teams Discovery Improvements** | Worker output limit raised from 3K to 10K characters, capturing significantly more context from each agent. Discovery parsing fallback improved from 200-character truncation to sentence-based chunking for more meaningful extractions. When SSH is unavailable during discovery extraction, partial discoveries are now created from available output instead of being silently dropped. |
 | **Adaptive Background Job Polling** | Background job polling interval now adapts based on activity: 3 seconds while the job is actively producing output, 8 seconds after 30 seconds of idle, and 15 seconds after 2+ minutes of idle. This reduces SSH command load and battery usage for long-running jobs without sacrificing responsiveness. |
+| **Jobs Tab Auto-Collapse** | Batch and team job groups now auto-collapse in the Jobs tab, reducing visual clutter when many groups are present. Individual jobs can still be expanded on demand. |
+| **Job Detail Auto-Scroll** | Auto-scroll in the job detail view is now disabled by default. Previously the view would continuously scroll to the bottom as new output arrived, making it difficult to read earlier output. |
+| **`/usage` Command** | New `/usage` slash command added as an alias for `/cost`. Displays current token usage and cost information for the active session. |
+| **`/help` Redesign** | The `/help` output has been redesigned with grouped code-block tables, organizing commands by category for easier scanning and discovery. |
+| **Background Heartbeat Notifications** | When the app is backgrounded with running jobs, periodic heartbeat notifications are sent to keep the user informed that jobs are still in progress. |
 
 ### Bug Fixes & Improvements (Post-Sprint 43)
 
