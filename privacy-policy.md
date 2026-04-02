@@ -1,7 +1,7 @@
 # ClawTerminal Privacy Policy
 
-**Effective Date:** February 25, 2026
-**App:** ClawTerminal — SSH Terminal + Claude AI
+**Effective Date:** April 2, 2026
+**App:** CatClaw Terminal (ClawTerminal) — SSH Terminal + AI Chatroom
 **Developer:** Liqun Chen
 **Contact:** [Open an issue](https://github.com/LiqunChen0606/clawterminal-docs/issues)
 
@@ -9,9 +9,9 @@
 
 ## Overview
 
-ClawTerminal is designed with privacy as a core principle. Almost all data stays on your device. We do not operate any servers that receive your personal data, and we do not use analytics SDKs, advertising networks, or third-party tracking of any kind.
+ClawTerminal is designed with privacy as a core principle. All data stays on your device. We do not operate any servers that receive your personal data, and we do not use analytics SDKs, advertising networks, or third-party tracking of any kind.
 
-The only data that ever leaves your device is the content you explicitly send to Claude AI (Anthropic's API) when using the Claude chatroom feature.
+The only data that leaves your device is content you explicitly send to AI providers (Anthropic, OpenAI, Google) when using the AI chatroom, or to servers you configure yourself (SSH hosts, relay server).
 
 ---
 
@@ -22,10 +22,13 @@ All data listed below is stored **locally on your device only** and is never tra
 | Data | Where Stored | Purpose |
 | --- | --- | --- |
 | SSH credentials (passwords, private keys) | iOS Keychain | Authenticate SSH connections |
-| Anthropic API key | iOS Keychain | Authenticate Claude API requests |
+| AI API keys (Anthropic, OpenAI, Google) | iOS Keychain | Authenticate AI API requests |
 | Connection profiles (hostname, port, username) | SwiftData (local) | Save and recall SSH connections |
+| Chat history and messages | App sandbox (`chatrooms.json`) | Persist conversations across sessions |
+| Cross-session AI memory | App sandbox (`memory_store.json`) | Remember user preferences and project context |
+| Custom skills and commands | App sandbox (`skills.json`, `commands.json`) | User-defined automation |
+| Code snippets | App sandbox (`snippets.json`) | Saved code blocks |
 | App settings and preferences | UserDefaults | Persist your configuration |
-| Chat history | In-memory only | Display conversation in session |
 
 **We never see, store, or transmit any of this data.**
 
@@ -33,20 +36,31 @@ All data listed below is stored **locally on your device only** and is never tra
 
 ## 2. Data Sent to Third Parties
 
-### Anthropic (Claude AI)
+### AI Providers (Anthropic, OpenAI, Google)
 
-When you use the Claude AI chatroom in API mode, ClawTerminal sends your messages directly from your device to Anthropic's API (`api.anthropic.com`). This may include:
+When you use the AI chatroom in API mode, ClawTerminal sends your messages directly from your device to the provider's API. This may include:
 
 - Your chat messages and conversation history
 - File attachments you add to messages (images, PDFs, text files)
-- System context you configure (context documents, skills)
+- System context you configure (skills, memory, project context)
 - Tool results when MCP servers are in use
 
-This data is sent directly to Anthropic — it does not pass through any ClawTerminal server. Anthropic's data handling is governed by the [Anthropic Privacy Policy](https://www.anthropic.com/privacy) and [Usage Policy](https://www.anthropic.com/usage-policy).
+This data is sent directly to the provider — it does not pass through any ClawTerminal server. Each provider's data handling is governed by their own privacy policy:
+- [Anthropic Privacy Policy](https://www.anthropic.com/privacy)
+- [OpenAI Privacy Policy](https://openai.com/privacy)
+- [Google Privacy Policy](https://policies.google.com/privacy)
 
-### MCP Servers (User-Configured)
+### SSH Hosts (User-Configured)
 
-If you configure MCP (Model Context Protocol) servers, ClawTerminal will connect to the URLs you specify. We have no control over or visibility into those servers. You are responsible for reviewing the privacy practices of any MCP server you configure.
+When you connect to a Mac or Linux server, ClawTerminal communicates with the host you specify via SSH. Terminal commands, AI CLI interactions, and file operations run on that host. We have no visibility into these connections.
+
+### Relay Server (Optional, User-Configured)
+
+If you configure the optional relay server for shared chatrooms, messages are routed through the relay URL you specify. We do not operate a relay server — you host your own.
+
+### MCP Servers (Optional, User-Configured)
+
+If you configure MCP (Model Context Protocol) servers, ClawTerminal will connect to the URLs you specify. You are responsible for reviewing the privacy practices of any MCP server you configure.
 
 ### No Other Third Parties
 
@@ -65,11 +79,13 @@ ClawTerminal requests the following iOS permissions:
 
 | Permission | When Requested | Why |
 | --- | --- | --- |
-| **Microphone** | When you tap the voice input button | Transcribe your voice into text for Claude messages |
+| **Microphone** | When you tap the voice input button | Transcribe your voice into text for chat messages |
 | **Speech Recognition** | When you tap the voice input button | Convert speech to text using Apple's on-device recognition |
+| **Camera** | When you use Screenshot → Code → Run | Take a photo to generate code from |
 | **Local Network** | On first launch or first connection attempt | Discover your Mac via Bonjour for automatic SSH setup |
-| **Face ID / Touch ID** | When you enable app lock in Settings | Lock the app and protect your SSH sessions and API key |
-| **Notifications** | When you send your first chat message | Alert you when Claude's response arrives while the app is in the background |
+| **Face ID / Touch ID** | When you enable app lock in Settings | Lock the app and protect your credentials |
+| **Notifications** | When you send your first chat message | Alert you when tasks complete or responses arrive in the background |
+| **Background App Refresh** | Automatic | Check for running background jobs and scheduled tasks while the app is minimized |
 
 All permissions are optional. The app functions without any of them (with the corresponding features disabled).
 
@@ -83,9 +99,9 @@ ClawTerminal is not directed at children under the age of 13 and is not intended
 
 ## 5. Data Retention and Deletion
 
-- **SSH credentials and API key:** Stored in the iOS Keychain. Deleted when you remove them in Settings or uninstall the app.
+- **SSH credentials and API keys:** Stored in the iOS Keychain. Deleted when you remove them in Settings or uninstall the app.
 - **Connection profiles:** Stored locally in SwiftData. Deleted when you remove profiles in the app or uninstall the app.
-- **Chat history:** Stored in memory only. Not persisted to disk. Cleared when the app is terminated.
+- **Chat history and memory:** Stored in app sandbox files. Deleted when you clear them in the app or uninstall the app.
 - **App settings:** Stored in UserDefaults. Reset when you uninstall the app.
 
 To delete all data, uninstall ClawTerminal from your device.
@@ -94,15 +110,15 @@ To delete all data, uninstall ClawTerminal from your device.
 
 ## 6. iCloud
 
-iCloud sync for connection profiles is not available in version 1.0. Connection profiles are stored locally only. A future update may add optional iCloud sync; this policy will be updated at that time.
+Connection profiles may sync via iCloud if enabled on your device. No other app data syncs to iCloud. You can disable iCloud sync for ClawTerminal in iOS Settings.
 
 ---
 
 ## 7. Security
 
-- SSH credentials and your Anthropic API key are stored exclusively in the iOS Keychain with `kSecAttrAccessibleWhenUnlockedThisDeviceOnly` protection.
+- SSH credentials and API keys are stored exclusively in the iOS Keychain with `kSecAttrAccessibleWhenUnlockedThisDeviceOnly` protection.
 - All SSH connections use standard encrypted SSH protocol (via the Citadel / SwiftNIO SSH library).
-- Claude API calls use HTTPS (TLS) exclusively.
+- AI API calls use HTTPS (TLS) exclusively.
 - No credentials are logged or written to disk outside the Keychain.
 
 ---
@@ -119,4 +135,4 @@ If you have questions about this Privacy Policy, please [open an issue](https://
 
 ---
 
-*ClawTerminal — SSH + Claude AI for iOS*
+*CatClaw Terminal — SSH + AI for iOS & iPad*
