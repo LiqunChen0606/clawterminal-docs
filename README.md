@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.1.0 (March 25, 2026) — Agent Teams, /batch multi-agent, smart commands, SFTP create, SSH reconnect resilience.
+**Latest Version:** v1.1.0 (March 26, 2026) — Sprint 44: iPhone slide-out drawer sidebar, iPad sidebar fix, Agent Teams discovery improvements, adaptive background job polling.
 
 ---
 
@@ -89,6 +89,15 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 ## 📚 Feature Tutorials
 
 In-depth guides for individual ClawTerminal features. Each tutorial covers a single feature with step-by-step instructions.
+
+### New Features & Improvements (Sprint 44)
+
+| Area | Change |
+|------|--------|
+| **iPhone Slide-Out Drawer** | The bottom TabView on iPhone has been replaced with a slide-out drawer sidebar (similar to the ChatGPT and Claude apps). Tap the hamburger menu button (top-left) to open a 280pt drawer with spring animation. Tap the dimmed overlay or swipe to dismiss. All tabs (My Mac, Terminal, Connections, Settings) are now accessed from the drawer. |
+| **iPad Sidebar Fix** | The `NavigationSplitView` detail view now properly updates when switching tabs in the sidebar. Previously, tapping a different sidebar row could leave the detail view stale. |
+| **Agent Teams Discovery Improvements** | Worker output limit raised from 3K to 10K characters, capturing significantly more context from each agent. Discovery parsing fallback improved from 200-character truncation to sentence-based chunking for more meaningful extractions. When SSH is unavailable during discovery extraction, partial discoveries are now created from available output instead of being silently dropped. |
+| **Adaptive Background Job Polling** | Background job polling interval now adapts based on activity: 3 seconds while the job is actively producing output, 8 seconds after 30 seconds of idle, and 15 seconds after 2+ minutes of idle. This reduces SSH command load and battery usage for long-running jobs without sacrificing responsiveness. |
 
 ### Bug Fixes & Improvements (Post-Sprint 43)
 
@@ -976,6 +985,7 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Memories toolbar button**: The chatroom toolbar has a single **Memories** button (brain icon) that opens the Memory Library. Earlier versions had two separate memory tabs — these are now merged. Use `/remember`, `/forget`, and `/memories` commands or tap the brain icon directly.
 - **SFTP create folder/file**: Tap the green **+** button in the SFTP breadcrumb bar to create a new folder or file directly from your iPhone without opening a terminal session.
 - **Background job context**: Completed job results are automatically available to subsequent jobs. Use `/submit "build on the refactoring from the previous job"` and the last 3 completed results are injected into the new job's context automatically.
+- **Slide-out drawer (iPhone)**: On iPhone, tap the hamburger menu button (top-left) to open the navigation drawer. All tabs — My Mac, Terminal, Connections, Settings — are accessible from here. Tap the dimmed overlay or swipe to dismiss.
 
 ### Keep Your Mac Awake for SSH
 
