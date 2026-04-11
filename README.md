@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.1.1 (April 10, 2026) — Sprint 45 adds subagent isolation, progressive skill disclosure, auto-compaction, memory search, auto-skill suggestions, and critical bug fixes.
+**Latest Version:** v1.1.1 (April 10, 2026) — Sprint 45 ships subagent isolation, progressive skill disclosure, auto-compaction, smart memory search, auto-skill suggestions, per-session memory editor, connection stability overhaul, and a stack of bug fixes.
 
 ---
 
@@ -1126,6 +1126,39 @@ After a standalone `/submit` job completes with 5+ tool uses, a yellow banner ap
 **🐛 Critical Bug Fixes**
 - Background job completion messages now persist across app restarts. Previously, the `✅ Background job finished` assistant bubble stayed in the main chat until you relaunched the app — then it disappeared (the result stayed in the Jobs tab). Fixed by calling `notifyMessagesUpdated()` after appending job-completion messages.
 - Background job polling now waits up to 60 seconds for SSH reconnect before continuing. Previously, polling would race through cycles during WiFi changes and phone wake events, sometimes falsely declaring the tmux session dead.
+
+### Sprint 45 Polish (mid-April)
+
+A week of post-initial-release polish focused on bugs found during real use and additional UX refinements.
+
+**🔗 Connection Stability**
+- Eliminated false "Reconnecting..." flashes during active use. The latency monitor previously tore down the connection on a single 5-second probe timeout — which happened under normal contention when background jobs and foreground messages shared exec channels. Now requires 2 consecutive failures, skips probing entirely while SSH is in active use, and all probe timeouts were raised from 3-5 seconds to 10-12 seconds (a busy Mac can legitimately take that long to respond).
+- First-tap saved connection failures are now silently retried. When you tap "Reconnect to [name]" in the wizard, the first attempt occasionally failed due to mDNS warmup on `.local` hostnames, NIO cleanup races, or Tailscale routing delays. The app now waits 1.5 seconds and retries once automatically — most first-tap failures now succeed transparently.
+
+**📝 Persisted Background Job Messages**
+Background job completion messages (the ✅ banner in the main chat) now persist across app restarts. Previously, the result stayed in the Jobs tab but disappeared from the main chatroom on relaunch — because `notifyMessagesUpdated()` was missing from the job-completion path.
+
+**🔌 Background Jobs Tolerate Reconnects**
+Polling loops now wait up to 60 seconds for `sshService` to become non-nil before continuing the poll cycle. Previously, a 45-second WiFi reconnect window could burn through 15 polls and trigger false "session died" errors.
+
+**✏️ Edit Existing Skills**
+A blue pencil icon now appears on each installed skill row, opening the full editor with Name, Description, Content, and the Progressive Disclosure section (keywords + "Always inject" toggle). Before this, there was no way to edit an existing skill — you could only create new ones or delete.
+
+**🧠 Per-Session Memory Management**
+Major memory UX overhaul. Open the **Memories** button in any chatroom and you now get:
+- **Filter tabs** at the top: `[This Session | Global | All]`
+  - *This Session* — project-specific memories + all globals (what the AI actually sees on this turn)
+  - *Global* — memories that apply to every session across all projects
+  - *All* — every memory everywhere, with orange folder badges showing which project each one belongs to
+- **Tap any memory to edit it** — opens a full editor with multiline content, category picker, keywords field, and a **scope toggle**: "Global Memory" ↔ "This Project Only". Flipping the toggle is the one-tap way to share a memory across sessions or scope it back down.
+- **New "+" button in the toolbar** creates memories without needing the `/remember` slash command.
+- **Delete from inside the editor** with confirmation.
+
+**🔍 Smart Memory Search**
+Typing in the memory search bar now runs a ranked full-text search using the Sprint 45 inverted keyword index. Results appear under a purple "Smart Search" badge header instead of category-grouped view, scored by exact match (×3), prefix match (×1.5), substring match (×2), recency, and frequency. Works across all projects when on the "All" filter tab.
+
+**🪄 Auto-Skill Suggestion Improvements**
+The "Save as reusable command?" banner now tracks tool use count incrementally as the job runs, rather than counting at completion (where the capped 10KB progress log had already discarded earlier markers). Threshold lowered from 5 tools to 3 — many useful jobs only use 3-4 tools (read, bash, write is already worth saving).
 
 ---
 
