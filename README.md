@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.1.1 (April 2, 2026) — LIVE on the App Store in 80+ countries worldwide. Sprint 44: iPhone slide-out drawer sidebar, iPad sidebar fix, Agent Teams discovery improvements, adaptive background job polling, jobs UX improvements, /help redesign, background heartbeat notifications.
+**Latest Version:** v1.1.1 (April 10, 2026) — Sprint 45 adds subagent isolation, progressive skill disclosure, auto-compaction, memory search, auto-skill suggestions, and critical bug fixes.
 
 ---
 
@@ -1100,6 +1100,85 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 | **v1.0** | March 16, 2026 | Initial release (US/Canada). SSH terminal, Claude AI chatroom, SFTP, background jobs, scheduled jobs, iPad multi-window, watchOS companion. |
 | **v1.1.0** | March 25, 2026 | Agent Teams (`/team`), `/batch` multi-agent orchestration, smart commands, SFTP create folder/file, 8-page welcome tour, SSH auto-reconnect hardening, cross-session memory improvements. |
 | **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide** (expanded from initial US/Canada launch). |
+| **v1.1.1 Sprint 45** | April 10, 2026 | Subagent isolation, progressive skill disclosure, auto-compaction, memory search performance, auto-skill suggestions, critical bug fixes. |
+
+---
+
+### New in Sprint 45 (April 2026)
+
+Sprint 45 focused on agent polish and memory/skills v2, inspired by patterns from Hermes Agent and OpenClaw.
+
+**🔒 Subagent Profile Isolation**
+Each `/team` and `/batch` agent now gets a private scratch workspace at `~/.catclaw/workspaces/{groupID}/{role}/`. Agents running in parallel can't step on each other's scratch files anymore. Workers are told about their isolated workspace in the prompt and use it for drafts before committing to the main project.
+
+**🎯 Progressive Skill Disclosure**
+Skills now support keyword triggers. Instead of every enabled skill dumping its full content into every message, you can mark a skill with keywords like `deploy, staging, release` and turn off "Always inject". The skill's name + description still appears in the index on every turn, but the full content only loads when your message contains a matching keyword. Cuts preamble token usage by ~50% for users with many skills.
+
+**✂️ Auto-Compaction**
+When your conversation grows past ~400K characters (roughly 100K tokens, 50% of a 200K context window), the app silently collapses older messages into a summary marker — keeping the first 2 and last 6 messages intact. Zero API calls; the summary is built locally. Long sessions no longer hit the context limit.
+
+**⚡ Faster Memory Search**
+Added an inverted keyword index to `MemoryStore` for O(1) candidate lookup (was O(n) per query). New `search(query:limit:)` API supports full-text search across all memories with exact + prefix + substring matching. SQLite FTS5 migration deferred — pragmatic call because typical users have <1000 memories.
+
+**🪄 Auto-Skill Suggestions**
+After a standalone `/submit` job completes with 5+ tool uses, a yellow banner appears above the input bar asking: "That job used N tools — save as reusable command `/foo`?" Tap Save to open the command editor with the slug and request pre-filled. Deduped by request fingerprint to avoid spam.
+
+**🐛 Critical Bug Fixes**
+- Background job completion messages now persist across app restarts. Previously, the `✅ Background job finished` assistant bubble stayed in the main chat until you relaunched the app — then it disappeared (the result stayed in the Jobs tab). Fixed by calling `notifyMessagesUpdated()` after appending job-completion messages.
+- Background job polling now waits up to 60 seconds for SSH reconnect before continuing. Previously, polling would race through cycles during WiFi changes and phone wake events, sometimes falsely declaring the tmux session dead.
+
+---
+
+### Editing Skills
+
+Skills are where you give Claude (or Codex/Gemini/Aider) repeatable context. To edit an existing skill — including any pre-installed ones:
+
+1. Open a chatroom on the **My Mac** tab
+2. Tap the **Skills** button in the toolbar (book icon)
+3. On any installed skill row, tap the **blue pencil icon** on the right
+4. The editor opens with all fields: Name, Description, Content, and the new **Progressive Disclosure** section
+
+In Progressive Disclosure you can:
+- **Always inject** toggle: ON = legacy behavior (full content in every message). OFF = only the name/description goes in the index; full content loads on keyword match.
+- **Keywords** field (shown when Always Inject is off): comma-separated trigger words like `deploy, staging, release, rollout`.
+
+Example setup for a "Deploy Staging" skill:
+- **Name**: `Deploy Staging`
+- **Description**: `Safe deploy procedure for staging environment`
+- **Content**: (your markdown instructions)
+- **Always inject**: OFF
+- **Keywords**: `deploy, staging, rollout, release`
+
+Now the full content only gets injected when you say something like "deploy to staging" or "start the rollout" — saving tokens on every other turn.
+
+---
+
+### Triggering the Auto-Skill Suggestion Banner
+
+After a `/submit` background job completes with 5+ tool uses, the app shows a yellow banner above the input bar asking if you want to save the job as a reusable slash command. Here are example requests that should trigger it:
+
+```
+/submit Run all the tests, fix any failures, commit the fixes, and push to the current branch
+```
+
+```
+/submit Deploy the staging environment: pull latest, run migrations, restart services, and verify health
+```
+
+```
+/submit Do a security audit: scan dependencies, check auth endpoints, review JWT handling, and write a report
+```
+
+```
+/submit Check git status, list all branches, show the last 5 commits, run npm test, and report findings
+```
+
+Each uses file reads, bash commands, git operations, etc. — enough tools to trigger the 5+ threshold.
+
+**Why you might not see it:**
+- The job used fewer than 5 tools (simple one-liner jobs)
+- You already saw it for a similar request (dedup by fingerprint of the first 100 chars)
+- The job was a `/batch` or `/team` child (only standalone jobs trigger it)
 
 ---
 
