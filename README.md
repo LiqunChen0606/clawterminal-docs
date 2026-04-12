@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.1.1 (April 10, 2026) — Sprint 45 ships subagent isolation, progressive skill disclosure, auto-compaction, smart memory search, auto-skill suggestions, per-session memory editor, connection stability overhaul, and a stack of bug fixes.
+**Latest Version:** v1.1.1 (April 10, 2026) — Sprint 45 ships subagent isolation, progressive skill disclosure, auto-compaction, smart memory search, auto-skill suggestions, per-session memory editor, connection stability overhaul, per-job cost tracking and trajectory timelines for background jobs, and a stack of bug fixes.
 
 ---
 
@@ -1159,6 +1159,43 @@ Typing in the memory search bar now runs a ranked full-text search using the Spr
 
 **🪄 Auto-Skill Suggestion Improvements**
 The "Save as reusable command?" banner now tracks tool use count incrementally as the job runs, rather than counting at completion (where the capped 10KB progress log had already discarded earlier markers). Threshold lowered from 5 tools to 3 — many useful jobs only use 3-4 tools (read, bash, write is already worth saving).
+
+### Cost Tracking & Trajectory Timeline (late April)
+
+Two major additions for background jobs — both inspired by patterns from the Cline VS Code agent.
+
+**💰 Per-Job Cost Tracking**
+
+Every `/submit`, `/batch`, and `/team` job now tracks token usage and estimates USD cost in real time:
+
+- **Jobs tab row** shows a small green cost chip next to the status pill (e.g. `$0.037`)
+- **Job detail view** has a new **Cost & Usage** card showing input tokens, output tokens, estimated USD, and the model ID
+- **Settings → Cost & Budget** lets you set an optional budget cap per job:
+  - No Limit
+  - $0.50
+  - $2.00
+  - $5.00
+  - $10.00
+
+If a job exceeds your budget cap, the Cost & Usage card turns red with a "Over Budget" warning badge. The cap is purely informational — it does not block or pause jobs, just flags them for your awareness.
+
+Pricing tables are public list prices as of April 2026 for Claude Opus/Sonnet/Haiku, GPT-4o, o3/o4-mini, and Gemini 2.5 Pro / 2.0 Flash. Actual Anthropic/OpenAI billing may differ by a few percent — this is for awareness, not accounting.
+
+**📈 Trajectory Timeline**
+
+Every background job now captures a trajectory of what the agent actually did during execution:
+
+- **Tool calls** (blue wrench icon) — each time the AI invoked Read, Bash, Edit, Grep, etc.
+- **Tool results** (cyan return icon) — the output from those tool calls
+- **Assistant text** (purple bubble icon) — the AI's explanatory messages
+- **Thinking blocks** (indigo brain icon) — the AI's internal reasoning
+- **Checkpoints** (orange flag icon) — milestone markers from `[CHECKPOINT: ...]` output
+
+Open any background job's detail view and scroll to the new **Trajectory** card. You'll see a color-coded vertical timeline with connector lines showing every step the agent took, a one-line summary per step, and a monospaced detail snippet (tool input or text preview) underneath.
+
+This was previously invisible — the Jobs tab only showed the final result and a 10KB-capped progress log. Now you can scroll back through a failed `/team` run and see exactly what Agent 3 was doing at minute 7.
+
+The trajectory is capped at 200 steps per job (to avoid unbounded growth on very long runs) and persists across app restarts.
 
 ---
 
