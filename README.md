@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.1.1 (April 10, 2026) — Sprint 45 ships subagent isolation, progressive skill disclosure, auto-compaction, smart memory search, auto-skill suggestions, per-session memory editor, connection stability overhaul, per-job cost tracking and trajectory timelines for background jobs, and a stack of bug fixes.
+**Latest Version:** v1.1.1 (April 10, 2026) — Sprint 45 ships subagent isolation, progressive skill disclosure, auto-compaction, smart memory search, auto-skill suggestions, per-session memory editor, connection stability overhaul, per-job cost tracking and trajectory timelines for background jobs, per-project skill variants with opt-in auto-customization, and a stack of bug fixes.
 
 ---
 
@@ -1196,6 +1196,35 @@ Open any background job's detail view and scroll to the new **Trajectory** card.
 This was previously invisible — the Jobs tab only showed the final result and a 10KB-capped progress log. Now you can scroll back through a failed `/team` run and see exactly what Agent 3 was doing at minute 7.
 
 The trajectory is capped at 200 steps per job (to avoid unbounded growth on very long runs) and persists across app restarts.
+
+### Per-Project Skill Variants (late April)
+
+Skills can now be customized for individual projects without touching the global version. Every enabled skill stays globally available for all your sessions, but specific projects can have their own variant that overrides the content only when working in that project.
+
+**🌿 Manual customization** — open any skill in the editor (tap the blue pencil on a skill row), scroll to the new **"Project Variants"** section, and tap **"Customize for [project-name]"**. A nested editor opens pre-filled with the global content; edit it to reflect project-specific conventions, tool versions, file layouts, or preferences. The variant is saved alongside the global skill — the global content is never modified.
+
+When a skill is injected into Claude's context, the app checks: does this skill have a variant for the current project? If yes, the variant is used; if no, the global content is used. Variants are marked with a 🌿 badge or *(project variant)* tag so Claude knows they're project-specific.
+
+**✨ Opt-in auto-customization** — turn on **Settings → Smart Skills → "Auto-customize skills per project"** to enable automatic variant suggestions. The app analyzes your conversation after each assistant response and, when it detects project-specific facts that would make a skill more effective (tool versions, conventions, patterns, file layouts), dispatches a lightweight Claude Haiku analysis in the background. If Haiku determines the skill would benefit from customization, you'll see a green banner above the input bar:
+
+> 🌿 Project variant for `deploy-staging`
+> Claude suggests customizing this skill for the current project.
+> [Review] [Dismiss]
+
+Tap **Review** to open a side-by-side comparison sheet showing the original global content and the proposed variant. Tap **Apply** to save — the global content is never modified; only the project variant is written.
+
+**Rate limits:**
+- Max 1 analysis per 10 minutes per chatroom (prevents spam)
+- Each (skill, project) pair is analyzed at most once per session
+- Only enabled skills are considered
+- Skills that already have a variant for the current project are skipped
+- Uses Claude Haiku for cost efficiency (cheapest model in the pricing table)
+
+**Safety guarantees:**
+- The global skill content is **never** modified by any automatic or manual flow
+- Every proposed variant requires **explicit user approval** before it's written
+- Default is **OFF** (opt-in) — you must explicitly turn on auto-customization in Settings
+- Variants are stored in `~/Documents/chatrooms.json` alongside the global skill definition
 
 ---
 
