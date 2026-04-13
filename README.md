@@ -677,6 +677,218 @@ See the [Agent Teams tutorial](tutorials/agent-teams.md) for a full walkthrough 
 
 ---
 
+### Multi-Model Comparison (`/race`)
+
+`/race` runs the same prompt through 2–4 AI models **simultaneously** so you can compare their answers side-by-side. It is the fastest way to see how Claude, Codex, and Gemini each approach a problem before choosing which direction to take.
+
+```text
+/race Write a fizzbuzz function
+/race --models claude,codex Explain the observer pattern
+/race --models claude,codex,gemini What are the security implications of this JWT implementation?
+```
+
+#### How `/race` works
+
+1. Your prompt is dispatched to each selected model as a background job.
+2. Results stream back in parallel — you see responses as they arrive.
+3. Once all models respond, an AI-generated **comparison summary** appears below, highlighting key differences in approach, correctness, and style.
+
+#### `/race` layout by device
+
+| Device | Layout |
+|--------|--------|
+| **iPad** | Side-by-side columns — all models visible at once |
+| **iPhone** | Swipeable cards — swipe left/right to compare |
+
+#### `/race` flags
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--models m1,m2,...` | Comma-separated list of models to race (2–4) | `claude,codex` |
+
+#### When to use `/race`
+
+- Evaluating a new algorithm or data structure approach
+- Comparing documentation quality across models
+- Getting a second opinion on a proposed solution before committing
+- Quick benchmarking of response style for a specific domain
+
+#### `/race` requirements
+
+- The models you select must be installed and authenticated on your Mac (e.g. `codex` requires the OpenAI Codex CLI; `gemini` requires the Gemini CLI)
+- See [Multi-CLI Tool Support](tutorials/multi-cli-tools.md) for tool setup
+
+---
+
+### GitHub PR Workflow (`/pr`)
+
+`/pr` gives you a full GitHub pull request workflow from your phone. Create PRs, get AI-powered code reviews, check CI status — all over SSH without switching to a desktop browser.
+
+**Requirement:** The `gh` CLI must be installed and authenticated on your Mac:
+
+```bash
+# Install
+brew install gh
+
+# Authenticate (one-time, on your Mac)
+gh auth login
+```
+
+#### Create a PR
+
+```text
+/pr
+/pr create
+```
+
+ClawTerminal reads `git diff` from your current project directory, sends it to Claude, and Claude generates a PR title and body following your project's conventions. The PR is then created via `gh pr create`. You'll see the PR URL in the chatroom when it's done.
+
+#### AI Code Review
+
+```text
+/pr review 42
+```
+
+ClawTerminal fetches the PR diff via `gh` and sends it to Claude for review. Results appear as color-coded review cards:
+
+| Color | Severity | Example |
+|-------|----------|---------|
+| Red | Bug | "This function doesn't handle the null case on line 47" |
+| Yellow | Suggestion | "Consider extracting this logic into a helper function" |
+| Blue | Question | "Why is this timeout set to 5000ms instead of the default?" |
+| Green | Praise | "Nice use of async/await throughout this module" |
+
+Each card has a thumbs-up / thumbs-down button. Your ratings train CatClaw's review preferences for this chatroom — see [AI Code Review Learning](#ai-code-review-learning) below.
+
+#### List & Check CI
+
+```text
+/pr list              # List open PRs in the current repo
+/pr checks 42         # Show CI status and check results for PR #42
+```
+
+#### Set Review Focus
+
+```text
+/pr focus security,tests,performance
+```
+
+Future reviews in this chatroom emphasize the listed areas. Run `/pr focus` with no arguments to reset to default (all areas equal weight).
+
+---
+
+### AI Code Review Learning
+
+Every `/pr review` result has thumbs-up / thumbs-down buttons on each review item. Your ratings teach CatClaw what matters to your team:
+
+- **Thumbs up** — reinforce this type of feedback; look for similar issues in future reviews
+- **Thumbs down** — deprioritize this category; it's either too noisy or not relevant for your project
+
+Preferences are stored **per-chatroom** — a backend services room and a frontend room can have different review styles. Switch focus areas with `/pr focus` to tune emphasis without clearing your learned ratings.
+
+**Example workflow:**
+
+```text
+# First review — Claude looks at everything
+/pr review 15
+
+# Thumbs down on style nits, thumbs up on security and null-safety findings
+
+# Second review on a later PR — Claude leads with security and null-safety,
+# buries style suggestions at the bottom
+/pr review 22
+```
+
+---
+
+### Session Handoff (`/handoff`)
+
+`/handoff` lets you seamlessly continue a coding session between your phone and your Mac — without losing context, output history, or the current directory.
+
+#### Hand off from phone to Mac
+
+```text
+/handoff mac
+```
+
+ClawTerminal exports the current phone session's context (project directory, active Claude session ID, last N messages) and opens a new tmux window on your Mac pre-populated with that context. Sit down at your Mac, attach the tmux session, and keep going in a full terminal — the Claude session resumes with `--resume`, so conversation history is intact.
+
+#### Pick up a Mac session on your phone
+
+```text
+/handoff
+```
+
+ClawTerminal SSHs to your Mac and lists all active tmux sessions running Claude, along with:
+- Session name and project directory
+- Time running
+- Last line of output (preview)
+
+Tap any session to attach it to the current chatroom. The phone session inherits the Claude session ID so conversation history continues seamlessly.
+
+#### Use case: commute-to-desk handoff
+
+```
+Morning commute (phone):
+  /submit Refactor the auth module — convert callbacks to async/await
+  → (job runs in background while you commute)
+
+Arrive at desk (Mac):
+  /handoff mac
+  → tmux window opens on your Mac, Claude session already attached
+  → continue with full keyboard, multiple panes, editor open
+```
+
+---
+
+### Live Web Preview (`/preview`)
+
+`/preview` opens a live, in-app browser preview of the dev server running on your Mac — connected through an SSH port-forwarding tunnel. It is the first mobile tool that gives you a real live web preview while coding.
+
+```text
+/preview              # Auto-detect port and open preview
+/preview --port 3000  # Specify port explicitly
+/preview --start      # Auto-start dev server then open preview
+/preview stop         # Close the SSH tunnel
+```
+
+#### Auto-detection
+
+ClawTerminal scans the project directory for port configuration in this order:
+
+1. `package.json` — `scripts.dev`, `scripts.start` (extracts port from `--port` flag or `PORT=` prefix)
+2. `.env` / `.env.local` — `PORT=` or `VITE_PORT=` variables
+3. `vite.config.ts` / `vite.config.js` — `server.port` value
+4. Falls back to `3000` if none found
+
+#### `--start` flag
+
+When `--start` is used, ClawTerminal runs your dev server start command (detected from `package.json scripts.dev`) in a background tmux window before opening the tunnel. The preview waits for the server to be ready (HTTP 200) before opening.
+
+```text
+/preview --start      # Equivalent to: npm run dev (in tmux) + /preview
+```
+
+#### Under the hood
+
+`/preview` creates a **local port-forwarding tunnel** from your iPhone to the Mac:
+
+```
+iPhone browser → SSH tunnel → Mac localhost:PORT → dev server
+```
+
+The same tunnel infrastructure used by the Port Forwarding tab (§10), but wired automatically from a single slash command.
+
+#### Close the preview
+
+```text
+/preview stop
+```
+
+Closes the SSH tunnel. The dev server continues running on your Mac unless you stop it separately.
+
+---
+
 ## 6. Skills & Marketplace
 
 **Skills** are Markdown snippets injected into Claude's system prompt to give it specialized knowledge, project context, or standing instructions. ClawTerminal ships with a built-in marketplace of 30 curated packages.
@@ -1019,6 +1231,10 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **SFTP create folder/file**: Tap the green **+** button in the SFTP breadcrumb bar to create a new folder or file directly from your iPhone without opening a terminal session.
 - **Background job context**: Completed job results are automatically available to subsequent jobs. Use `/submit "build on the refactoring from the previous job"` and the last 3 completed results are injected into the new job's context automatically.
 - **Slide-out drawer (iPhone)**: On iPhone, tap the hamburger menu button (top-left) to open the navigation drawer. All tabs — My Mac, Terminal, Connections, Settings — are accessible from here. Tap the dimmed overlay or swipe to dismiss.
+- **Multi-model comparison**: Use `/race` when you are unsure which approach is best — race Claude against Codex or Gemini and let the AI summary tell you the trade-offs. Great for algorithm selection, documentation wording, and architectural decisions.
+- **PR review on your commute**: Fetch a colleague's PR on your phone with `/pr review 42` and leave thumbs-up/down feedback while commuting. Your ratings are remembered and improve future reviews for that chatroom.
+- **Commute-to-desk handoff**: Use `/submit` to kick off a long refactor before you leave your desk. On your commute, monitor it in the Jobs tab. When you arrive, run `/handoff mac` to continue the conversation in a full terminal with full context intact.
+- **Preview before push**: Run `/preview --start` to auto-launch your dev server and open a live preview on your phone — useful for a final visual check before running `/pr create`.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1100,6 +1316,10 @@ This only needs to be done once per Mac. The session token is stored in Claude C
 
 See the [tutorials/](tutorials/) directory for in-depth guides on individual features:
 
+- **[Multi-Model Comparison (`/race`)](tutorials/race.md)** — Race 2–4 AI models on the same prompt simultaneously with side-by-side results and an AI-generated comparison summary
+- **[GitHub PR Workflow (`/pr`)](tutorials/pr-workflow.md)** — Auto-generate PRs from git diff, AI code review with severity-colored items and review learning, CI status checks
+- **[Session Handoff (`/handoff`)](tutorials/handoff.md)** — Bidirectional handoff between phone and Mac; start on your commute, continue at your desk without losing context
+- **[Live Web Preview (`/preview`)](tutorials/preview.md)** — SSH port-forwarded live web preview of your dev server with auto-detection, auto-start, and one-command teardown
 - **[Agent Teams (`/team`)](tutorials/agent-teams.md)** — Wave-based orchestration with Research → Implement → Review phases, discovery propagation between waves, and visual command center with animated flow graph
 - **[Batch Multi-Agent Orchestration (`/batch`)](tutorials/batch-multi-agent.md)** — Commander + N parallel Workers + Synthesizer, with `--agents`, `--multi` cross-tool assignment, `--ckpt`, and `--skills` flags
 - **[Smart Commands](tutorials/smart-commands.md)** — User-defined slash commands with named parameters, background auto-submit, tool overrides, skill injection, and auto-batch execution
@@ -1128,6 +1348,8 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 | **v1.1.0** | March 25, 2026 | Agent Teams (`/team`), `/batch` multi-agent orchestration, smart commands, SFTP create folder/file, 8-page welcome tour, SSH auto-reconnect hardening, cross-session memory improvements. |
 | **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide** (expanded from initial US/Canada launch). |
 | **v1.1.1 Sprint 45** | April 10, 2026 | Subagent isolation, progressive skill disclosure, auto-compaction, memory search performance, auto-skill suggestions, critical bug fixes. |
+| **v1.2.0 Sprint 46** | April 2026 | `/race` multi-model comparison, `/pr` GitHub PR workflow with AI code review and review learning, `/handoff` bidirectional session handoff. |
+| **v1.2.0 Sprint 47** | April 2026 | `/preview` live web preview via SSH port forwarding, slash command autocomplete for all new commands. |
 
 ---
 
@@ -1309,6 +1531,62 @@ Each uses file reads, bash commands, git operations, etc. — enough tools to tr
 - The job used fewer than 5 tools (simple one-liner jobs)
 - You already saw it for a similar request (dedup by fingerprint of the first 100 chars)
 - The job was a `/batch` or `/team` child (only standalone jobs trigger it)
+
+---
+
+### New in Sprint 46 (April 2026)
+
+Sprint 46 adds three major workflow commands: multi-model racing, a full GitHub PR workflow with AI review, and bidirectional session handoff.
+
+**Multi-Model Comparison (`/race`)**
+
+Race Claude, Codex, and Gemini on the same prompt simultaneously and compare their answers in a swipeable or side-by-side layout. An AI summary highlights the key differences. Use `--models` to pick which models compete. Full details: [Multi-Model Comparison](#multi-model-comparison-race).
+
+```text
+/race Write a fizzbuzz function
+/race --models claude,codex,gemini Explain event sourcing
+```
+
+**GitHub PR Workflow (`/pr`)**
+
+A complete pull request lifecycle from your phone. Auto-generate PR titles and bodies from `git diff`, get AI-powered code reviews with severity-colored items, list open PRs, and check CI status — all via the `gh` CLI installed on your Mac. Full details: [GitHub PR Workflow](#github-pr-workflow-pr).
+
+```text
+/pr create
+/pr review 42
+/pr list
+/pr checks 42
+```
+
+**Session Handoff (`/handoff`)**
+
+Start coding on your phone during your commute, sit down at your desk and `/handoff mac` to continue in a full terminal — no copy-pasting, no context loss. Or run `/handoff` to discover active Mac sessions and pick them up on your phone. Full details: [Session Handoff](#session-handoff-handoff).
+
+```text
+/handoff mac     # Send current phone session to Mac tmux
+/handoff         # Discover Mac sessions, pick one up on phone
+```
+
+---
+
+### New in Sprint 47 (April 2026)
+
+Sprint 47 adds live web preview and slash command autocomplete for all new commands.
+
+**Live Web Preview (`/preview`)**
+
+The first mobile tool with a real live web preview. `/preview` auto-detects your dev server port from `package.json`, `.env`, or `vite.config`, then creates an SSH port-forwarding tunnel so you can browse your app directly from your phone. Add `--start` to launch the dev server automatically, use `--port N` for a specific port, and `/preview stop` to close the tunnel. Full details: [Live Web Preview](#live-web-preview-preview).
+
+```text
+/preview              # Auto-detect port, open preview
+/preview --port 3000  # Specific port
+/preview --start      # Start dev server + preview
+/preview stop         # Close tunnel
+```
+
+**Slash Command Autocomplete**
+
+All Sprint 46 and Sprint 47 commands — `/race`, `/pr`, `/handoff`, and `/preview` — now appear in the slash command suggestion palette when you type `/` in any chatroom. Each entry shows the command name, a short description, and the available flags. The palette uses fuzzy search so typing `/rac`, `/han`, or `/prev` finds the right command immediately.
 
 ---
 
