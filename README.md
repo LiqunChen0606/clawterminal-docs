@@ -7,7 +7,19 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.2.0 (April 2026) — Sprint 46+47 ships `/race` multi-model comparison, `/pr` GitHub PR workflow with AI code review, `/handoff` bidirectional session handoff, `/preview` live web preview via SSH port forwarding, AI code review learning, and slash command autocomplete for all new commands.
+**Latest Version:** v1.2.0 (April 2026)
+
+### What's New
+
+| Feature | Description | Learn More |
+|---------|-------------|------------|
+| **Multi-Model Race** | Race 2-4 AI models on the same prompt. Compare responses side-by-side with AI-generated analysis. Same-model "thinking lenses" for diverse perspectives. | [Examples](examples/race.md) · [Tutorial](tutorials/race.md) |
+| **GitHub PR Workflow** | Create PRs, run AI code reviews, post to GitHub — all from your phone. Review learning remembers what your team cares about. | [Examples](examples/pr-workflow.md) · [Tutorial](tutorials/pr-workflow.md) |
+| **Session Handoff** | Start coding on your phone, continue on your Mac — or pick up a Mac session on your phone. Bidirectional, seamless. | [Examples](examples/handoff.md) · [Tutorial](tutorials/handoff.md) |
+| **Live Web Preview** | Preview your web app via SSH tunnel. Auto-detects port, multi-port tabs, console log capture, responsive viewport modes, screenshot + annotate. | [Examples](examples/preview.md) · [Tutorial](tutorials/preview.md) |
+| **Smart Model Routing** | Auto-assigns cost-appropriate models per agent role. Three presets: Quality, Balanced, Budget. | — |
+| **Agent Reasoning** | See *why* your agents made decisions — extracted reasoning shown as a collapsible banner on job results. | — |
+| **Git Worktree Mode** | `/batch --vcs` gives each agent a real git branch. Results auto-merge back with conflict reporting. | — |
 
 ---
 
@@ -99,7 +111,7 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 
 In-depth guides for individual ClawTerminal features. Each tutorial covers a single feature with step-by-step instructions.
 
-### New Features (Sprint 46 + 47)
+### New Features
 
 | Tutorial | Description |
 |----------|-------------|
@@ -109,7 +121,7 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 | [Live Web Preview (`/preview`)](tutorials/preview.md) | SSH-tunneled live preview of your dev server in-app. Auto-detects port from package.json, .env, or vite.config. Multi-port tab switching, `--start` auto-launch, console log panel, screenshot+annotate, responsive viewport modes |
 | [AI Code Review Learning](tutorials/pr-workflow.md#part-3-review-learning) | Thumbs-up/down feedback on individual review items teaches CatClaw your team's preferences. Set focus areas with `/pr focus security,tests,performance`. Builds up over 5–10 reviews |
 
-### New Features & Improvements (Sprint 44)
+### New Features & Improvements (v1.1.1)
 
 | Area | Change |
 |------|--------|
@@ -123,7 +135,7 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 | **`/help` Redesign** | The `/help` output has been redesigned with grouped code-block tables, organizing commands by category for easier scanning and discovery. |
 | **Background Heartbeat Notifications** | When the app is backgrounded with running jobs, periodic heartbeat notifications are sent to keep the user informed that jobs are still in progress. |
 
-### Bug Fixes & Improvements (Post-Sprint 43)
+### Bug Fixes & Improvements (v1.1.0 — v1.1.1)
 
 | Area | Fix |
 |------|-----|
@@ -136,20 +148,20 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 | **WiFi/Tailscale username** | The Username field no longer pre-fills "mobile". It shows empty with a `whoami` tip — run `whoami` in Terminal on your Mac and enter the result. |
 | **Terminal keyboard dismiss** | The chevron-down button is now present on the extended keyboard bar (terminal mode), consistent with the chatroom input bar. |
 
-### New Features (Sprint 43)
+### New Features (v1.1.0)
 
 | Tutorial | Description |
 |----------|-------------|
 | [Agent Teams (`/team`)](tutorials/agent-teams.md) | Wave-based orchestration: Research → Implement → Review waves with parallel agents, discovery propagation between waves, visual command center with animated flow graph and live discovery feed |
 
-### New Features (Sprint 42)
+### New Features (v1.1.0 — Earlier)
 
 | Tutorial | Description |
 |----------|-------------|
 | [Batch Multi-Agent Orchestration (`/batch`)](tutorials/batch-multi-agent.md) | Commander decomposes your goal, N parallel Workers execute it, Synthesizer merges results. Supports `--agents`, `--multi`, `--ckpt`, `--skills` |
 | [Smart Commands](tutorials/smart-commands.md) | User-defined slash commands with named parameters, background auto-submit, tool overrides, skill injection, and auto-batch execution |
 
-### New Features (Sprint 29+)
+### Additional Features
 
 | Tutorial | Description |
 |----------|-------------|
@@ -1378,15 +1390,15 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 | **v1.0** | March 16, 2026 | Initial release (US/Canada). SSH terminal, Claude AI chatroom, SFTP, background jobs, scheduled jobs, iPad multi-window, watchOS companion. |
 | **v1.1.0** | March 25, 2026 | Agent Teams (`/team`), `/batch` multi-agent orchestration, smart commands, SFTP create folder/file, 8-page welcome tour, SSH auto-reconnect hardening, cross-session memory improvements. |
 | **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide** (expanded from initial US/Canada launch). |
-| **v1.1.1 Sprint 45** | April 10, 2026 | Subagent isolation, progressive skill disclosure, auto-compaction, memory search performance, auto-skill suggestions, critical bug fixes. |
-| **v1.2.0 Sprint 46** | April 2026 | `/race` multi-model comparison (models + thinking lenses), `/pr` GitHub PR workflow with AI code review, review learning, and CI checks, `/handoff` bidirectional session handoff. |
-| **v1.2.0 Sprint 47** | April 2026 | `/preview` live web preview via SSH port forwarding (auto-detect port, `--start`, multi-port, console logs, screenshot annotation, responsive viewport modes), orange `--flag` highlighting, Job tab category pills (All/Jobs/Race/Agents/Scheduled), slash command autocomplete for all new commands. |
+| **v1.1.1** (update) | April 10, 2026 | Subagent isolation, progressive skill disclosure, auto-compaction, memory search performance, auto-skill suggestions, critical bug fixes. |
+| **v1.2.0** | April 2026 | `/race` multi-model comparison (models + thinking lenses), `/pr` GitHub PR workflow with AI code review, review learning, and CI checks, `/handoff` bidirectional session handoff. |
+| **v1.2.0** (update) | April 2026 | `/preview` live web preview via SSH port forwarding (auto-detect port, `--start`, multi-port, console logs, screenshot annotation, responsive viewport modes), orange `--flag` highlighting, Job tab category pills (All/Jobs/Race/Agents/Scheduled), slash command autocomplete for all new commands. |
 
 ---
 
-### New in Sprint 45 (April 2026)
+### Agent Polish & Memory/Skills v2 (April 2026)
 
-Sprint 45 focused on agent polish and memory/skills v2, inspired by patterns from Hermes Agent and OpenClaw.
+This update focused on agent polish and memory/skills improvements.
 
 **🔒 Subagent Profile Isolation**
 Each `/team` and `/batch` agent now gets a private scratch workspace at `~/.catclaw/workspaces/{groupID}/{role}/`. Agents running in parallel can't step on each other's scratch files anymore. Workers are told about their isolated workspace in the prompt and use it for drafts before committing to the main project.
@@ -1407,9 +1419,9 @@ After a standalone `/submit` job completes with 5+ tool uses, a yellow banner ap
 - Background job completion messages now persist across app restarts. Previously, the `✅ Background job finished` assistant bubble stayed in the main chat until you relaunched the app — then it disappeared (the result stayed in the Jobs tab). Fixed by calling `notifyMessagesUpdated()` after appending job-completion messages.
 - Background job polling now waits up to 60 seconds for SSH reconnect before continuing. Previously, polling would race through cycles during WiFi changes and phone wake events, sometimes falsely declaring the tmux session dead.
 
-### Sprint 45 Polish (mid-April)
+### Polish & Reliability (mid-April 2026)
 
-A week of post-initial-release polish focused on bugs found during real use and additional UX refinements.
+A round of polish focused on bugs found during real use and additional UX refinements.
 
 **🔗 Connection Stability**
 - Eliminated false "Reconnecting..." flashes during active use. The latency monitor previously tore down the connection on a single 5-second probe timeout — which happened under normal contention when background jobs and foreground messages shared exec channels. Now requires 2 consecutive failures, skips probing entirely while SSH is in active use, and all probe timeouts were raised from 3-5 seconds to 10-12 seconds (a busy Mac can legitimately take that long to respond).
@@ -1435,7 +1447,7 @@ Major memory UX overhaul. Open the **Memories** button in any chatroom and you n
 - **Delete from inside the editor** with confirmation.
 
 **🔍 Smart Memory Search**
-Typing in the memory search bar now runs a ranked full-text search using the Sprint 45 inverted keyword index. Results appear under a purple "Smart Search" badge header instead of category-grouped view, scored by exact match (×3), prefix match (×1.5), substring match (×2), recency, and frequency. Works across all projects when on the "All" filter tab.
+Typing in the memory search bar now runs a ranked full-text search using the inverted keyword index. Results appear under a purple "Smart Search" badge header instead of category-grouped view, scored by exact match (×3), prefix match (×1.5), substring match (×2), recency, and frequency. Works across all projects when on the "All" filter tab.
 
 **🪄 Auto-Skill Suggestion Improvements**
 The "Save as reusable command?" banner now tracks tool use count incrementally as the job runs, rather than counting at completion (where the capped 10KB progress log had already discarded earlier markers). Threshold lowered from 5 tools to 3 — many useful jobs only use 3-4 tools (read, bash, write is already worth saving).
@@ -1565,9 +1577,9 @@ Each uses file reads, bash commands, git operations, etc. — enough tools to tr
 
 ---
 
-### New in Sprint 46 (April 2026)
+### New Workflow Commands (April 2026)
 
-Sprint 46 adds three major workflow commands: multi-model racing, a full GitHub PR workflow with AI review, and bidirectional session handoff.
+Three major workflow commands: multi-model racing, a full GitHub PR workflow with AI review, and bidirectional session handoff.
 
 **Multi-Model Comparison (`/race`)**
 
@@ -1602,9 +1614,9 @@ Start coding on your phone during your commute, sit down at your desk and `/hand
 
 ---
 
-### New in Sprint 47 (April 2026)
+### Live Web Preview & UI Polish (April 2026)
 
-Sprint 47 adds live web preview, UI polish, and slash command autocomplete for all new commands.
+Live web preview, UI polish, and slash command autocomplete for all new commands.
 
 **Live Web Preview (`/preview`)**
 
@@ -1619,7 +1631,7 @@ The first mobile tool with a real live web preview. `/preview` auto-detects your
 
 **Slash Command Autocomplete**
 
-All Sprint 46 and Sprint 47 commands — `/race`, `/pr`, `/handoff`, and `/preview` — now appear in the slash command suggestion palette when you type `/` in any chatroom. Each entry shows the command name, a short description, and the available flags. The palette uses fuzzy search so typing `/rac`, `/han`, or `/prev` finds the right command immediately.
+All new commands — `/race`, `/pr`, `/handoff`, and `/preview` — now appear in the slash command suggestion palette when you type `/` in any chatroom. Each entry shows the command name, a short description, and the available flags. The palette uses fuzzy search so typing `/rac`, `/han`, or `/prev` finds the right command immediately.
 
 **Orange `--flag` Highlighting**
 
