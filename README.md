@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.1.1 (April 10, 2026) — Sprint 45 ships subagent isolation, progressive skill disclosure, auto-compaction, smart memory search, auto-skill suggestions, per-session memory editor, connection stability overhaul, per-job cost tracking and trajectory timelines for background jobs, per-project skill variants with opt-in auto-customization, and a stack of bug fixes.
+**Latest Version:** v1.2.0 (April 2026) — Sprint 46+47 ships `/race` multi-model comparison, `/pr` GitHub PR workflow with AI code review, `/handoff` bidirectional session handoff, `/preview` live web preview via SSH port forwarding, AI code review learning, and slash command autocomplete for all new commands.
 
 ---
 
@@ -24,6 +24,10 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 | **Multi-tool AI** | Claude + Codex + Gemini + Aider in dedicated chatrooms | Claude only | Claude only |
 | **Multi-agent orchestration** | `/batch --agents N` with Commander + Workers + Synthesizer, cross-tool assignment | Background agents (desktop only) | No |
 | **Agent Teams** | `/team` — wave-based orchestration with visual command center, animated flow graph, discovery feed, per-agent status cards | Desktop-only CLI text output | No |
+| **Multi-model comparison** | `/race` — run 2–4 AI models on the same prompt simultaneously, side-by-side results with AI summary | No | No |
+| **GitHub PR workflow** | `/pr create`, `/pr review`, `/pr list`, `/pr checks` — full PR lifecycle with AI-powered code review | No (desktop only) | No |
+| **Session handoff** | `/handoff` — start on phone, continue on Mac; or pick up an active Mac session on your phone | No | No |
+| **Live web preview** | `/preview` — SSH port-forwarded browser preview of your dev server, auto-detects port from config files | No | No |
 | **Scheduled/recurring jobs** | Hourly, daily, weekly recurring with auto-submission | No | No |
 | **Security model** | End-to-end SSH encryption, keys stored in iOS Keychain | Localhost only (requires SSH tunnel to reach claude.ai) | Code passes through third-party platforms (Slack, Discord) |
 | **Setup** | Just SSH credentials (password or key) | CLI install + tunnel configuration | Bot token + bridge setup + runtime |
@@ -53,7 +57,7 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 2. [SSH Setup — Connect to Your Mac (Local Network)](#2-ssh-setup--connect-to-your-mac-local-network)
 3. [Tailscale — Remote Access Anywhere (Recommended for remote use)](#3-tailscale--remote-access-anywhere)
 4. [SSH Keys](#4-ssh-keys)
-5. [Claude AI Chatroom](#5-claude-ai-chatroom) (includes [Background Jobs](#background-jobs-submit), [Agent Orchestration](#agent-orchestration-orchestrate), [Batch Multi-Agent](#batch-multi-agent-orchestration-batch), and [Agent Teams](#agent-teams-team))
+5. [Claude AI Chatroom](#5-claude-ai-chatroom) (includes [Background Jobs](#background-jobs-submit), [Agent Orchestration](#agent-orchestration-orchestrate), [Batch Multi-Agent](#batch-multi-agent-orchestration-batch), [Agent Teams](#agent-teams-team), [Multi-Model Comparison](#multi-model-comparison-race), [GitHub PR Workflow](#github-pr-workflow-pr), [Session Handoff](#session-handoff-handoff), and [Live Web Preview](#live-web-preview-preview))
 6. [Skills & Marketplace](#6-skills--marketplace)
 7. [Smart Commands](#7-smart-commands)
 8. [Slash Commands & @ References](#8-slash-commands---references)
@@ -83,6 +87,10 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 | [Memory & Skills](examples/memory-skills.md) | `/remember`, `/forget`, `/memories`; enabling skills; per-message skills |
 | [SFTP & Files](examples/sftp-files.md) | Browse, download, batch delete, Snap & Code workflow |
 | [Collaboration](examples/collaboration.md) | Host/join shared rooms, relay server setup, guest watch view |
+| [Multi-Model Comparison](examples/race.md) | `/race` examples — compare Claude, Codex, and Gemini side-by-side on the same prompt |
+| [GitHub PR Workflow](examples/pr-workflow.md) | `/pr create`, `/pr review`, `/pr list`, `/pr checks` — full examples with review learning |
+| [Session Handoff](examples/handoff.md) | `/handoff mac` and `/handoff` pickup — start on phone, continue on Mac |
+| [Live Web Preview](examples/preview.md) | `/preview` auto-detect, port override, `--start`, and `stop` examples |
 | [Slash Commands Reference](examples/slash-commands-reference.md) | Every slash command with syntax, flags, and examples — grouped by category |
 
 ---
@@ -90,6 +98,16 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 ## 📚 Feature Tutorials
 
 In-depth guides for individual ClawTerminal features. Each tutorial covers a single feature with step-by-step instructions.
+
+### New Features (Sprint 46 + 47)
+
+| Tutorial | Description |
+|----------|-------------|
+| [Multi-Model Comparison (`/race`)](tutorials/race.md) | Race 2–4 AI models on the same prompt simultaneously. Side-by-side results on iPad, swipeable cards on iPhone, with an AI-generated comparison summary |
+| [GitHub PR Workflow (`/pr`)](tutorials/pr-workflow.md) | Full GitHub PR lifecycle: auto-generate PR title and body, AI-powered code review with severity-colored items, CI status checks, and per-chatroom review learning |
+| [Session Handoff (`/handoff`)](tutorials/handoff.md) | Bidirectional handoff between phone and Mac: send your current session to a Mac tmux window, or discover and pick up active Mac sessions on your phone |
+| [Live Web Preview (`/preview`)](tutorials/preview.md) | SSH-tunneled live preview of your dev server in-app. Auto-detects port from package.json, .env, or vite.config. Supports auto-start and explicit port override |
+| [AI Code Review Learning](tutorials/pr-workflow.md#review-learning) | Thumbs-up/down feedback on individual review items teaches CatClaw your team's preferences. Set focus areas with `/pr focus security,tests,performance` |
 
 ### New Features & Improvements (Sprint 44)
 
@@ -791,6 +809,15 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/rename <name>` | Rename the current chatroom |
 | `/tasks` | List all background jobs and their status |
 | `/config` | Display current settings |
+| `/race <prompt> [--models m1,m2,...]` | Race 2–4 AI models on the same prompt simultaneously. Results appear side-by-side (iPad) or as swipeable cards (iPhone), with an AI summary comparing strengths and trade-offs. Default models: claude + codex. Specify others with `--models claude,codex,gemini`. |
+| `/pr [create]` | Auto-generate a GitHub PR title and body from `git diff`, then create the PR via the `gh` CLI installed on your Mac. Requires `gh` authenticated on your Mac. |
+| `/pr review <number>` | AI-powered code review for the given PR number. Review items are color-coded by severity (red bugs, yellow suggestions, blue questions, green praise). Thumbs-up/down on each item teaches CatClaw your team's preferences. |
+| `/pr list` | List open pull requests in the current repo. |
+| `/pr checks <number>` | Show CI status and check details for the given PR number. |
+| `/pr focus <areas>` | Set review focus areas for this chatroom, e.g. `/pr focus security,tests,performance`. Future reviews emphasize the selected areas. |
+| `/handoff mac` | Hand your current phone chatroom session to a Mac tmux window. The terminal session is recreated on the Mac so you can continue in a full desktop terminal. |
+| `/handoff` | Discover active Claude sessions on your Mac and pick one up on your phone. Shows a list of running tmux sessions with their last output preview — tap one to attach. |
+| `/preview [--port N] [--start] [stop]` | Open a live web preview of your dev server via SSH port forwarding. Auto-detects the port from `package.json`, `.env`, or `vite.config`. Add `--port 3000` for a specific port. Add `--start` to auto-launch the dev server before opening the preview. Run `/preview stop` to close the tunnel. |
 | `/remember <fact>` | Save a fact to **cross-session memory** — injected into every future chatroom session |
 | `/forget <keyword>` | Remove memories matching the keyword |
 | `/memories` | Open the **Memory Library** to browse, search, and manage saved memories |
