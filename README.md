@@ -1226,6 +1226,10 @@ Tap **Review** to open a side-by-side comparison sheet showing the original glob
 - Default is **OFF** (opt-in) — you must explicitly turn on auto-customization in Settings
 - Variants are stored in `~/Documents/chatrooms.json` alongside the global skill definition
 
+### Smarter Background Notifications (mid-April)
+
+The 10-minute background refresh now detects **actual job completions** instead of just posting "N jobs still running" on every wake. When the app discovers a job that finished while you were away, it posts a "Job Complete" notification with the result preview and View/Copy action buttons — the same notification you'd get in the foreground. Running job notifications no longer repeat every 10 minutes for the same jobs.
+
 ---
 
 ### Editing Skills
