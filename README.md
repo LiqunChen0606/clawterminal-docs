@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.2.0 (April 2026)
+**Latest Version:** v1.5.0 (April 2026)
 
 ### What's New
 
@@ -29,6 +29,10 @@
 | **Plan Mode** | `/plan` — Claude generates a structured plan (files, changes, risks) before touching anything. Review then tap Execute to proceed. | [Examples](examples/workflow-automation.md) |
 | **@web Context** | `@web https://url` fetches a URL via SSH, strips HTML, and injects up to 4000 chars into your message context. | [Examples](examples/workflow-automation.md) |
 | **File Pinning** | `/pin filepath` keeps specific files always included in every message's context. `/unpin` to remove. | [Examples](examples/workflow-automation.md) |
+| **Analytics Dashboard** | `/dashboard` shows aggregate stats across all chatrooms and jobs: success rates, token spend, daily activity, most-used commands — all local, no external service. | [Examples](examples/dashboard-workflows.md) |
+| **Workflow Pipelines** | `/workflow [name]` runs named multi-step pipelines defined as JSON DAGs. Steps with no dependencies run in parallel; dependent steps wait. Visual DAG with live per-node status. | [Examples](examples/dashboard-workflows.md) |
+| **Auto-Recovery for Failed Jobs** | When a background job fails, CatClaw classifies the error and auto-retries network/dependency failures. Other failures show a one-tap "Retry with AI fix?" banner. | [Examples](examples/dashboard-workflows.md) |
+| **Auth Error Auto-Switch** | When Claude CLI reports an auth error, the app automatically switches to the Terminal tab and shows a recovery banner with `/login` instructions. No manual tab-switching needed. | [Examples](examples/dashboard-workflows.md) |
 
 ---
 
@@ -61,6 +65,9 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 | **Plan mode** | `/plan` — structured dry-run plan (files, changes, risks) before any writes; tap Execute to proceed | No | No |
 | **@web context** | `@web https://url` — fetch a URL via SSH and inject content into your message context | No | No |
 | **File pinning** | `/pin filepath` — keep specific files always in context for every message in a chatroom | No | No |
+| **Analytics dashboard** | `/dashboard` — aggregate stats: job success rates, token spend, daily activity sparkline, most-used commands, drill-down filtered views | No | No |
+| **Workflow pipelines** | `/workflow [name]` — named multi-step pipelines as JSON DAGs, parallel steps, dependency ordering, live visual DAG with per-node status | No | No |
+| **Auto-recovery for failed jobs** | Classifies job failures (network timeout, missing dependency, auth, etc.) and auto-retries or shows one-tap "Retry with AI fix?" banner | No | No |
 | **Scheduled/recurring jobs** | Hourly, daily, weekly recurring with auto-submission | No | No |
 | **Security model** | End-to-end SSH encryption, keys stored in iOS Keychain | Localhost only (requires SSH tunnel to reach claude.ai) | Code passes through third-party platforms (Slack, Discord) |
 | **Setup** | Just SSH credentials (password or key) | CLI install + tunnel configuration | Bot token + bridge setup + runtime |
@@ -1081,6 +1088,10 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/pin <filepath>` | Keep a file always included in context for every message in this chatroom. |
 | `/pin` | List currently pinned files. |
 | `/unpin <filepath>` | Remove a file from the always-include pin list. |
+| `/dashboard` | Open the **analytics dashboard** — aggregate stats across all chatrooms and jobs: success rates, token spend, daily activity sparkline (last 14 days), most-used commands, most-active chatrooms. Tap any card to drill into a filtered job list. |
+| `/workflow [name]` | Run a named multi-step **pipeline** defined in `workflows.json`. Steps with no dependencies run in parallel; dependent steps wait. Rendered as a live DAG. |
+| `/workflow list` | List all saved workflow pipelines. |
+| `/workflow save [name]` | Save the last N slash commands as a new pipeline. |
 | `/help` | List all available slash commands |
 
 ### @ References
@@ -1310,6 +1321,10 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Plan mode before risky refactors**: Toggle `/plan`, then describe the refactor. Review the file list and risk notes before anything is written. If the scope looks wrong, adjust your prompt and plan again — costs nothing until you tap Execute.
 - **Inject API docs without copy-paste**: Use `@web https://docs.example.com/api` to pull a reference page directly into your message. Pair it with a code question and Claude sees the spec alongside your source file.
 - **Pin your config file for every message**: Run `/pin src/config.ts` in a chatroom that touches configuration constantly. The file content is always in context — no need to attach it manually each time.
+- **Weekly analytics review**: Run `/dashboard` at the start of each week to see which commands you use most, how much you've spent on tokens, and whether your job success rate is trending up or down. Drill into "failed" to see which job types need better prompts.
+- **Build a deployment pipeline**: Create a `deploy.json` workflow with steps for linting, testing, building, and deploying. Steps that can run in parallel (lint + type-check) share a wave; the deploy step depends on build. Run `/workflow deploy` to execute the full pipeline with a live DAG view.
+- **Auto-recovery saves retries**: When a job fails due to a network blip or missing npm package, CatClaw retries automatically. Open the job detail to see the retry lineage card — it shows the original failure reason and what the recovery prompt changed. This is especially useful for long `/batch` runs where individual workers may hit transient errors.
+- **Auth recovery is one tap**: If the Claude chatroom shows an auth banner, it will automatically switch to the Terminal tab. Just type `claude`, then `/login`, and follow the OAuth flow — no need to remember which tab to go to or what command to run.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1425,6 +1440,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 | **v1.2.0** | April 2026 | Multi-model race (`/race`) with thinking lenses, GitHub PR workflow (`/pr`) with AI code review and review learning, bidirectional session handoff (`/handoff`), live web preview (`/preview`), smart model routing, git worktree isolation (`--vcs`), agent reasoning banners, per-job cost tracking, trajectory timeline, per-project skill variants, subagent isolation, progressive skill disclosure, auto-compaction, smart memory search. |
 | **v1.3.0** | April 2026 | Visual git branch graph (`/git`), codebase health dashboard (`/health`), live server monitor (`/monitor`), AI semantic code search (`/search`), voice input (`/voice`). Git worktree mode and smart model routing now fully documented with examples. Agent reasoning banner available on all background job results. |
 | **v1.4.0** | April 2026 | AI merge conflict resolver (`/conflicts`), smart notifications (`/notify`), enhanced plan mode (`/plan` with Execute button), `@web` URL context injection, file context pinning (`/pin`/`/unpin`). |
+| **v1.5.0** | April 2026 | Analytics dashboard (`/dashboard`), workflow pipelines (`/workflow`) with visual DAG execution, auto-recovery for failed jobs (error classification + auto-retry + retry lineage), auth error auto-switch to Terminal tab with recovery banner. Auto-approve skill banner removed. |
 
 ---
 
