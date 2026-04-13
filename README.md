@@ -24,6 +24,11 @@
 | **Git Graph** | `/git` — visual branch/commit graph with timeline, branch tags, tap to checkout. | [Examples](examples/git-health-monitor.md) |
 | **Codebase Health** | `/health` — one-tap dashboard: LOC, file count, TODOs, uncommitted changes, dependencies, largest file. | [Examples](examples/git-health-monitor.md) |
 | **Server Monitor** | `/monitor` — live CPU, memory, disk, uptime, load average with sparkline charts. | [Examples](examples/git-health-monitor.md) |
+| **Merge Conflict Resolver** | `/conflicts` finds all unmerged files, shows ours/theirs blocks, and generates AI-powered resolution suggestions with one-tap Apply. | [Examples](examples/workflow-automation.md) |
+| **Smart Notifications** | `/notify when tests finish` — set natural language monitoring rules; CatClaw polls via SSH and sends a push notification when the condition is met. | [Examples](examples/workflow-automation.md) |
+| **Plan Mode** | `/plan` — Claude generates a structured plan (files, changes, risks) before touching anything. Review then tap Execute to proceed. | [Examples](examples/workflow-automation.md) |
+| **@web Context** | `@web https://url` fetches a URL via SSH, strips HTML, and injects up to 4000 chars into your message context. | [Examples](examples/workflow-automation.md) |
+| **File Pinning** | `/pin filepath` keeps specific files always included in every message's context. `/unpin` to remove. | [Examples](examples/workflow-automation.md) |
 
 ---
 
@@ -51,6 +56,11 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 | **Codebase health dashboard** | `/health` — one-tap scan: LOC, file count, TODOs, uncommitted changes, dependencies, largest file | No | No |
 | **Live server monitor** | `/monitor` — real-time CPU, memory, disk, uptime, load average with sparkline charts | No | No |
 | **AI code search** | `/search [query]` — semantic AI-powered search across your codebase with ranked explanations | No | No |
+| **Merge conflict resolver** | `/conflicts` — AI-powered conflict resolution with ours/theirs view and one-tap Apply | No | No |
+| **Smart notifications** | `/notify when tests finish` — natural language SSH-polled monitoring rules with push notifications | No | No |
+| **Plan mode** | `/plan` — structured dry-run plan (files, changes, risks) before any writes; tap Execute to proceed | No | No |
+| **@web context** | `@web https://url` — fetch a URL via SSH and inject content into your message context | No | No |
+| **File pinning** | `/pin filepath` — keep specific files always in context for every message in a chatroom | No | No |
 | **Scheduled/recurring jobs** | Hourly, daily, weekly recurring with auto-submission | No | No |
 | **Security model** | End-to-end SSH encryption, keys stored in iOS Keychain | Localhost only (requires SSH tunnel to reach claude.ai) | Code passes through third-party platforms (Slack, Discord) |
 | **Setup** | Just SSH credentials (password or key) | CLI install + tunnel configuration | Bot token + bridge setup + runtime |
@@ -117,6 +127,7 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 | [Slash Commands Reference](examples/slash-commands-reference.md) | Every slash command with syntax, flags, and examples — grouped by category |
 | [Git, Health & Monitor](examples/git-health-monitor.md) | `/git` visual branch graph, `/health` codebase dashboard, `/monitor` live server stats, `/search` AI code search |
 | [Advanced Agent Features](examples/agent-advanced.md) | Git worktree mode (`--vcs`), smart model routing (`--routing`), agent reasoning banner, combining all flags |
+| [Workflow Automation](examples/workflow-automation.md) | `/conflicts` merge conflict resolver, `/notify` smart notifications, `/plan` enhanced dry-run, `@web` URL injection, `/pin` file pinning |
 
 ---
 
@@ -1062,7 +1073,25 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/remember <fact>` | Save a fact to **cross-session memory** — injected into every future chatroom session |
 | `/forget <keyword>` | Remove memories matching the keyword |
 | `/memories` | Open the **Memory Library** to browse, search, and manage saved memories |
+| `/conflicts` | Scan for git merge conflicts, show AI resolution suggestions per file, one-tap Apply to write the resolved content. |
+| `/notify <condition>` | Set a natural language monitoring rule (e.g. `/notify when tests finish`). CatClaw polls via SSH every 30s and sends a push notification when the condition is met. |
+| `/notify list` | Show all active notification rules. |
+| `/notify cancel` | Remove all active notification rules. |
+| `/plan` | Toggle **plan mode** — your next message generates a structured plan (files, changes, risks, complexity) instead of making changes. Tap **Execute** in the plan card to proceed. |
+| `/pin <filepath>` | Keep a file always included in context for every message in this chatroom. |
+| `/pin` | List currently pinned files. |
+| `/unpin <filepath>` | Remove a file from the always-include pin list. |
 | `/help` | List all available slash commands |
+
+### @ References
+
+Type `@web https://url` anywhere in a message to fetch a URL and inject its content:
+
+1. CatClaw fetches the URL via SSH (`curl`) — no device traffic, uses your Mac's network
+2. HTML is stripped and the content is truncated to 4000 chars
+3. The result is injected as a `<web_content url="...">` block before your message
+
+Great for documentation pages, API references, GitHub raw files, or any plain-text URL. Combine with file references: `Implement this spec: @web https://api.example.com/docs and also check @src/client.ts`.
 
 ### @ File References
 
@@ -1276,6 +1305,11 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Worktree mode for safe experiments**: Add `--vcs` to any `/batch` run to give each agent its own git branch. If the results are bad, delete the branches with no impact on your working tree. If they are good, the merge happens automatically.
 - **Routing presets for cost control**: Use `--routing budget` for exploratory research tasks where speed and cost matter more than quality, and `--routing quality` for production code generation where accuracy is critical.
 - **Agent reasoning as a sanity check**: After any background job completes, open the job detail and read the Agent Reasoning card. If the agent misunderstood the task, the reasoning card usually shows why — which helps you write a clearer prompt next time.
+- **Resolve merge conflicts after worktree batch runs**: After `/batch --vcs`, if the auto-merge produces conflicts, run `/conflicts` to get per-file AI resolution suggestions. Tap Apply on each resolved file — no need to open a terminal.
+- **Monitor long test suites without polling**: Run `/notify when tests finish` before starting a long test run, then put your phone down. CatClaw sends a push notification the moment the test process exits — no need to check the Jobs tab manually.
+- **Plan mode before risky refactors**: Toggle `/plan`, then describe the refactor. Review the file list and risk notes before anything is written. If the scope looks wrong, adjust your prompt and plan again — costs nothing until you tap Execute.
+- **Inject API docs without copy-paste**: Use `@web https://docs.example.com/api` to pull a reference page directly into your message. Pair it with a code question and Claude sees the spec alongside your source file.
+- **Pin your config file for every message**: Run `/pin src/config.ts` in a chatroom that touches configuration constantly. The file content is always in context — no need to attach it manually each time.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1390,6 +1424,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 | **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide**. |
 | **v1.2.0** | April 2026 | Multi-model race (`/race`) with thinking lenses, GitHub PR workflow (`/pr`) with AI code review and review learning, bidirectional session handoff (`/handoff`), live web preview (`/preview`), smart model routing, git worktree isolation (`--vcs`), agent reasoning banners, per-job cost tracking, trajectory timeline, per-project skill variants, subagent isolation, progressive skill disclosure, auto-compaction, smart memory search. |
 | **v1.3.0** | April 2026 | Visual git branch graph (`/git`), codebase health dashboard (`/health`), live server monitor (`/monitor`), AI semantic code search (`/search`), voice input (`/voice`). Git worktree mode and smart model routing now fully documented with examples. Agent reasoning banner available on all background job results. |
+| **v1.4.0** | April 2026 | AI merge conflict resolver (`/conflicts`), smart notifications (`/notify`), enhanced plan mode (`/plan` with Execute button), `@web` URL context injection, file context pinning (`/pin`/`/unpin`). |
 
 ---
 
