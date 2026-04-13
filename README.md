@@ -17,9 +17,13 @@
 | **GitHub PR Workflow** | Create PRs, run AI code reviews, post to GitHub — all from your phone. Review learning remembers what your team cares about. | [Examples](examples/pr-workflow.md) · [Tutorial](tutorials/pr-workflow.md) |
 | **Session Handoff** | Start coding on your phone, continue on your Mac — or pick up a Mac session on your phone. Bidirectional, seamless. | [Examples](examples/handoff.md) · [Tutorial](tutorials/handoff.md) |
 | **Live Web Preview** | Preview your web app via SSH tunnel. Auto-detects port, multi-port tabs, console log capture, responsive viewport modes, screenshot + annotate. | [Examples](examples/preview.md) · [Tutorial](tutorials/preview.md) |
-| **Smart Model Routing** | Auto-assigns cost-appropriate models per agent role. Three presets: Quality, Balanced, Budget. | — |
-| **Agent Reasoning** | See *why* your agents made decisions — extracted reasoning shown as a collapsible banner on job results. | — |
-| **Git Worktree Mode** | `/batch --vcs` gives each agent a real git branch. Results auto-merge back with conflict reporting. | — |
+| **Smart Model Routing** | Auto-assigns cost-appropriate models per agent role. Three presets: Quality, Balanced, Budget. Use `--routing balanced` with `/batch` or `/team`. | [Examples](examples/agent-advanced.md) |
+| **Agent Reasoning** | See *why* your agents made decisions — extracted reasoning shown as a collapsible banner on job results. | [Examples](examples/agent-advanced.md) |
+| **Git Worktree Mode** | `/batch --vcs` gives each agent a real git branch. Results auto-merge back with conflict reporting. | [Examples](examples/agent-advanced.md) |
+| **AI Code Search** | `/search [query]` — semantic search across your codebase powered by AI. | [Examples](examples/git-health-monitor.md) |
+| **Git Graph** | `/git` — visual branch/commit graph with timeline, branch tags, tap to checkout. | [Examples](examples/git-health-monitor.md) |
+| **Codebase Health** | `/health` — one-tap dashboard: LOC, file count, TODOs, uncommitted changes, dependencies, largest file. | [Examples](examples/git-health-monitor.md) |
+| **Server Monitor** | `/monitor` — live CPU, memory, disk, uptime, load average with sparkline charts. | [Examples](examples/git-health-monitor.md) |
 
 ---
 
@@ -43,6 +47,10 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 | **Smart model routing** | Auto-assigns cost-appropriate models per agent role (Quality/Balanced/Budget presets). Use `--routing balanced`. | No | No |
 | **Git worktree isolation** | `--vcs` flag for agent branch isolation. Each agent works in its own branch; results auto-merge back with conflict reporting. | `/worktree` (desktop) | No |
 | **Agent reasoning** | Extracted agent reasoning shown as a collapsible banner on job results | No | No |
+| **Visual git graph** | `/git` — visual branch/commit timeline with branch tags; tap to checkout | No | No |
+| **Codebase health dashboard** | `/health` — one-tap scan: LOC, file count, TODOs, uncommitted changes, dependencies, largest file | No | No |
+| **Live server monitor** | `/monitor` — real-time CPU, memory, disk, uptime, load average with sparkline charts | No | No |
+| **AI code search** | `/search [query]` — semantic AI-powered search across your codebase with ranked explanations | No | No |
 | **Scheduled/recurring jobs** | Hourly, daily, weekly recurring with auto-submission | No | No |
 | **Security model** | End-to-end SSH encryption, keys stored in iOS Keychain | Localhost only (requires SSH tunnel to reach claude.ai) | Code passes through third-party platforms (Slack, Discord) |
 | **Setup** | Just SSH credentials (password or key) | CLI install + tunnel configuration | Bot token + bridge setup + runtime |
@@ -107,6 +115,8 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 | [Session Handoff](examples/handoff.md) | `/handoff mac` and `/handoff` pickup — start on phone, continue on Mac |
 | [Live Web Preview](examples/preview.md) | `/preview` auto-detect, port override, `--start`, and `stop` examples |
 | [Slash Commands Reference](examples/slash-commands-reference.md) | Every slash command with syntax, flags, and examples — grouped by category |
+| [Git, Health & Monitor](examples/git-health-monitor.md) | `/git` visual branch graph, `/health` codebase dashboard, `/monitor` live server stats, `/search` AI code search |
+| [Advanced Agent Features](examples/agent-advanced.md) | Git worktree mode (`--vcs`), smart model routing (`--routing`), agent reasoning banner, combining all flags |
 
 ---
 
@@ -1023,8 +1033,8 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/model <name>` | Switch the active model mid-conversation, e.g. `/model claude-opus-4-6` |
 | `/clear` | Clear the current conversation and start fresh |
 | `/orchestrate <goal>` | Spawn **3 parallel AI agents** (Researcher, Implementer, Reviewer) plus a Synthesis agent that combines their results. See [Agent Orchestration](#agent-orchestration-orchestrate) below. |
-| `/batch <goal> [--agents N] [--multi] [--ckpt] [--skills alias,...]` | Spawn a **Commander + N Worker agents + Synthesizer**. Commander decomposes the goal dynamically. `--multi` assigns different tools (Claude/Codex/Gemini/Aider) to different subtasks. See [Batch Multi-Agent Orchestration](#batch-multi-agent-orchestration-batch). |
-| `/team <goal> [--multi]` | Wave-based orchestration — Commander decomposes into sequential waves (Research → Implement → Review), agents run in parallel within each wave, discoveries propagate between waves. Visual command center with animated flow graph and live discovery feed. See [Agent Teams](#agent-teams-team). |
+| `/batch <goal> [--agents N] [--multi] [--ckpt] [--skills alias,...] [--vcs] [--routing preset]` | Spawn a **Commander + N Worker agents + Synthesizer**. Commander decomposes the goal dynamically. `--multi` assigns different tools (Claude/Codex/Gemini/Aider) to different subtasks. `--vcs` gives each agent its own git branch (worktree mode). `--routing quality/balanced/budget` auto-assigns cost-appropriate models per role. See [Batch Multi-Agent Orchestration](#batch-multi-agent-orchestration-batch). |
+| `/team <goal> [--multi] [--routing preset]` | Wave-based orchestration — Commander decomposes into sequential waves (Research → Implement → Review), agents run in parallel within each wave, discoveries propagate between waves. `--routing quality/balanced/budget` auto-assigns models per wave role. Visual command center with animated flow graph and live discovery feed. See [Agent Teams](#agent-teams-team). |
 | `/cost` | Show estimated token usage and cost for the current session |
 | `/diff` | Show the last code changes Claude made |
 | `/context` | Display current session context (project dir, session ID, model) |
@@ -1044,6 +1054,11 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/handoff mac` | Hand your current phone chatroom session to a Mac tmux window. The terminal session is recreated on the Mac so you can continue in a full desktop terminal. |
 | `/handoff` | Discover active Claude sessions on your Mac and pick one up on your phone. Shows a list of running tmux sessions with their last output preview — tap one to attach. |
 | `/preview [--port N] [--start] [stop]` | Open a live web preview of your dev server via SSH port forwarding. Auto-detects the port from `package.json`, `.env`, or `vite.config`. Add `--port 3000` for a specific port. Add `--start` to auto-launch the dev server before opening the preview. Run `/preview stop` to close the tunnel. |
+| `/git` | Open a **visual git branch graph** — commit timeline with branch tags. Tap a branch name to checkout. |
+| `/health` | Run a **codebase health scan** — lines of code, file count, TODO/FIXME count, uncommitted changes, dependencies, last commit age, branch count, and largest file. Results shown in a one-tap dashboard. |
+| `/monitor` | Open a **live server monitor** — real-time CPU usage, memory, disk space, uptime, and load average. Sparkline charts show trends. Tap refresh for latest readings. |
+| `/search <query>` | **AI-powered semantic search** across your codebase. Greps for keywords, then Claude ranks and explains the top 5 most relevant matches. |
+| `/voice` | Start **voice input** — dictate your message and tap send when done. Works in any chatroom or background job. |
 | `/remember <fact>` | Save a fact to **cross-session memory** — injected into every future chatroom session |
 | `/forget <keyword>` | Remove memories matching the keyword |
 | `/memories` | Open the **Memory Library** to browse, search, and manage saved memories |
@@ -1254,6 +1269,13 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Annotate UI bugs**: In the preview sheet, tap the camera icon, draw on the screenshot, and send it to Claude with a description. Claude reads the annotation and proposes a specific CSS fix.
 - **Job tab filter**: Use the color-coded pill tabs in the Jobs panel (All / Jobs / Race / Agents / Scheduled) to quickly find what you're looking for when many jobs are in flight.
 - **Orange flag hints**: As you type flags like `--agents 4` or `--models claude,codex`, the flag names turn orange in the input bar — a quick visual confirmation that the app recognizes the flag before you send.
+- **Git graph for branch navigation**: Run `/git` to see a visual timeline of commits and branches. Tap any branch name to check it out — no need to remember branch names or type git commands manually.
+- **Codebase health before a refactor**: Run `/health` before starting a large refactor to get a quick snapshot of LOC, TODO count, and uncommitted changes. Run it again after to compare.
+- **Server monitor during deployments**: Keep `/monitor` open during a deploy to watch CPU and memory react in real time. The sparkline chart shows whether load normalizes after a restart.
+- **Semantic code search**: Use `/search` with plain English questions instead of regex — e.g. `/search where is the payment flow handled` or `/search find all API rate limit logic`. Claude ranks and explains the top matches.
+- **Worktree mode for safe experiments**: Add `--vcs` to any `/batch` run to give each agent its own git branch. If the results are bad, delete the branches with no impact on your working tree. If they are good, the merge happens automatically.
+- **Routing presets for cost control**: Use `--routing budget` for exploratory research tasks where speed and cost matter more than quality, and `--routing quality` for production code generation where accuracy is critical.
+- **Agent reasoning as a sanity check**: After any background job completes, open the job detail and read the Agent Reasoning card. If the agent misunderstood the task, the reasoning card usually shows why — which helps you write a clearer prompt next time.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1367,6 +1389,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 | **v1.1.0** | March 25, 2026 | Agent Teams (`/team`), `/batch` multi-agent orchestration, smart commands, SFTP create folder/file, 8-page welcome tour, SSH auto-reconnect hardening, cross-session memory improvements. |
 | **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide**. |
 | **v1.2.0** | April 2026 | Multi-model race (`/race`) with thinking lenses, GitHub PR workflow (`/pr`) with AI code review and review learning, bidirectional session handoff (`/handoff`), live web preview (`/preview`), smart model routing, git worktree isolation (`--vcs`), agent reasoning banners, per-job cost tracking, trajectory timeline, per-project skill variants, subagent isolation, progressive skill disclosure, auto-compaction, smart memory search. |
+| **v1.3.0** | April 2026 | Visual git branch graph (`/git`), codebase health dashboard (`/health`), live server monitor (`/monitor`), AI semantic code search (`/search`), voice input (`/voice`). Git worktree mode and smart model routing now fully documented with examples. Agent reasoning banner available on all background job results. |
 
 ---
 
