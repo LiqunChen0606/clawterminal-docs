@@ -103,11 +103,11 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 
 | Tutorial | Description |
 |----------|-------------|
-| [Multi-Model Comparison (`/race`)](tutorials/race.md) | Race 2–4 AI models on the same prompt simultaneously. Side-by-side results on iPad, swipeable cards on iPhone, with an AI-generated comparison summary |
-| [GitHub PR Workflow (`/pr`)](tutorials/pr-workflow.md) | Full GitHub PR lifecycle: auto-generate PR title and body, AI-powered code review with severity-colored items, CI status checks, and per-chatroom review learning |
-| [Session Handoff (`/handoff`)](tutorials/handoff.md) | Bidirectional handoff between phone and Mac: send your current session to a Mac tmux window, or discover and pick up active Mac sessions on your phone |
-| [Live Web Preview (`/preview`)](tutorials/preview.md) | SSH-tunneled live preview of your dev server in-app. Auto-detects port from package.json, .env, or vite.config. Supports auto-start and explicit port override |
-| [AI Code Review Learning](tutorials/pr-workflow.md#review-learning) | Thumbs-up/down feedback on individual review items teaches CatClaw your team's preferences. Set focus areas with `/pr focus security,tests,performance` |
+| [Multi-Model Comparison (`/race`)](tutorials/race.md) | Race 2–4 AI models on the same prompt simultaneously. Side-by-side results on iPad, swipeable cards on iPhone, with an AI-generated comparison summary. Includes same-model thinking lenses (`--copies`, `--lenses`): Adversarial, Pragmatic, Principled, User-First, Skeptic, Optimizer |
+| [GitHub PR Workflow (`/pr`)](tutorials/pr-workflow.md) | Full GitHub PR lifecycle: auto-generate PR title and body, AI-powered code review with severity-colored items (red/yellow/blue/green), CI status checks, and per-chatroom review learning with thumbs-up/down ratings |
+| [Session Handoff (`/handoff`)](tutorials/handoff.md) | Bidirectional handoff between phone and Mac: send your current session to a Mac tmux window, or discover and pick up active Mac sessions on your phone. Uses Claude's `--resume` flag for seamless context continuity |
+| [Live Web Preview (`/preview`)](tutorials/preview.md) | SSH-tunneled live preview of your dev server in-app. Auto-detects port from package.json, .env, or vite.config. Multi-port tab switching, `--start` auto-launch, console log panel, screenshot+annotate, responsive viewport modes |
+| [AI Code Review Learning](tutorials/pr-workflow.md#part-3-review-learning) | Thumbs-up/down feedback on individual review items teaches CatClaw your team's preferences. Set focus areas with `/pr focus security,tests,performance`. Builds up over 5–10 reviews |
 
 ### New Features & Improvements (Sprint 44)
 
@@ -705,17 +705,43 @@ See the [Agent Teams tutorial](tutorials/agent-teams.md) for a full walkthrough 
 | Flag | Description | Default |
 |------|-------------|---------|
 | `--models m1,m2,...` | Comma-separated list of models to race (2–4) | `claude,codex` |
+| `--copies N` | Race the same model N times, each with a randomly selected thinking lens | — |
+| `--lenses lens1,lens2,...` | Race the same model with specific thinking lenses (see table below) | — |
+
+`--models` and `--copies`/`--lenses` are mutually exclusive — pick one approach per race.
+
+#### Same-Model Thinking Lenses (`--copies` / `--lenses`)
+
+Race the same model against itself with different system-level perspectives:
+
+```text
+/race --copies 3 How should we structure the error handling in this service?
+/race --lenses adversarial,pragmatic,optimizer Design a rate limiting strategy
+```
+
+| Lens | Focus |
+|------|-------|
+| `adversarial` | What could break? Edge cases, attack vectors, failure modes |
+| `pragmatic` | Simplest path to ship. Maintainability over perfection |
+| `principled` | Best practices, design patterns, SOLID principles |
+| `user-first` | End user experience, performance, accessibility |
+| `skeptic` | Hidden assumptions, unstated requirements, scope creep |
+| `optimizer` | Performance, memory, cost efficiency, redundancy |
+
+Lenses are useful when you already know which model to use but want to stress-test an idea from multiple angles before committing.
 
 #### When to use `/race`
 
 - Evaluating a new algorithm or data structure approach
 - Comparing documentation quality across models
 - Getting a second opinion on a proposed solution before committing
+- Stress-testing a design with adversarial or skeptic lenses before a PR
 - Quick benchmarking of response style for a specific domain
 
 #### `/race` requirements
 
 - The models you select must be installed and authenticated on your Mac (e.g. `codex` requires the OpenAI Codex CLI; `gemini` requires the Gemini CLI)
+- `--copies` / `--lenses` only require the currently active model — no additional installs needed
 - See [Multi-CLI Tool Support](tutorials/multi-cli-tools.md) for tool setup
 
 ---
@@ -1232,9 +1258,14 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Background job context**: Completed job results are automatically available to subsequent jobs. Use `/submit "build on the refactoring from the previous job"` and the last 3 completed results are injected into the new job's context automatically.
 - **Slide-out drawer (iPhone)**: On iPhone, tap the hamburger menu button (top-left) to open the navigation drawer. All tabs — My Mac, Terminal, Connections, Settings — are accessible from here. Tap the dimmed overlay or swipe to dismiss.
 - **Multi-model comparison**: Use `/race` when you are unsure which approach is best — race Claude against Codex or Gemini and let the AI summary tell you the trade-offs. Great for algorithm selection, documentation wording, and architectural decisions.
+- **Same-model lenses for stress-testing**: Use `/race --lenses adversarial,skeptic` before proposing a design to your team — the Adversarial lens will find failure modes you hadn't considered, and Skeptic will challenge hidden assumptions.
 - **PR review on your commute**: Fetch a colleague's PR on your phone with `/pr review 42` and leave thumbs-up/down feedback while commuting. Your ratings are remembered and improve future reviews for that chatroom.
 - **Commute-to-desk handoff**: Use `/submit` to kick off a long refactor before you leave your desk. On your commute, monitor it in the Jobs tab. When you arrive, run `/handoff mac` to continue the conversation in a full terminal with full context intact.
 - **Preview before push**: Run `/preview --start` to auto-launch your dev server and open a live preview on your phone — useful for a final visual check before running `/pr create`.
+- **Console logs for debugging**: In the preview sheet, tap the terminal icon to see JavaScript console output. Tap "Send errors to Claude" to get a diagnosis without leaving the app.
+- **Annotate UI bugs**: In the preview sheet, tap the camera icon, draw on the screenshot, and send it to Claude with a description. Claude reads the annotation and proposes a specific CSS fix.
+- **Job tab filter**: Use the color-coded pill tabs in the Jobs panel (All / Jobs / Race / Agents / Scheduled) to quickly find what you're looking for when many jobs are in flight.
+- **Orange flag hints**: As you type flags like `--agents 4` or `--models claude,codex`, the flag names turn orange in the input bar — a quick visual confirmation that the app recognizes the flag before you send.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1348,8 +1379,8 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 | **v1.1.0** | March 25, 2026 | Agent Teams (`/team`), `/batch` multi-agent orchestration, smart commands, SFTP create folder/file, 8-page welcome tour, SSH auto-reconnect hardening, cross-session memory improvements. |
 | **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide** (expanded from initial US/Canada launch). |
 | **v1.1.1 Sprint 45** | April 10, 2026 | Subagent isolation, progressive skill disclosure, auto-compaction, memory search performance, auto-skill suggestions, critical bug fixes. |
-| **v1.2.0 Sprint 46** | April 2026 | `/race` multi-model comparison, `/pr` GitHub PR workflow with AI code review and review learning, `/handoff` bidirectional session handoff. |
-| **v1.2.0 Sprint 47** | April 2026 | `/preview` live web preview via SSH port forwarding, slash command autocomplete for all new commands. |
+| **v1.2.0 Sprint 46** | April 2026 | `/race` multi-model comparison (models + thinking lenses), `/pr` GitHub PR workflow with AI code review, review learning, and CI checks, `/handoff` bidirectional session handoff. |
+| **v1.2.0 Sprint 47** | April 2026 | `/preview` live web preview via SSH port forwarding (auto-detect port, `--start`, multi-port, console logs, screenshot annotation, responsive viewport modes), orange `--flag` highlighting, Job tab category pills (All/Jobs/Race/Agents/Scheduled), slash command autocomplete for all new commands. |
 
 ---
 
@@ -1540,11 +1571,13 @@ Sprint 46 adds three major workflow commands: multi-model racing, a full GitHub 
 
 **Multi-Model Comparison (`/race`)**
 
-Race Claude, Codex, and Gemini on the same prompt simultaneously and compare their answers in a swipeable or side-by-side layout. An AI summary highlights the key differences. Use `--models` to pick which models compete. Full details: [Multi-Model Comparison](#multi-model-comparison-race).
+Race Claude, Codex, and Gemini on the same prompt simultaneously and compare their answers in a swipeable or side-by-side layout. An AI summary highlights the key differences. Use `--models` to pick which models compete, or `--copies`/`--lenses` to race the same model with different thinking perspectives. Full details: [Multi-Model Comparison](#multi-model-comparison-race).
 
 ```text
 /race Write a fizzbuzz function
 /race --models claude,codex,gemini Explain event sourcing
+/race --copies 3 How should we handle database migrations?
+/race --lenses adversarial,pragmatic,optimizer Design a caching strategy
 ```
 
 **GitHub PR Workflow (`/pr`)**
@@ -1571,7 +1604,7 @@ Start coding on your phone during your commute, sit down at your desk and `/hand
 
 ### New in Sprint 47 (April 2026)
 
-Sprint 47 adds live web preview and slash command autocomplete for all new commands.
+Sprint 47 adds live web preview, UI polish, and slash command autocomplete for all new commands.
 
 **Live Web Preview (`/preview`)**
 
@@ -1587,6 +1620,29 @@ The first mobile tool with a real live web preview. `/preview` auto-detects your
 **Slash Command Autocomplete**
 
 All Sprint 46 and Sprint 47 commands — `/race`, `/pr`, `/handoff`, and `/preview` — now appear in the slash command suggestion palette when you type `/` in any chatroom. Each entry shows the command name, a short description, and the available flags. The palette uses fuzzy search so typing `/rac`, `/han`, or `/prev` finds the right command immediately.
+
+**Orange `--flag` Highlighting**
+
+As you type in the chatroom input bar, any `--flag` argument (such as `--agents`, `--models`, `--port`, `--ckpt`, `--skills`, `--start`, `--copies`, `--lenses`) turns orange automatically. This makes it easy to spot flags at a glance and confirms the app recognizes the flag before you send the message.
+
+```text
+/batch --agents 4 --multi implement the payment flow
+        ^^^^^^^^^  ^^^^^^^ these turn orange as you type
+```
+
+**Job Tab Categories**
+
+The Background Jobs panel now has a color-coded pill tab bar at the top to filter the job list by type:
+
+| Tab | Color | Shows |
+|-----|-------|-------|
+| All | Gray | Every job |
+| Jobs | Blue | Single `/submit` background jobs |
+| Race | Orange | `/race` multi-model comparison runs |
+| Agents | Purple | `/batch`, `/team`, and `/orchestrate` groups |
+| Scheduled | Green | Recurring scheduled jobs |
+
+Tap any pill to filter. The active tab is highlighted. This replaces the previous flat list which became unwieldy when many job types were mixed together.
 
 ---
 
