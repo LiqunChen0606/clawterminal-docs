@@ -40,6 +40,9 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 | **GitHub PR workflow** | `/pr create`, `/pr review`, `/pr list`, `/pr checks` — full PR lifecycle with AI-powered code review | No (desktop only) | No |
 | **Session handoff** | `/handoff` — start on phone, continue on Mac; or pick up an active Mac session on your phone | No | No |
 | **Live web preview** | `/preview` — SSH port-forwarded browser preview of your dev server, auto-detects port from config files | No | No |
+| **Smart model routing** | Auto-assigns cost-appropriate models per agent role (Quality/Balanced/Budget presets). Use `--routing balanced`. | No | No |
+| **Git worktree isolation** | `--vcs` flag for agent branch isolation. Each agent works in its own branch; results auto-merge back with conflict reporting. | `/worktree` (desktop) | No |
+| **Agent reasoning** | Extracted agent reasoning shown as a collapsible banner on job results | No | No |
 | **Scheduled/recurring jobs** | Hourly, daily, weekly recurring with auto-submission | No | No |
 | **Security model** | End-to-end SSH encryption, keys stored in iOS Keychain | Localhost only (requires SSH tunnel to reach claude.ai) | Code passes through third-party platforms (Slack, Discord) |
 | **Setup** | Just SSH credentials (password or key) | CLI install + tunnel configuration | Bot token + bridge setup + runtime |
@@ -111,54 +114,27 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 
 In-depth guides for individual ClawTerminal features. Each tutorial covers a single feature with step-by-step instructions.
 
-### New Features
+### Multi-Model & AI Comparison
 
 | Tutorial | Description |
 |----------|-------------|
 | [Multi-Model Comparison (`/race`)](tutorials/race.md) | Race 2–4 AI models on the same prompt simultaneously. Side-by-side results on iPad, swipeable cards on iPhone, with an AI-generated comparison summary. Includes same-model thinking lenses (`--copies`, `--lenses`): Adversarial, Pragmatic, Principled, User-First, Skeptic, Optimizer |
+| [AI Code Review Learning](tutorials/pr-workflow.md#part-3-review-learning) | Thumbs-up/down feedback on individual review items teaches CatClaw your team's preferences. Set focus areas with `/pr focus security,tests,performance`. Builds up over 5–10 reviews |
+
+### Developer Workflow
+
+| Tutorial | Description |
+|----------|-------------|
 | [GitHub PR Workflow (`/pr`)](tutorials/pr-workflow.md) | Full GitHub PR lifecycle: auto-generate PR title and body, AI-powered code review with severity-colored items (red/yellow/blue/green), CI status checks, and per-chatroom review learning with thumbs-up/down ratings |
 | [Session Handoff (`/handoff`)](tutorials/handoff.md) | Bidirectional handoff between phone and Mac: send your current session to a Mac tmux window, or discover and pick up active Mac sessions on your phone. Uses Claude's `--resume` flag for seamless context continuity |
 | [Live Web Preview (`/preview`)](tutorials/preview.md) | SSH-tunneled live preview of your dev server in-app. Auto-detects port from package.json, .env, or vite.config. Multi-port tab switching, `--start` auto-launch, console log panel, screenshot+annotate, responsive viewport modes |
-| [AI Code Review Learning](tutorials/pr-workflow.md#part-3-review-learning) | Thumbs-up/down feedback on individual review items teaches CatClaw your team's preferences. Set focus areas with `/pr focus security,tests,performance`. Builds up over 5–10 reviews |
 
-### New Features & Improvements (v1.1.1)
-
-| Area | Change |
-|------|--------|
-| **iPhone Slide-Out Drawer** | The bottom TabView on iPhone has been replaced with a slide-out drawer sidebar (similar to the ChatGPT and Claude apps). Tap the hamburger menu button (top-left) to open a 280pt drawer with spring animation. Tap the dimmed overlay or swipe to dismiss. All tabs (My Mac, Terminal, Connections, Settings) are now accessed from the drawer. |
-| **iPad Sidebar Fix** | The `NavigationSplitView` detail view now properly updates when switching tabs in the sidebar. Previously, tapping a different sidebar row could leave the detail view stale. |
-| **Agent Teams Discovery Improvements** | Worker output limit raised from 3K to 10K characters, capturing significantly more context from each agent. Discovery parsing fallback improved from 200-character truncation to sentence-based chunking for more meaningful extractions. When SSH is unavailable during discovery extraction, partial discoveries are now created from available output instead of being silently dropped. |
-| **Adaptive Background Job Polling** | Background job polling interval now adapts based on activity: 3 seconds while the job is actively producing output, 8 seconds after 30 seconds of idle, and 15 seconds after 2+ minutes of idle. This reduces SSH command load and battery usage for long-running jobs without sacrificing responsiveness. |
-| **Jobs Tab Auto-Collapse** | Batch and team job groups now auto-collapse in the Jobs tab, reducing visual clutter when many groups are present. Individual jobs can still be expanded on demand. |
-| **Job Detail Auto-Scroll** | Auto-scroll in the job detail view is now disabled by default. Previously the view would continuously scroll to the bottom as new output arrived, making it difficult to read earlier output. |
-| **`/usage` Command** | New `/usage` slash command added as an alias for `/cost`. Displays current token usage and cost information for the active session. |
-| **`/help` Redesign** | The `/help` output has been redesigned with grouped code-block tables, organizing commands by category for easier scanning and discovery. |
-| **Background Heartbeat Notifications** | When the app is backgrounded with running jobs, periodic heartbeat notifications are sent to keep the user informed that jobs are still in progress. |
-
-### Bug Fixes & Improvements (v1.1.0 — v1.1.1)
-
-| Area | Fix |
-|------|-----|
-| **SSH auto-reconnect** | Latency monitor now retries 3x with 15-second backoff before giving up. `ensureHealthySSH()` actively triggers a reconnect rather than just waiting. |
-| **Claude CLI "not logged in"** | App detects auth errors and shows step-by-step recovery: go to the Terminal tab, run `claude`, type `/login`. |
-| **Skills injection** | App-only skills (e.g. Marketplace packs that use iOS-side callbacks) injected into the CLI preamble now include a disclaimer so Claude CLI does not try to invoke them as tools. |
-| **Background job cross-context** | `/submit` and `/batch` jobs now inject the 3 most recently completed job results into new jobs, so agents can reference prior work without manual copy-paste. |
-| **First-time setup** | A connection failure during the My Mac wizard no longer flips back to the first wizard page. Instead it shows an inline error message with a **Retry** button so you can fix the issue without re-entering details. |
-| **File picker** | Two separate `.fileImporter` modifiers were merged into one (SwiftUI only supports one per view). The attachment dialog now correctly opens the iOS Files app for markdown, code, PDFs, and other file types. |
-| **WiFi/Tailscale username** | The Username field no longer pre-fills "mobile". It shows empty with a `whoami` tip — run `whoami` in Terminal on your Mac and enter the result. |
-| **Terminal keyboard dismiss** | The chevron-down button is now present on the extended keyboard bar (terminal mode), consistent with the chatroom input bar. |
-
-### New Features (v1.1.0)
+### Agent Orchestration
 
 | Tutorial | Description |
 |----------|-------------|
 | [Agent Teams (`/team`)](tutorials/agent-teams.md) | Wave-based orchestration: Research → Implement → Review waves with parallel agents, discovery propagation between waves, visual command center with animated flow graph and live discovery feed |
-
-### New Features (v1.1.0 — Earlier)
-
-| Tutorial | Description |
-|----------|-------------|
-| [Batch Multi-Agent Orchestration (`/batch`)](tutorials/batch-multi-agent.md) | Commander decomposes your goal, N parallel Workers execute it, Synthesizer merges results. Supports `--agents`, `--multi`, `--ckpt`, `--skills` |
+| [Batch Multi-Agent Orchestration (`/batch`)](tutorials/batch-multi-agent.md) | Commander decomposes your goal, N parallel Workers execute it, Synthesizer merges results. Supports `--agents`, `--multi`, `--ckpt`, `--skills`, and `--vcs` for git worktree isolation |
 | [Smart Commands](tutorials/smart-commands.md) | User-defined slash commands with named parameters, background auto-submit, tool overrides, skill injection, and auto-batch execution |
 
 ### Additional Features
@@ -1389,272 +1365,93 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 |---------|------|------------|
 | **v1.0** | March 16, 2026 | Initial release (US/Canada). SSH terminal, Claude AI chatroom, SFTP, background jobs, scheduled jobs, iPad multi-window, watchOS companion. |
 | **v1.1.0** | March 25, 2026 | Agent Teams (`/team`), `/batch` multi-agent orchestration, smart commands, SFTP create folder/file, 8-page welcome tour, SSH auto-reconnect hardening, cross-session memory improvements. |
-| **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide** (expanded from initial US/Canada launch). |
-| **v1.1.1** (update) | April 10, 2026 | Subagent isolation, progressive skill disclosure, auto-compaction, memory search performance, auto-skill suggestions, critical bug fixes. |
-| **v1.2.0** | April 2026 | `/race` multi-model comparison (models + thinking lenses), `/pr` GitHub PR workflow with AI code review, review learning, and CI checks, `/handoff` bidirectional session handoff. |
-| **v1.2.0** (update) | April 2026 | `/preview` live web preview via SSH port forwarding (auto-detect port, `--start`, multi-port, console logs, screenshot annotation, responsive viewport modes), orange `--flag` highlighting, Job tab category pills (All/Jobs/Race/Agents/Scheduled), slash command autocomplete for all new commands. |
+| **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide**. |
+| **v1.2.0** | April 2026 | Multi-model race (`/race`) with thinking lenses, GitHub PR workflow (`/pr`) with AI code review and review learning, bidirectional session handoff (`/handoff`), live web preview (`/preview`), smart model routing, git worktree isolation (`--vcs`), agent reasoning banners, per-job cost tracking, trajectory timeline, per-project skill variants, subagent isolation, progressive skill disclosure, auto-compaction, smart memory search. |
 
 ---
 
-### Agent Polish & Memory/Skills v2 (April 2026)
+## Advanced Features Reference
 
-This update focused on agent polish and memory/skills improvements.
+### Progressive Skill Disclosure
 
-**🔒 Subagent Profile Isolation**
-Each `/team` and `/batch` agent now gets a private scratch workspace at `~/.catclaw/workspaces/{groupID}/{role}/`. Agents running in parallel can't step on each other's scratch files anymore. Workers are told about their isolated workspace in the prompt and use it for drafts before committing to the main project.
+By default, every enabled skill's full content is injected into every message — which consumes tokens even when the skill isn't relevant. Progressive disclosure lets you mark a skill as keyword-triggered: the skill's name and description always appear in the index, but the full content only loads when your message contains a matching keyword.
 
-**🎯 Progressive Skill Disclosure**
-Skills now support keyword triggers. Instead of every enabled skill dumping its full content into every message, you can mark a skill with keywords like `deploy, staging, release` and turn off "Always inject". The skill's name + description still appears in the index on every turn, but the full content only loads when your message contains a matching keyword. Cuts preamble token usage by ~50% for users with many skills.
+To configure a skill for progressive disclosure:
 
-**✂️ Auto-Compaction**
-When your conversation grows past ~400K characters (roughly 100K tokens, 50% of a 200K context window), the app silently collapses older messages into a summary marker — keeping the first 2 and last 6 messages intact. Zero API calls; the summary is built locally. Long sessions no longer hit the context limit.
+1. Open the **Skills** toolbar button in any chatroom
+2. Tap the blue pencil icon on any installed skill row to open the editor
+3. In the **Progressive Disclosure** section, toggle **Always inject** off
+4. Add comma-separated **keywords** that trigger the full content, e.g. `deploy, staging, rollout, release`
 
-**⚡ Faster Memory Search**
-Added an inverted keyword index to `MemoryStore` for O(1) candidate lookup (was O(n) per query). New `search(query:limit:)` API supports full-text search across all memories with exact + prefix + substring matching. SQLite FTS5 migration deferred — pragmatic call because typical users have <1000 memories.
-
-**🪄 Auto-Skill Suggestions**
-After a standalone `/submit` job completes with 5+ tool uses, a yellow banner appears above the input bar asking: "That job used N tools — save as reusable command `/foo`?" Tap Save to open the command editor with the slug and request pre-filled. Deduped by request fingerprint to avoid spam.
-
-**🐛 Critical Bug Fixes**
-- Background job completion messages now persist across app restarts. Previously, the `✅ Background job finished` assistant bubble stayed in the main chat until you relaunched the app — then it disappeared (the result stayed in the Jobs tab). Fixed by calling `notifyMessagesUpdated()` after appending job-completion messages.
-- Background job polling now waits up to 60 seconds for SSH reconnect before continuing. Previously, polling would race through cycles during WiFi changes and phone wake events, sometimes falsely declaring the tmux session dead.
-
-### Polish & Reliability (mid-April 2026)
-
-A round of polish focused on bugs found during real use and additional UX refinements.
-
-**🔗 Connection Stability**
-- Eliminated false "Reconnecting..." flashes during active use. The latency monitor previously tore down the connection on a single 5-second probe timeout — which happened under normal contention when background jobs and foreground messages shared exec channels. Now requires 2 consecutive failures, skips probing entirely while SSH is in active use, and all probe timeouts were raised from 3-5 seconds to 10-12 seconds (a busy Mac can legitimately take that long to respond).
-- First-tap saved connection failures are now silently retried. When you tap "Reconnect to [name]" in the wizard, the first attempt occasionally failed due to mDNS warmup on `.local` hostnames, NIO cleanup races, or Tailscale routing delays. The app now waits 1.5 seconds and retries once automatically — most first-tap failures now succeed transparently.
-
-**📝 Persisted Background Job Messages**
-Background job completion messages (the ✅ banner in the main chat) now persist across app restarts. Previously, the result stayed in the Jobs tab but disappeared from the main chatroom on relaunch — because `notifyMessagesUpdated()` was missing from the job-completion path.
-
-**🔌 Background Jobs Tolerate Reconnects**
-Polling loops now wait up to 60 seconds for `sshService` to become non-nil before continuing the poll cycle. Previously, a 45-second WiFi reconnect window could burn through 15 polls and trigger false "session died" errors.
-
-**✏️ Edit Existing Skills**
-A blue pencil icon now appears on each installed skill row, opening the full editor with Name, Description, Content, and the Progressive Disclosure section (keywords + "Always inject" toggle). Before this, there was no way to edit an existing skill — you could only create new ones or delete.
-
-**🧠 Per-Session Memory Management**
-Major memory UX overhaul. Open the **Memories** button in any chatroom and you now get:
-- **Filter tabs** at the top: `[This Session | Global | All]`
-  - *This Session* — project-specific memories + all globals (what the AI actually sees on this turn)
-  - *Global* — memories that apply to every session across all projects
-  - *All* — every memory everywhere, with orange folder badges showing which project each one belongs to
-- **Tap any memory to edit it** — opens a full editor with multiline content, category picker, keywords field, and a **scope toggle**: "Global Memory" ↔ "This Project Only". Flipping the toggle is the one-tap way to share a memory across sessions or scope it back down.
-- **New "+" button in the toolbar** creates memories without needing the `/remember` slash command.
-- **Delete from inside the editor** with confirmation.
-
-**🔍 Smart Memory Search**
-Typing in the memory search bar now runs a ranked full-text search using the inverted keyword index. Results appear under a purple "Smart Search" badge header instead of category-grouped view, scored by exact match (×3), prefix match (×1.5), substring match (×2), recency, and frequency. Works across all projects when on the "All" filter tab.
-
-**🪄 Auto-Skill Suggestion Improvements**
-The "Save as reusable command?" banner now tracks tool use count incrementally as the job runs, rather than counting at completion (where the capped 10KB progress log had already discarded earlier markers). Threshold lowered from 5 tools to 3 — many useful jobs only use 3-4 tools (read, bash, write is already worth saving).
-
-### Cost Tracking & Trajectory Timeline (late April)
-
-Two major additions for background jobs — both inspired by patterns from the Cline VS Code agent.
-
-**💰 Per-Job Cost Tracking**
-
-Every `/submit`, `/batch`, and `/team` job now tracks token usage and estimates USD cost in real time:
-
-- **Jobs tab row** shows a small green cost chip next to the status pill (e.g. `$0.037`)
-- **Job detail view** has a new **Cost & Usage** card showing input tokens, output tokens, estimated USD, and the model ID
-- **Settings → Cost & Budget** lets you set an optional budget cap per job:
-  - No Limit
-  - $0.50
-  - $2.00
-  - $5.00
-  - $10.00
-
-If a job exceeds your budget cap, the Cost & Usage card turns red with a "Over Budget" warning badge. The cap is purely informational — it does not block or pause jobs, just flags them for your awareness.
-
-Pricing tables are public list prices as of April 2026 for Claude Opus/Sonnet/Haiku, GPT-4o, o3/o4-mini, and Gemini 2.5 Pro / 2.0 Flash. Actual Anthropic/OpenAI billing may differ by a few percent — this is for awareness, not accounting.
-
-**📈 Trajectory Timeline**
-
-Every background job now captures a trajectory of what the agent actually did during execution:
-
-- **Tool calls** (blue wrench icon) — each time the AI invoked Read, Bash, Edit, Grep, etc.
-- **Tool results** (cyan return icon) — the output from those tool calls
-- **Assistant text** (purple bubble icon) — the AI's explanatory messages
-- **Thinking blocks** (indigo brain icon) — the AI's internal reasoning
-- **Checkpoints** (orange flag icon) — milestone markers from `[CHECKPOINT: ...]` output
-
-Open any background job's detail view and scroll to the new **Trajectory** card. You'll see a color-coded vertical timeline with connector lines showing every step the agent took, a one-line summary per step, and a monospaced detail snippet (tool input or text preview) underneath.
-
-This was previously invisible — the Jobs tab only showed the final result and a 10KB-capped progress log. Now you can scroll back through a failed `/team` run and see exactly what Agent 3 was doing at minute 7.
-
-The trajectory is capped at 200 steps per job (to avoid unbounded growth on very long runs) and persists across app restarts.
-
-### Per-Project Skill Variants (late April)
-
-Skills can now be customized for individual projects without touching the global version. Every enabled skill stays globally available for all your sessions, but specific projects can have their own variant that overrides the content only when working in that project.
-
-**🌿 Manual customization** — open any skill in the editor (tap the blue pencil on a skill row), scroll to the new **"Project Variants"** section, and tap **"Customize for [project-name]"**. A nested editor opens pre-filled with the global content; edit it to reflect project-specific conventions, tool versions, file layouts, or preferences. The variant is saved alongside the global skill — the global content is never modified.
-
-When a skill is injected into Claude's context, the app checks: does this skill have a variant for the current project? If yes, the variant is used; if no, the global content is used. Variants are marked with a 🌿 badge or *(project variant)* tag so Claude knows they're project-specific.
-
-**✨ Opt-in auto-customization** — turn on **Settings → Smart Skills → "Auto-customize skills per project"** to enable automatic variant suggestions. The app analyzes your conversation after each assistant response and, when it detects project-specific facts that would make a skill more effective (tool versions, conventions, patterns, file layouts), dispatches a lightweight Claude Haiku analysis in the background. If Haiku determines the skill would benefit from customization, you'll see a green banner above the input bar:
-
-> 🌿 Project variant for `deploy-staging`
-> Claude suggests customizing this skill for the current project.
-> [Review] [Dismiss]
-
-Tap **Review** to open a side-by-side comparison sheet showing the original global content and the proposed variant. Tap **Apply** to save — the global content is never modified; only the project variant is written.
-
-**Rate limits:**
-- Max 1 analysis per 10 minutes per chatroom (prevents spam)
-- Each (skill, project) pair is analyzed at most once per session
-- Only enabled skills are considered
-- Skills that already have a variant for the current project are skipped
-- Uses Claude Haiku for cost efficiency (cheapest model in the pricing table)
-
-**Safety guarantees:**
-- The global skill content is **never** modified by any automatic or manual flow
-- Every proposed variant requires **explicit user approval** before it's written
-- Default is **OFF** (opt-in) — you must explicitly turn on auto-customization in Settings
-- Variants are stored in `~/Documents/chatrooms.json` alongside the global skill definition
-
-### Smarter Background Notifications (mid-April)
-
-The 10-minute background refresh now detects **actual job completions** instead of just posting "N jobs still running" on every wake. When the app discovers a job that finished while you were away, it posts a "Job Complete" notification with the result preview and View/Copy action buttons — the same notification you'd get in the foreground. Running job notifications no longer repeat every 10 minutes for the same jobs.
+Example: a "Deploy Staging" skill with keywords `deploy, staging, rollout` stays dormant on every normal coding turn. The moment you write "deploy to staging", the full instructions load automatically. For users with many skills, this can cut preamble token usage by roughly 50%.
 
 ---
 
-### Editing Skills
+### Auto-Skill Suggestions
 
-Skills are where you give Claude (or Codex/Gemini/Aider) repeatable context. To edit an existing skill — including any pre-installed ones:
+After a standalone `/submit` job completes with 3 or more tool uses, a yellow banner appears above the input bar offering to save that job pattern as a reusable slash command. Tap **Save** to open the command editor with the name and template pre-filled — then add parameters and customize as needed.
 
-1. Open a chatroom on the **My Mac** tab
-2. Tap the **Skills** button in the toolbar (book icon)
-3. On any installed skill row, tap the **blue pencil icon** on the right
-4. The editor opens with all fields: Name, Description, Content, and the new **Progressive Disclosure** section
-
-In Progressive Disclosure you can:
-- **Always inject** toggle: ON = legacy behavior (full content in every message). OFF = only the name/description goes in the index; full content loads on keyword match.
-- **Keywords** field (shown when Always Inject is off): comma-separated trigger words like `deploy, staging, release, rollout`.
-
-Example setup for a "Deploy Staging" skill:
-- **Name**: `Deploy Staging`
-- **Description**: `Safe deploy procedure for staging environment`
-- **Content**: (your markdown instructions)
-- **Always inject**: OFF
-- **Keywords**: `deploy, staging, rollout, release`
-
-Now the full content only gets injected when you say something like "deploy to staging" or "start the rollout" — saving tokens on every other turn.
+The suggestion fires only for standalone jobs (not `/batch` or `/team` children), and only once per unique request pattern. If you dismiss it, the same job pattern won't prompt again.
 
 ---
 
-### Triggering the Auto-Skill Suggestion Banner
+### Per-Job Cost Tracking
 
-After a `/submit` background job completes with 5+ tool uses, the app shows a yellow banner above the input bar asking if you want to save the job as a reusable slash command. Here are example requests that should trigger it:
+Every `/submit`, `/batch`, and `/team` job tracks token usage and estimates USD cost in real time.
 
-```
-/submit Run all the tests, fix any failures, commit the fixes, and push to the current branch
-```
+- The **Jobs tab** shows a green cost chip next to each job's status pill
+- The **job detail view** has a **Cost & Usage** card with input tokens, output tokens, estimated USD, and model ID
+- **Settings → Cost & Budget** lets you set an optional soft cap (No Limit / $0.50 / $2.00 / $5.00 / $10.00). Jobs over the cap are flagged with a red "Over Budget" badge — the cap is informational and does not pause or cancel jobs
 
-```
-/submit Deploy the staging environment: pull latest, run migrations, restart services, and verify health
-```
-
-```
-/submit Do a security audit: scan dependencies, check auth endpoints, review JWT handling, and write a report
-```
-
-```
-/submit Check git status, list all branches, show the last 5 commits, run npm test, and report findings
-```
-
-Each uses file reads, bash commands, git operations, etc. — enough tools to trigger the 5+ threshold.
-
-**Why you might not see it:**
-- The job used fewer than 5 tools (simple one-liner jobs)
-- You already saw it for a similar request (dedup by fingerprint of the first 100 chars)
-- The job was a `/batch` or `/team` child (only standalone jobs trigger it)
+Pricing is based on public list prices as of April 2026 for Claude Opus/Sonnet/Haiku, GPT-4o, o3/o4-mini, and Gemini 2.5 Pro / 2.0 Flash.
 
 ---
 
-### New Workflow Commands (April 2026)
+### Trajectory Timeline
 
-Three major workflow commands: multi-model racing, a full GitHub PR workflow with AI review, and bidirectional session handoff.
+Every background job captures a step-by-step record of what the agent did during execution. Open any job's detail view and scroll to the **Trajectory** card to see a color-coded timeline:
 
-**Multi-Model Comparison (`/race`)**
+| Color | Icon | Event type |
+|-------|------|-----------|
+| Blue | Wrench | Tool call (Read, Bash, Edit, Grep, etc.) |
+| Cyan | Return | Tool result |
+| Purple | Bubble | Assistant text |
+| Indigo | Brain | Thinking block |
+| Orange | Flag | Checkpoint marker |
 
-Race Claude, Codex, and Gemini on the same prompt simultaneously and compare their answers in a swipeable or side-by-side layout. An AI summary highlights the key differences. Use `--models` to pick which models compete, or `--copies`/`--lenses` to race the same model with different thinking perspectives. Full details: [Multi-Model Comparison](#multi-model-comparison-race).
-
-```text
-/race Write a fizzbuzz function
-/race --models claude,codex,gemini Explain event sourcing
-/race --copies 3 How should we handle database migrations?
-/race --lenses adversarial,pragmatic,optimizer Design a caching strategy
-```
-
-**GitHub PR Workflow (`/pr`)**
-
-A complete pull request lifecycle from your phone. Auto-generate PR titles and bodies from `git diff`, get AI-powered code reviews with severity-colored items, list open PRs, and check CI status — all via the `gh` CLI installed on your Mac. Full details: [GitHub PR Workflow](#github-pr-workflow-pr).
-
-```text
-/pr create
-/pr review 42
-/pr list
-/pr checks 42
-```
-
-**Session Handoff (`/handoff`)**
-
-Start coding on your phone during your commute, sit down at your desk and `/handoff mac` to continue in a full terminal — no copy-pasting, no context loss. Or run `/handoff` to discover active Mac sessions and pick them up on your phone. Full details: [Session Handoff](#session-handoff-handoff).
-
-```text
-/handoff mac     # Send current phone session to Mac tmux
-/handoff         # Discover Mac sessions, pick one up on phone
-```
+Each step shows a one-line summary and a monospaced detail snippet. The trajectory is capped at 200 steps per job and persists across app restarts. For failed multi-agent runs, this lets you scroll back and see exactly what each agent was doing at any point in time.
 
 ---
 
-### Live Web Preview & UI Polish (April 2026)
+### Per-Project Skill Variants
 
-Live web preview, UI polish, and slash command autocomplete for all new commands.
+Skills can be customized for individual projects without modifying the global version. When a skill is injected into Claude's context, the app checks whether a variant exists for the current project — if yes, the variant is used instead of the global content.
 
-**Live Web Preview (`/preview`)**
+**Manual customization:** Open any skill in the editor (tap the blue pencil icon), scroll to **Project Variants**, and tap **Customize for [project-name]**. A nested editor opens pre-filled with the global content. Edit to reflect project-specific conventions, tool versions, or file layouts. The global content is never modified.
 
-The first mobile tool with a real live web preview. `/preview` auto-detects your dev server port from `package.json`, `.env`, or `vite.config`, then creates an SSH port-forwarding tunnel so you can browse your app directly from your phone. Add `--start` to launch the dev server automatically, use `--port N` for a specific port, and `/preview stop` to close the tunnel. Full details: [Live Web Preview](#live-web-preview-preview).
+**Auto-customization (opt-in):** Enable **Settings → Smart Skills → Auto-customize skills per project**. After each assistant response, the app checks whether the conversation reveals project-specific facts that would improve an enabled skill. If so, it runs a lightweight background analysis and — if a useful customization is found — shows a green banner offering to review the proposed variant. Every proposed variant requires explicit approval before it is saved. The global content is never touched automatically.
 
-```text
-/preview              # Auto-detect port, open preview
-/preview --port 3000  # Specific port
-/preview --start      # Start dev server + preview
-/preview stop         # Close tunnel
-```
+---
 
-**Slash Command Autocomplete**
+### Memory Management
 
-All new commands — `/race`, `/pr`, `/handoff`, and `/preview` — now appear in the slash command suggestion palette when you type `/` in any chatroom. Each entry shows the command name, a short description, and the available flags. The palette uses fuzzy search so typing `/rac`, `/han`, or `/prev` finds the right command immediately.
+The **Memories** button (brain icon) in any chatroom toolbar opens the Memory Library. Use the filter tabs at the top to browse by scope:
 
-**Orange `--flag` Highlighting**
+| Tab | What it shows |
+|-----|--------------|
+| This Session | Project-specific memories plus all globals — what Claude actually sees |
+| Global | Memories that apply across all sessions and projects |
+| All | Every memory, with folder badges showing which project each belongs to |
 
-As you type in the chatroom input bar, any `--flag` argument (such as `--agents`, `--models`, `--port`, `--ckpt`, `--skills`, `--start`, `--copies`, `--lenses`) turns orange automatically. This makes it easy to spot flags at a glance and confirms the app recognizes the flag before you send the message.
+Tap any memory to edit its content, category, keywords, or scope (Global vs. This Project Only). The search bar runs a ranked full-text search: exact matches score highest, followed by prefix and substring matches, with recency and frequency bonuses. Results appear under a "Smart Search" header instead of the normal category-grouped view.
 
-```text
-/batch --agents 4 --multi implement the payment flow
-        ^^^^^^^^^  ^^^^^^^ these turn orange as you type
-```
+To create a memory without a slash command, tap the **+** button in the toolbar. To remove a memory, open it and tap **Delete**.
 
-**Job Tab Categories**
+---
 
-The Background Jobs panel now has a color-coded pill tab bar at the top to filter the job list by type:
+### Background Notifications
 
-| Tab | Color | Shows |
-|-----|-------|-------|
-| All | Gray | Every job |
-| Jobs | Blue | Single `/submit` background jobs |
-| Race | Orange | `/race` multi-model comparison runs |
-| Agents | Purple | `/batch`, `/team`, and `/orchestrate` groups |
-| Scheduled | Green | Recurring scheduled jobs |
-
-Tap any pill to filter. The active tab is highlighted. This replaces the previous flat list which became unwieldy when many job types were mixed together.
+When ClawTerminal is backgrounded with running jobs, the system checks periodically for completions. When a job finishes while you are away, you receive a "Job Complete" notification with a result preview and **View** / **Copy** action buttons — the same notification you would see in the foreground. Notifications for still-running jobs are sent only when they are new, preventing repeated "N jobs running" reminders for the same jobs.
 
 ---
 
