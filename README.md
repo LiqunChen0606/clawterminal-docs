@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.6.0 (April 2026)
+**Latest Version:** v1.7.0 (April 2026)
 
 ### What's New
 
@@ -40,6 +40,15 @@
 | **Spec-Driven Dev** | `/spec [feature]` generates a formal requirements spec in EARS notation, including files to create, ordered tasks, acceptance criteria, and risks. Optionally executes with agents. | [Examples](examples/ai-analysis.md) |
 | **Codebase Graph** | `/graph [question]` queries your project's file tree, import map, and class definitions to answer architectural questions with specific file and line references. | [Examples](examples/ai-analysis.md) |
 | **Agent Hooks** | `/hooks add name "pattern" "action"` watches for file changes matching a glob and automatically dispatches a background job when they occur. `/hooks list` and `/hooks remove` manage active hooks. | [Examples](examples/ai-analysis.md) |
+| **Smart Suggestions** | Context-aware follow-up chips appear above the input bar after every response. Tap to ask instantly — no typing needed. Chips adapt based on whether the response contains code, an error, tests, or general content. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Gesture Shortcuts** | Long-press Send (0.5s) to submit as a background job instead of chat. Swipe down on the input bar to trigger `/compact` and summarize the conversation. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Split-Screen Terminal** | Collapsible mini SSH terminal slides up below the chatroom. Run shell commands without switching tabs. Drag the handle to resize. Only available when SSH is connected. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Conversation Branching** | Fork any conversation at any point. Long-press any message → "Branch from here". A purple branch picker appears in the banner. Switch between branches to compare approaches. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **JSON Table Cards** | When Claude returns a JSON array in a code block, it auto-renders as an interactive table with column headers, scrollable rows, and alternating shading. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Auto-Context from Terminal** | Terminal errors auto-inject into chatroom context when you tap "Ask Claude". CatClaw switches tabs and pre-fills the conversation — Claude already knows what went wrong. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Implicit Learning** | Say "no, I meant X" or "that's wrong, actually" and CatClaw auto-saves the correction to memory. Next time, Claude remembers your preference without any `/remember` command. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Cat Mascot** | The pawprint icon in the banner pulses orange while streaming, turns cyan when a job is running, bounces on job completion, and turns red on failure. | [Examples](examples/ux-features.md) |
+| **Haptic Patterns** | Distinct vibration patterns for job complete (success tap), job failed (error buzz), SSH disconnected (warning pulse), and message sent (soft tap). | [Examples](examples/ux-features.md) |
 
 ---
 
@@ -97,6 +106,10 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 | **Conversation export** | PDF and Markdown export with share sheet | No | No |
 | **Port forwarding** | Local, remote, and dynamic SOCKS5 tunnels | No (tunnel is one-way) | No |
 | **Mosh transport** | UDP-based Mosh for high-latency connections | No | No |
+| **Smart suggestions** | Context-aware follow-up chips after every response — tap to ask instantly without typing | No | No |
+| **Split-screen terminal** | Collapsible mini SSH terminal below the chatroom; drag to resize; no tab-switching needed | No | No |
+| **Conversation branching** | Fork at any message, switch between branches to compare approaches | No | No |
+| **JSON table cards** | JSON arrays in code blocks auto-render as scrollable tables with headers | No | No |
 
 **Bottom line:** ClawTerminal is a full mobile development environment. Claude Code Remote Control and Channels are remote interfaces to a single tool. If you want persistent, resilient, multi-tool AI access from your phone or tablet with real terminal capabilities, ClawTerminal is purpose-built for that.
 
@@ -150,6 +163,7 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 | [Advanced Agent Features](examples/agent-advanced.md) | Git worktree mode (`--vcs`), smart model routing (`--routing`), agent reasoning banner, combining all flags |
 | [Workflow Automation](examples/workflow-automation.md) | `/conflicts` merge conflict resolver, `/notify` smart notifications, `/plan` enhanced dry-run, `@web` URL injection, `/pin` file pinning |
 | [AI Analysis & Automation](examples/ai-analysis.md) | `/changelog` release notes, `/gentest` test generation, `/security` audit, `/tribal` knowledge extraction, `/spec` requirements, `/graph` codebase queries, `/hooks` file-change automation |
+| [UX & Intelligence Features](examples/ux-features.md) | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON table cards, auto-context from terminal, implicit learning, cat mascot, haptic patterns |
 
 ---
 
@@ -204,6 +218,7 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 | [Code Snippet Library](tutorials/code-snippets.md) | Save and reuse code blocks from conversations |
 | [Smart Notifications](tutorials/smart-notifications.md) | Notifications for job completion, long responses, and to-do completion |
 | [AI Analysis & Automation](tutorials/ai-analysis.md) | `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` — step-by-step walkthroughs and real-world pipelines |
+| [UX & Intelligence Features](tutorials/ux-features.md) | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON table cards, auto-context, implicit learning — when and why to use each, productivity combinations |
 
 ---
 
@@ -1348,6 +1363,13 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Spec before code**: Use `/spec Add OAuth2 login with JWT` to generate a formal requirements doc before any agent touches code. Review the EARS-notation requirements and acceptance criteria, then tap Execute to dispatch agents.
 - **Ask architectural questions in plain English**: Run `/graph what depends on the PaymentService class` instead of grepping imports manually. CatClaw maps your file tree and import graph to give a specific answer with line references.
 - **Automate on file changes**: Set up `/hooks add auto-test "*.swift" "run tests for changed files"` to automatically dispatch a test job every time you save a Swift file. Combine with `/notify when tests finish` for a fully automated feedback loop.
+- **Smart suggestions for faster follow-ups**: After any response, tap one of the 3 chips above the input bar to ask an instant follow-up — no typing needed. Chips change based on context: error responses show "How do I fix this?", code responses show "Explain this code" and "Are there any bugs?", test responses show "Add more edge cases".
+- **Long-press Send for silent background jobs**: Hold the Send button for half a second to submit your message as a background job instead of a chatroom turn. The conversation stays clean and the job result appears in the Jobs tab when it finishes — great for tasks you don't need to watch in real time.
+- **Swipe down to compact**: Swipe down on the input bar to trigger `/compact`, which summarizes the conversation so far and frees up context tokens. Useful when a long session starts to slow down.
+- **Split-screen for quick checks**: Tap the split-rectangle icon in the chatroom banner to open the mini terminal below the chat. Run `git status`, `ls`, or `npm test` without switching tabs. Drag the handle to resize the panel and tap the icon again to close it.
+- **Branching for side-by-side comparisons**: Long-press any message → "Branch from here" to fork the conversation. Try one approach in Branch 1 and a different approach in Branch 2, then use the purple branch picker to switch between them. Tap "Clear branches" to discard all forks and return to the main thread.
+- **Implicit memory from corrections**: When you say "no, I meant X" or "that's wrong, actually", CatClaw detects the correction phrase and auto-saves the fact to memory — same as `/remember` but without any command. Over time this builds a personal preference profile that Claude uses automatically.
+- **JSON tables for structured data**: Ask Claude to return results as a JSON array (e.g. "Give me a JSON array of the 5 largest countries with name, population, and area") and the code block auto-renders as a formatted table. Useful for comparing model specs, API endpoints, or any tabular data.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1466,6 +1488,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 | **v1.4.0** | April 2026 | AI merge conflict resolver (`/conflicts`), smart notifications (`/notify`), enhanced plan mode (`/plan` with Execute button), `@web` URL context injection, file context pinning (`/pin`/`/unpin`). |
 | **v1.5.0** | April 2026 | Analytics dashboard (`/dashboard`), workflow pipelines (`/workflow`) with visual DAG execution, auto-recovery for failed jobs (error classification + auto-retry + retry lineage), auth error auto-switch to Terminal tab with recovery banner. Auto-approve skill banner removed. |
 | **v1.6.0** | April 2026 | AI changelog generation (`/changelog`), test generation from plain English (`/gentest`), deep security scan (`/security`), tribal knowledge extraction (`/tribal`), spec-driven development (`/spec`), codebase graph queries (`/graph`), file-change agent hooks (`/hooks`). |
+| **v1.7.0** | April 2026 | Smart follow-up suggestions, gesture shortcuts (long-press Send, swipe-to-compact), split-screen mini terminal, conversation branching, JSON table cards, auto-context from terminal errors, implicit memory learning from corrections, cat mascot state animations, distinct haptic patterns. |
 
 ---
 
