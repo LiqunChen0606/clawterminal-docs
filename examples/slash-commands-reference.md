@@ -94,6 +94,32 @@ These commands are handled by ClawTerminal itself and work in both CLI and API m
 
 ---
 
+## AI analysis & automation
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/changelog [range]` | — | Generate structured release notes from git log, organized into Features, Improvements, Bug Fixes, and Other Changes | `/changelog v1.0..v1.1` |
+| `/gentest <description>` | — | Generate comprehensive tests from a plain English description. Auto-detects your test framework (Jest, Vitest, pytest, XCTest, Mocha). | `/gentest the user authentication flow` |
+| `/security` | — | Run a four-check security audit: dependency vulnerabilities, hardcoded secrets pattern grep, `.env` files tracked in git, and `.gitignore` gaps — with AI-prioritized results | `/security` |
+| `/tribal [path]` | — | Run a background job to extract unwritten project knowledge: architecture decisions, gotchas, hidden dependencies, naming conventions, historical context | `/tribal` |
+| `/spec <feature>` | — | Generate a formal requirements spec in EARS notation with files to create/modify, ordered tasks, acceptance criteria, and risks. Claude asks if you want to execute with agents after generating. | `/spec Add OAuth2 login with JWT refresh tokens` |
+| `/graph <question>` | — | Query your codebase structure as a knowledge graph. Analyzes file tree, import map, and class/function definitions to answer architectural questions with file and line references | `/graph what depends on the UserManager class` |
+| `/hooks add <name> "<pattern>" "<action>"` | — | Add a file-change hook that polls every 10 seconds and dispatches a background job when files matching the glob pattern are modified. 30-second cooldown per hook. | `/hooks add auto-test "*.swift" "run tests for changed files"` |
+| `/hooks list` | — | Show all active hooks with their patterns, actions, and last-triggered time | `/hooks list` |
+| `/hooks remove <name>` | — | Remove a hook by name | `/hooks remove auto-test` |
+| `/hooks stop` | — | Stop all active hooks | `/hooks stop` |
+
+**`/changelog` range syntax:**
+
+| Range | Description | Example |
+|-------|-------------|---------|
+| (none) | Last 20 commits | `/changelog` |
+| `v1.0..v1.1` | Between two tags | `/changelog v1.0..v1.1` |
+| `HEAD~5..HEAD` | Last N commits | `/changelog HEAD~5..HEAD` |
+| `main..feature` | Branch diff | `/changelog main..feature-branch` |
+
+---
+
 ## CLI pass-through commands (CLI mode only)
 
 These are forwarded directly to the Claude Code CLI running on your Mac. They work only in CLI mode with an active tmux session.

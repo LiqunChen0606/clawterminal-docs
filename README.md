@@ -7,7 +7,7 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.5.0 (April 2026)
+**Latest Version:** v1.6.0 (April 2026)
 
 ### What's New
 
@@ -33,6 +33,13 @@
 | **Workflow Pipelines** | `/workflow [name]` runs named multi-step pipelines defined as JSON DAGs. Steps with no dependencies run in parallel; dependent steps wait. Visual DAG with live per-node status. | [Examples](examples/dashboard-workflows.md) |
 | **Auto-Recovery for Failed Jobs** | When a background job fails, CatClaw classifies the error and auto-retries network/dependency failures. Other failures show a one-tap "Retry with AI fix?" banner. | [Examples](examples/dashboard-workflows.md) |
 | **Auth Error Auto-Switch** | When Claude CLI reports an auth error, the app automatically switches to the Terminal tab and shows a recovery banner with `/login` instructions. No manual tab-switching needed. | [Examples](examples/dashboard-workflows.md) |
+| **AI Changelog** | `/changelog [range]` generates structured release notes from your git log — organized into Features, Improvements, Bug Fixes, and Other Changes. | [Examples](examples/ai-analysis.md) |
+| **Test Generation** | `/gentest [description]` generates comprehensive tests from a plain English description. Auto-detects your test framework (Jest, Vitest, pytest, XCTest, Mocha). | [Examples](examples/ai-analysis.md) |
+| **Security Scan** | `/security` runs a four-check audit: dependency vulnerabilities, pattern grep for hardcoded secrets, `.env` files tracked in git, and `.gitignore` gaps — with AI analysis. | [Examples](examples/ai-analysis.md) |
+| **Tribal Knowledge** | `/tribal` runs as a background job to extract unwritten project knowledge: architecture decisions, gotchas, hidden dependencies, naming conventions, and historical context. | [Examples](examples/ai-analysis.md) |
+| **Spec-Driven Dev** | `/spec [feature]` generates a formal requirements spec in EARS notation, including files to create, ordered tasks, acceptance criteria, and risks. Optionally executes with agents. | [Examples](examples/ai-analysis.md) |
+| **Codebase Graph** | `/graph [question]` queries your project's file tree, import map, and class definitions to answer architectural questions with specific file and line references. | [Examples](examples/ai-analysis.md) |
+| **Agent Hooks** | `/hooks add name "pattern" "action"` watches for file changes matching a glob and automatically dispatches a background job when they occur. `/hooks list` and `/hooks remove` manage active hooks. | [Examples](examples/ai-analysis.md) |
 
 ---
 
@@ -68,6 +75,13 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 | **Analytics dashboard** | `/dashboard` — aggregate stats: job success rates, token spend, daily activity sparkline, most-used commands, drill-down filtered views | No | No |
 | **Workflow pipelines** | `/workflow [name]` — named multi-step pipelines as JSON DAGs, parallel steps, dependency ordering, live visual DAG with per-node status | No | No |
 | **Auto-recovery for failed jobs** | Classifies job failures (network timeout, missing dependency, auth, etc.) and auto-retries or shows one-tap "Retry with AI fix?" banner | No | No |
+| **AI changelog** | `/changelog [range]` — structured release notes from git log, organized into Features, Improvements, Bug Fixes, Other Changes | No | No |
+| **Test generation** | `/gentest [description]` — generates comprehensive tests from plain English; auto-detects Jest, Vitest, pytest, XCTest, Mocha | No | No |
+| **Security scan** | `/security` — four-check audit: dependency vulnerabilities, hardcoded secrets, `.env` tracking, `.gitignore` gaps, with AI prioritization | No | No |
+| **Tribal knowledge extraction** | `/tribal` — background job that documents unwritten project knowledge: architecture decisions, gotchas, hidden dependencies, naming conventions | No | No |
+| **Spec-driven development** | `/spec [feature]` — formal EARS-notation requirements with files, tasks, acceptance criteria, risks; optional agent execution | No | No |
+| **Codebase graph queries** | `/graph [question]` — queries file tree, import map, class/function definitions to answer architectural questions with file + line references | No | No |
+| **Agent hooks** | `/hooks add name "pattern" "action"` — file-change triggered background jobs; poll every 10s, 30s cooldown, manage with list/remove/stop | No | No |
 | **Scheduled/recurring jobs** | Hourly, daily, weekly recurring with auto-submission | No | No |
 | **Security model** | End-to-end SSH encryption, keys stored in iOS Keychain | Localhost only (requires SSH tunnel to reach claude.ai) | Code passes through third-party platforms (Slack, Discord) |
 | **Setup** | Just SSH credentials (password or key) | CLI install + tunnel configuration | Bot token + bridge setup + runtime |
@@ -135,6 +149,7 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 | [Git, Health & Monitor](examples/git-health-monitor.md) | `/git` visual branch graph, `/health` codebase dashboard, `/monitor` live server stats, `/search` AI code search |
 | [Advanced Agent Features](examples/agent-advanced.md) | Git worktree mode (`--vcs`), smart model routing (`--routing`), agent reasoning banner, combining all flags |
 | [Workflow Automation](examples/workflow-automation.md) | `/conflicts` merge conflict resolver, `/notify` smart notifications, `/plan` enhanced dry-run, `@web` URL injection, `/pin` file pinning |
+| [AI Analysis & Automation](examples/ai-analysis.md) | `/changelog` release notes, `/gentest` test generation, `/security` audit, `/tribal` knowledge extraction, `/spec` requirements, `/graph` codebase queries, `/hooks` file-change automation |
 
 ---
 
@@ -188,6 +203,7 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 | [Inline Code Execution](tutorials/inline-code-execution.md) | Run code blocks from Claude's responses with one tap |
 | [Code Snippet Library](tutorials/code-snippets.md) | Save and reuse code blocks from conversations |
 | [Smart Notifications](tutorials/smart-notifications.md) | Notifications for job completion, long responses, and to-do completion |
+| [AI Analysis & Automation](tutorials/ai-analysis.md) | `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` — step-by-step walkthroughs and real-world pipelines |
 
 ---
 
@@ -1325,6 +1341,13 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Build a deployment pipeline**: Create a `deploy.json` workflow with steps for linting, testing, building, and deploying. Steps that can run in parallel (lint + type-check) share a wave; the deploy step depends on build. Run `/workflow deploy` to execute the full pipeline with a live DAG view.
 - **Auto-recovery saves retries**: When a job fails due to a network blip or missing npm package, CatClaw retries automatically. Open the job detail to see the retry lineage card — it shows the original failure reason and what the recovery prompt changed. This is especially useful for long `/batch` runs where individual workers may hit transient errors.
 - **Auth recovery is one tap**: If the Claude chatroom shows an auth banner, it will automatically switch to the Terminal tab. Just type `claude`, then `/login`, and follow the OAuth flow — no need to remember which tab to go to or what command to run.
+- **AI changelog in seconds**: Run `/changelog HEAD~10..HEAD` after a week of commits to get structured release notes grouped by Features, Improvements, and Bug Fixes. Paste directly into your GitHub release or CHANGELOG.md — no manual categorization needed.
+- **Generate tests from plain English**: Use `/gentest the login flow with invalid credentials` instead of writing boilerplate. CatClaw auto-detects your test framework and generates tests you can review and approve before they're written to disk.
+- **Run a security audit before shipping**: Type `/security` before any release. It checks npm/pip/cargo audit, scans for hardcoded API keys, finds `.env` files tracked in git, and identifies `.gitignore` gaps — Claude prioritizes findings and suggests fixes.
+- **Capture tribal knowledge before a hire**: Run `/tribal` in a project before onboarding a new developer. The background job documents hidden gotchas, architecture decisions, and naming conventions that aren't in any README — save the output to a CONTRIBUTING.md.
+- **Spec before code**: Use `/spec Add OAuth2 login with JWT` to generate a formal requirements doc before any agent touches code. Review the EARS-notation requirements and acceptance criteria, then tap Execute to dispatch agents.
+- **Ask architectural questions in plain English**: Run `/graph what depends on the PaymentService class` instead of grepping imports manually. CatClaw maps your file tree and import graph to give a specific answer with line references.
+- **Automate on file changes**: Set up `/hooks add auto-test "*.swift" "run tests for changed files"` to automatically dispatch a test job every time you save a Swift file. Combine with `/notify when tests finish` for a fully automated feedback loop.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1427,6 +1450,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 - **[Smart Notifications](tutorials/smart-notifications.md)** — Intelligent alerts for job completion, long responses, and to-do completion
 - **[Cross-Session AI Memory](tutorials/cross-session-memory.md)** — Save facts with `/remember`, auto-injected into every chatroom session
 - **[Shared Chatroom](tutorials/shared-chatroom.md)** — Share your AI session via room codes for real-time watch-only viewing
+- **[AI Analysis & Automation](tutorials/ai-analysis.md)** — `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` — step-by-step walkthroughs, real-world pipelines, and tips for each command
 
 ---
 
@@ -1441,6 +1465,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 | **v1.3.0** | April 2026 | Visual git branch graph (`/git`), codebase health dashboard (`/health`), live server monitor (`/monitor`), AI semantic code search (`/search`), voice input (`/voice`). Git worktree mode and smart model routing now fully documented with examples. Agent reasoning banner available on all background job results. |
 | **v1.4.0** | April 2026 | AI merge conflict resolver (`/conflicts`), smart notifications (`/notify`), enhanced plan mode (`/plan` with Execute button), `@web` URL context injection, file context pinning (`/pin`/`/unpin`). |
 | **v1.5.0** | April 2026 | Analytics dashboard (`/dashboard`), workflow pipelines (`/workflow`) with visual DAG execution, auto-recovery for failed jobs (error classification + auto-retry + retry lineage), auth error auto-switch to Terminal tab with recovery banner. Auto-approve skill banner removed. |
+| **v1.6.0** | April 2026 | AI changelog generation (`/changelog`), test generation from plain English (`/gentest`), deep security scan (`/security`), tribal knowledge extraction (`/tribal`), spec-driven development (`/spec`), codebase graph queries (`/graph`), file-change agent hooks (`/hooks`). |
 
 ---
 
