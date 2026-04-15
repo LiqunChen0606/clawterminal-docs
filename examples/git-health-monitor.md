@@ -1,5 +1,7 @@
 # Git, Health & Monitor Commands
 
+> **Why these matter:** These four commands give you instant visibility into your codebase, your server, and your git history -- without leaving the chatroom. Run `/health` before a refactor to know what you are working with. Run `/monitor` during a deploy to watch it land. Run `/search` to find code by asking questions, not writing regex.
+
 ## /git — Visual Branch Graph
 
 ```

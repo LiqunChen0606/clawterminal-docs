@@ -1,6 +1,8 @@
-# AI Analysis & Automation — Tutorial
+# AI Analysis & Automation -- Tutorial
 
-This tutorial covers seven commands that turn CatClaw into an analytical layer over your codebase: `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, and `/hooks`. Each command addresses a different gap in the typical mobile development workflow.
+> You are about to ship v2.0. You need release notes for the GitHub release, a security audit before production, tests for the new payment module, and documentation of the gotchas your team never wrote down. Without CatClaw, that is a full day of work. With these seven commands, it is 15 minutes and a handful of background jobs.
+
+Each command below addresses a different gap in the typical development workflow. They work independently and chain together beautifully.
 
 ---
 

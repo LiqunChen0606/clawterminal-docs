@@ -1,6 +1,8 @@
 # Tutorial: GitHub PR Workflow with `/pr`
 
-ClawTerminal's `/pr` commands give you a full pull request lifecycle from your phone: create PRs with AI-generated titles and bodies, run AI-powered code reviews with severity-coded items, check CI status, and teach the reviewer your team's preferences over time. This tutorial covers setup through advanced use.
+> You are on the subway, headphones in, reviewing a teammate's PR before standup. You type `/pr review 42`, skim the color-coded findings (red for bugs, green for praise), thumb-down two style nits that do not matter on this project, and thumb-up the SQL injection warning. By the time you reach the office, CatClaw's reviewer has learned what your team cares about. Next review will be better.
+
+This tutorial walks you through setup, your first PR creation, AI-powered code review, review learning, and a full end-to-end workflow.
 
 ---
 
@@ -314,3 +316,11 @@ Review learning is stored per-chatroom, not per-repo. If you maintain multiple r
 - Active SSH connection to your Mac
 
 See the [examples/pr-workflow.md](../examples/pr-workflow.md) for copy-paste-ready examples.
+
+---
+
+## What's Next?
+
+- **[Live Web Preview](preview.md)** -- Before creating a PR, preview your UI changes on your phone with `/preview --start` for a final visual check.
+- **[Session Handoff](handoff.md)** -- Created a PR from your phone? Hand off to your Mac to address review feedback with a full keyboard.
+- **[Multi-Model Race](race.md)** -- Unsure about an implementation approach before committing? Race multiple models to compare perspectives.

@@ -1,6 +1,6 @@
 # AI Analysis & Automation Commands
 
-Examples for `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, and `/hooks` — commands that help you understand, document, test, and automate your codebase.
+> **Why these matter:** These seven commands turn CatClaw into an analytical layer over your codebase. Generate release notes in seconds, write tests from plain English, catch security issues before they ship, extract the tribal knowledge your README forgot, and automate repetitive tasks with file-change hooks.
 
 ---
 

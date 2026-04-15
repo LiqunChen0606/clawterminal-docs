@@ -1,6 +1,6 @@
 # Tutorial: UX & Intelligence Features
 
-This tutorial covers CatClaw's UX and intelligence features introduced in v1.7.0. Each section explains when and why to use the feature, how to set it up, and how to combine features for maximum productivity.
+> You have been using CatClaw for a week. Every time Claude returns code, you type "are there any bugs?" manually. Every time you want a background job, you type `/submit` and re-enter the prompt. Every time Claude uses snake_case, you correct it. This tutorial shows you the features that eliminate all of that friction -- smart suggestions, gesture shortcuts, implicit learning, and more. After reading this, your daily interaction will feel noticeably faster.
 
 ---
 

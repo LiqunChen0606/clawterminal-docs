@@ -1,6 +1,6 @@
-# ClawTerminal — Guides & Tutorials
+# CatClaw — Your Mac's Best Friend on Mobile
 
-> **ClawTerminal** (also known as **CatClaw**) is an iOS SSH terminal + AI chatroom (Claude, Codex, Gemini, Aider) that connects your iPhone, iPad, or Apple Watch to your Mac and remote servers. Run AI agents, manage files, schedule jobs, and collaborate — all from your pocket.
+> **Ship code from anywhere.** CatClaw turns your iPhone or iPad into a full mobile dev environment -- SSH terminal, AI chatroom (Claude, Codex, Gemini, Aider), file browser, and multi-agent orchestration. Start a refactor on the train, review a PR at lunch, deploy from the couch. Your Mac does the heavy lifting; your phone is the remote control.
 
 [![Download on the App Store](https://img.shields.io/badge/Download-App%20Store-blue?logo=apple&logoColor=white)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![Platform](https://img.shields.io/badge/Platform-iOS%2017%2B%20%7C%20iPadOS%20%7C%20watchOS-blue)](https://apps.apple.com/us/app/clawterminal/id6759690902)
@@ -9,52 +9,52 @@
 
 **Latest Version:** v1.7.0 (April 2026)
 
-### What's New
+### What's New in v1.7.0
 
-| Feature | Description | Learn More |
+| Feature | What it does | Learn More |
 |---------|-------------|------------|
-| **Multi-Model Race** | Race 2-4 AI models on the same prompt. Compare responses side-by-side with AI-generated analysis. Same-model "thinking lenses" for diverse perspectives. | [Examples](examples/race.md) · [Tutorial](tutorials/race.md) |
-| **GitHub PR Workflow** | Create PRs, run AI code reviews, post to GitHub — all from your phone. Review learning remembers what your team cares about. | [Examples](examples/pr-workflow.md) · [Tutorial](tutorials/pr-workflow.md) |
-| **Session Handoff** | Start coding on your phone, continue on your Mac — or pick up a Mac session on your phone. Bidirectional, seamless. | [Examples](examples/handoff.md) · [Tutorial](tutorials/handoff.md) |
-| **Live Web Preview** | Preview your web app via SSH tunnel. Auto-detects port, multi-port tabs, console log capture, responsive viewport modes, screenshot + annotate. | [Examples](examples/preview.md) · [Tutorial](tutorials/preview.md) |
-| **Smart Model Routing** | Auto-assigns cost-appropriate models per agent role. Three presets: Quality, Balanced, Budget. Use `--routing balanced` with `/batch` or `/team`. | [Examples](examples/agent-advanced.md) |
-| **Agent Reasoning** | See *why* your agents made decisions — extracted reasoning shown as a collapsible banner on job results. | [Examples](examples/agent-advanced.md) |
-| **Git Worktree Mode** | `/batch --vcs` gives each agent a real git branch. Results auto-merge back with conflict reporting. | [Examples](examples/agent-advanced.md) |
-| **AI Code Search** | `/search [query]` — semantic search across your codebase powered by AI. | [Examples](examples/git-health-monitor.md) |
-| **Git Graph** | `/git` — visual branch/commit graph with timeline, branch tags, tap to checkout. | [Examples](examples/git-health-monitor.md) |
-| **Codebase Health** | `/health` — one-tap dashboard: LOC, file count, TODOs, uncommitted changes, dependencies, largest file. | [Examples](examples/git-health-monitor.md) |
-| **Server Monitor** | `/monitor` — live CPU, memory, disk, uptime, load average with sparkline charts. | [Examples](examples/git-health-monitor.md) |
-| **Merge Conflict Resolver** | `/conflicts` finds all unmerged files, shows ours/theirs blocks, and generates AI-powered resolution suggestions with one-tap Apply. | [Examples](examples/workflow-automation.md) |
-| **Smart Notifications** | `/notify when tests finish` — set natural language monitoring rules; CatClaw polls via SSH and sends a push notification when the condition is met. | [Examples](examples/workflow-automation.md) |
-| **Plan Mode** | `/plan` — Claude generates a structured plan (files, changes, risks) before touching anything. Review then tap Execute to proceed. | [Examples](examples/workflow-automation.md) |
-| **@web Context** | `@web https://url` fetches a URL via SSH, strips HTML, and injects up to 4000 chars into your message context. | [Examples](examples/workflow-automation.md) |
-| **File Pinning** | `/pin filepath` keeps specific files always included in every message's context. `/unpin` to remove. | [Examples](examples/workflow-automation.md) |
-| **Analytics Dashboard** | `/dashboard` shows aggregate stats across all chatrooms and jobs: success rates, token spend, daily activity, most-used commands — all local, no external service. | [Examples](examples/dashboard-workflows.md) |
-| **Workflow Pipelines** | `/workflow [name]` runs named multi-step pipelines defined as JSON DAGs. Steps with no dependencies run in parallel; dependent steps wait. Visual DAG with live per-node status. | [Examples](examples/dashboard-workflows.md) |
-| **Auto-Recovery for Failed Jobs** | When a background job fails, CatClaw classifies the error and auto-retries network/dependency failures. Other failures show a one-tap "Retry with AI fix?" banner. | [Examples](examples/dashboard-workflows.md) |
-| **Auth Error Auto-Switch** | When Claude CLI reports an auth error, the app automatically switches to the Terminal tab and shows a recovery banner with `/login` instructions. No manual tab-switching needed. | [Examples](examples/dashboard-workflows.md) |
-| **AI Changelog** | `/changelog [range]` generates structured release notes from your git log — organized into Features, Improvements, Bug Fixes, and Other Changes. | [Examples](examples/ai-analysis.md) |
-| **Test Generation** | `/gentest [description]` generates comprehensive tests from a plain English description. Auto-detects your test framework (Jest, Vitest, pytest, XCTest, Mocha). | [Examples](examples/ai-analysis.md) |
-| **Security Scan** | `/security` runs a four-check audit: dependency vulnerabilities, pattern grep for hardcoded secrets, `.env` files tracked in git, and `.gitignore` gaps — with AI analysis. | [Examples](examples/ai-analysis.md) |
-| **Tribal Knowledge** | `/tribal` runs as a background job to extract unwritten project knowledge: architecture decisions, gotchas, hidden dependencies, naming conventions, and historical context. | [Examples](examples/ai-analysis.md) |
-| **Spec-Driven Dev** | `/spec [feature]` generates a formal requirements spec in EARS notation, including files to create, ordered tasks, acceptance criteria, and risks. Optionally executes with agents. | [Examples](examples/ai-analysis.md) |
-| **Codebase Graph** | `/graph [question]` queries your project's file tree, import map, and class definitions to answer architectural questions with specific file and line references. | [Examples](examples/ai-analysis.md) |
-| **Agent Hooks** | `/hooks add name "pattern" "action"` watches for file changes matching a glob and automatically dispatches a background job when they occur. `/hooks list` and `/hooks remove` manage active hooks. | [Examples](examples/ai-analysis.md) |
-| **Smart Suggestions** | Context-aware follow-up chips appear above the input bar after every response. Tap to ask instantly — no typing needed. Chips adapt based on whether the response contains code, an error, tests, or general content. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
-| **Gesture Shortcuts** | Long-press Send (0.5s) to submit as a background job instead of chat. Swipe down on the input bar to trigger `/compact` and summarize the conversation. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
-| **Split-Screen Terminal** | Collapsible mini SSH terminal slides up below the chatroom. Run shell commands without switching tabs. Drag the handle to resize. Only available when SSH is connected. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
-| **Conversation Branching** | Fork any conversation at any point. Long-press any message → "Branch from here". A purple branch picker appears in the banner. Switch between branches to compare approaches. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
-| **JSON Table Cards** | When Claude returns a JSON array in a code block, it auto-renders as an interactive table with column headers, scrollable rows, and alternating shading. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
-| **Auto-Context from Terminal** | Terminal errors auto-inject into chatroom context when you tap "Ask Claude". CatClaw switches tabs and pre-fills the conversation — Claude already knows what went wrong. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
-| **Implicit Learning** | Say "no, I meant X" or "that's wrong, actually" and CatClaw auto-saves the correction to memory. Next time, Claude remembers your preference without any `/remember` command. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
-| **Cat Mascot** | The pawprint icon in the banner pulses orange while streaming, turns cyan when a job is running, bounces on job completion, and turns red on failure. | [Examples](examples/ux-features.md) |
-| **Haptic Patterns** | Distinct vibration patterns for job complete (success tap), job failed (error buzz), SSH disconnected (warning pulse), and message sent (soft tap). | [Examples](examples/ux-features.md) |
+| **Multi-Model Race** | Pit Claude vs Codex vs Gemini on the same prompt -- pick the winner | [Examples](examples/race.md) · [Tutorial](tutorials/race.md) |
+| **GitHub PR Workflow** | Create PRs, AI code review, CI checks -- all from your phone | [Examples](examples/pr-workflow.md) · [Tutorial](tutorials/pr-workflow.md) |
+| **Session Handoff** | Start on your phone, continue on your Mac (or vice versa) | [Examples](examples/handoff.md) · [Tutorial](tutorials/handoff.md) |
+| **Live Web Preview** | See your web app on your phone via SSH tunnel -- annotate bugs, send to Claude | [Examples](examples/preview.md) · [Tutorial](tutorials/preview.md) |
+| **Smart Model Routing** | Auto-pick the right model per agent role: Quality, Balanced, or Budget | [Examples](examples/agent-advanced.md) |
+| **Agent Reasoning** | See *why* your agents made decisions, not just what they did | [Examples](examples/agent-advanced.md) |
+| **Git Worktree Mode** | Each agent gets its own branch -- no stepping on each other's toes | [Examples](examples/agent-advanced.md) |
+| **AI Code Search** | Ask "where is auth handled?" and get ranked results with explanations | [Examples](examples/git-health-monitor.md) |
+| **Git Graph** | Visual branch timeline -- tap any branch to check it out | [Examples](examples/git-health-monitor.md) |
+| **Codebase Health** | One-tap project snapshot: LOC, TODOs, dependencies, largest file | [Examples](examples/git-health-monitor.md) |
+| **Server Monitor** | Live CPU, memory, and disk charts -- watch your deploy in real time | [Examples](examples/git-health-monitor.md) |
+| **Merge Conflict Resolver** | AI reads both sides, suggests a resolution, one-tap Apply | [Examples](examples/workflow-automation.md) |
+| **Smart Notifications** | `/notify when tests finish` -- plain English rules, push when true | [Examples](examples/workflow-automation.md) |
+| **Plan Mode** | See what Claude *would* change before it changes anything | [Examples](examples/workflow-automation.md) |
+| **@web Context** | Pull any URL into your prompt -- docs, changelogs, Stack Overflow | [Examples](examples/workflow-automation.md) |
+| **File Pinning** | Keep key files always in context -- no re-attaching every turn | [Examples](examples/workflow-automation.md) |
+| **Analytics Dashboard** | Track token spend, job success rates, and daily activity | [Examples](examples/dashboard-workflows.md) |
+| **Workflow Pipelines** | Define multi-step DAG pipelines -- parallel lint + test, then deploy | [Examples](examples/dashboard-workflows.md) |
+| **Auto-Recovery** | Failed job? CatClaw classifies the error and retries automatically | [Examples](examples/dashboard-workflows.md) |
+| **Auth Auto-Recovery** | CLI auth expired? CatClaw walks you through the fix in one tap | [Examples](examples/dashboard-workflows.md) |
+| **AI Changelog** | Structured release notes from `git log` in seconds | [Examples](examples/ai-analysis.md) |
+| **Test Generation** | Describe the feature in English, get tests in your framework | [Examples](examples/ai-analysis.md) |
+| **Security Scan** | Four-check audit: deps, hardcoded secrets, `.env` leaks, `.gitignore` gaps | [Examples](examples/ai-analysis.md) |
+| **Tribal Knowledge** | Extract the unwritten rules your README forgot to mention | [Examples](examples/ai-analysis.md) |
+| **Spec-Driven Dev** | Generate formal requirements, then execute them with agents | [Examples](examples/ai-analysis.md) |
+| **Codebase Graph** | "What depends on PaymentService?" -- answered with file + line refs | [Examples](examples/ai-analysis.md) |
+| **Agent Hooks** | Auto-run tests every time you save a file -- zero manual effort | [Examples](examples/ai-analysis.md) |
+| **Smart Suggestions** | Tap-to-ask follow-up chips -- "How do I fix this?" after every error | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Gesture Shortcuts** | Long-press Send = background job. Swipe down = compact context. | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Split-Screen Terminal** | Run shell commands below the chatroom -- no tab-switching | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Conversation Branching** | Fork any conversation to try two approaches side by side | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **JSON Table Cards** | JSON arrays auto-render as scrollable tables with headers | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Auto-Context from Terminal** | Build fails? Tap "Ask Claude" -- error output already loaded | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Implicit Learning** | Correct Claude once, it remembers forever -- no commands needed | [Examples](examples/ux-features.md) · [Tutorial](tutorials/ux-features.md) |
+| **Cat Mascot** | The paw pulses orange (thinking), cyan (working), bounces (done) | [Examples](examples/ux-features.md) |
+| **Haptic Patterns** | Feel the difference: firm click = done, double buzz = failed | [Examples](examples/ux-features.md) |
 
 ---
 
-## Why ClawTerminal vs Claude Code Remote Control / Channels
+## Why CatClaw Instead of Claude Code Remote Control / Channels?
 
-Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "Channels" (Slack/Discord bridge). ClawTerminal takes a fundamentally different approach: a native iOS app with direct SSH and tmux-based session management. Here is how they compare:
+Claude Code has "Remote Control" (SSH tunnel to claude.ai) and "Channels" (Slack/Discord bridge). Both are remote interfaces to a single tool. CatClaw is a full mobile dev environment -- native iOS app, direct SSH, tmux-backed sessions that survive anything, and multi-tool AI orchestration. Here is how they stack up:
 
 | Feature | ClawTerminal | Claude Code Remote Control | Claude Code Channels |
 |---------|-------------|---------------------------|---------------------|
@@ -111,14 +111,14 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 | **Conversation branching** | Fork at any message, switch between branches to compare approaches | No | No |
 | **JSON table cards** | JSON arrays in code blocks auto-render as scrollable tables with headers | No | No |
 
-**Bottom line:** ClawTerminal is a full mobile development environment. Claude Code Remote Control and Channels are remote interfaces to a single tool. If you want persistent, resilient, multi-tool AI access from your phone or tablet with real terminal capabilities, ClawTerminal is purpose-built for that.
+**Bottom line:** If you want to check on a Claude task from your phone, Remote Control works fine. If you want to *actually develop* from your phone -- run agents, review PRs, preview web apps, manage files, and never lose work when your phone sleeps -- CatClaw is purpose-built for that.
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
-- [Why ClawTerminal vs Claude Code Remote Control / Channels](#why-clawterminal-vs-claude-code-remote-control--channels)
-- [Examples](#-examples) — copy-paste-ready examples for every feature
+- [Why CatClaw?](#why-catclaw-instead-of-claude-code-remote-control--channels)
+- [Examples](#examples) -- copy-paste-ready recipes for every feature
 
 1. [Getting Started](#1-getting-started)
 2. [SSH Setup — Connect to Your Mac (Local Network)](#2-ssh-setup--connect-to-your-mac-local-network)
@@ -139,9 +139,9 @@ Anthropic's Claude Code offers "Remote Control" (SSH tunnel to claude.ai) and "C
 
 ---
 
-## 💡 Examples
+## Examples
 
-Practical, copy-paste-ready examples for every ClawTerminal feature. Each file covers a specific area with real-world scenarios you can try immediately.
+Copy-paste-ready recipes for every CatClaw feature. Each file covers one area with real scenarios you can try right now.
 
 | Example | What's inside |
 |---------|---------------|
@@ -167,9 +167,9 @@ Practical, copy-paste-ready examples for every ClawTerminal feature. Each file c
 
 ---
 
-## 📚 Feature Tutorials
+## Feature Tutorials
 
-In-depth guides for individual ClawTerminal features. Each tutorial covers a single feature with step-by-step instructions.
+Deep dives into individual features. Each tutorial walks you through setup, usage, tips, and real-world workflows.
 
 ### Multi-Model & AI Comparison
 
@@ -233,9 +233,11 @@ In-depth guides for individual ClawTerminal features. Each tutorial covers a sin
 
 #### Why tmux?
 
-ClawTerminal runs Claude and other CLI tools inside **tmux sessions** on your Mac. This is what makes the chatroom resilient — if your phone sleeps, disconnects, or iOS backgrounds the app, the AI keeps running in tmux and ClawTerminal picks up where it left off when you reconnect. Background jobs (`/submit`), scheduled jobs, and agent orchestration all depend on tmux.
+Your phone will sleep. Your WiFi will drop. iOS will background the app. tmux means none of that matters.
 
-**Without tmux:** Chatroom messages fall back to direct SSH exec channels, which drop when the connection is interrupted — you may lose partial responses.
+CatClaw runs Claude inside **tmux sessions** on your Mac. The AI keeps working even when your phone disconnects -- and CatClaw picks up where it left off when you reconnect. Background jobs, scheduled tasks, and multi-agent runs all depend on tmux.
+
+**Without tmux:** Messages fall back to direct SSH channels, which drop when the connection is interrupted -- you may lose partial responses.
 
 #### Install tmux
 
@@ -1306,70 +1308,54 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 
 ## 13. Tips & Tricks
 
-- **Markdown in the input field**: Type markdown directly — `**bold**`, `*italic*`, `` `inline code` ``, triple backticks for code blocks, `- bullet`, `1. numbered`, `> quote`. Claude's responses render all of these natively.
-- **Multi-tab terminal**: Tap **+** in the Terminal tab to open multiple SSH sessions simultaneously — great for running a server in one tab and editing code in another
-- **Theme picker**: Go to **Settings → Terminal Theme** to choose from Catppuccin, Solarized Dark, One Dark, Monokai, Gruvbox Dark
-- **Font size**: Pinch-to-zoom in the terminal adjusts font size on the fly
+> These are the shortcuts and workflows that power users swear by. Bookmark this section.
+
+- **Markdown in the input field**: Type markdown directly -- `**bold**`, `*italic*`, `` `inline code` ``, triple backticks for code blocks. Claude renders it all natively.
+- **Multi-tab terminal**: Tap **+** in the Terminal tab to run a server in one tab and edit code in another
+- **Theme picker**: Go to **Settings --> Terminal Theme** -- Catppuccin, Solarized Dark, One Dark, Monokai, Gruvbox Dark, or design your own
+- **Font size**: Pinch-to-zoom in the terminal -- adjusts instantly
 - **Quick reconnect**: Recently used profiles appear on the My Mac welcome screen for one-tap reconnect
-- **Auto-reconnect after sleep**: If your phone goes to sleep and drops the SSH connection, ClawTerminal silently restores it the next time you open the app — no need to manually disconnect and reconnect
-- **Copy SFTP path → chatroom**: In the Files tab, long-press any folder → **Copy Path**, then paste it into a chatroom's **Info → Project Directory** field. Claude will use that directory for the whole conversation, even across reconnects
-- **Session continuity**: Once Claude runs its first command in a chatroom, the project directory is locked for that session. This ensures `--resume` always finds the right conversation history even after your phone sleeps
-- **Context Document**: Write project-specific instructions in the chatroom's Context Document so Claude always has the right background
-- **Auto Memory**: Enable Auto Memory in a chatroom — Claude will write a persistent memory file on your Mac and read it at the start of each session
-- **iCloud Sync**: Enable iCloud sync in Settings to sync your connection profiles to all your Apple devices
-- **Favorites**: Star a connection profile to pin it to the top of the Connections list
-- **Color Tags**: Assign color tags to connection profiles for quick visual identification
-- **Home Screen Widget**: Add the **Quick Connect** widget (small or medium) to your home screen for one-tap SSH connection to your most-used profiles
-- **Mosh transport**: For high-latency or unreliable connections, switch a profile's transport to **Mosh** (connection form → Transport). Mosh uses UDP for instant local echo and survives IP changes
-- **watchOS companion**: Open the ClawTerminal Watch app to dictate jobs via Siri, monitor running jobs, and see completion status — all from your wrist
-- **Message pinning**: Long-press any message → **Pin** to keep important messages accessible. Use the pin filter in the banner to show only pinned messages
-- **Welcome Tour**: Revisit the 8-page onboarding walkthrough anytime from **Settings → About → Welcome Tour**
-- **SSH config import**: Import connection profiles from your Mac's `~/.ssh/config` file via the ellipsis menu in the My Mac header — no manual re-entry needed
-- **Relay server**: Enable the relay server in Settings to collaborate with teammates via shared chatroom room codes
-- **Agent Teams toolbar button**: The **Team** button is always visible in the chatroom toolbar. Tap it during a `/team` run to open the Visual Command Center (animated flow graph, discovery feed, per-agent status). When no team is running, it shows an empty state with usage instructions — you do not need a team running to find the button.
-- **Memories toolbar button**: The chatroom toolbar has a single **Memories** button (brain icon) that opens the Memory Library. Earlier versions had two separate memory tabs — these are now merged. Use `/remember`, `/forget`, and `/memories` commands or tap the brain icon directly.
-- **SFTP create folder/file**: Tap the green **+** button in the SFTP breadcrumb bar to create a new folder or file directly from your iPhone without opening a terminal session.
-- **Background job context**: Completed job results are automatically available to subsequent jobs. Use `/submit "build on the refactoring from the previous job"` and the last 3 completed results are injected into the new job's context automatically.
-- **Slide-out drawer (iPhone)**: On iPhone, tap the hamburger menu button (top-left) to open the navigation drawer. All tabs — My Mac, Terminal, Connections, Settings — are accessible from here. Tap the dimmed overlay or swipe to dismiss.
-- **Multi-model comparison**: Use `/race` when you are unsure which approach is best — race Claude against Codex or Gemini and let the AI summary tell you the trade-offs. Great for algorithm selection, documentation wording, and architectural decisions.
-- **Same-model lenses for stress-testing**: Use `/race --lenses adversarial,skeptic` before proposing a design to your team — the Adversarial lens will find failure modes you hadn't considered, and Skeptic will challenge hidden assumptions.
-- **PR review on your commute**: Fetch a colleague's PR on your phone with `/pr review 42` and leave thumbs-up/down feedback while commuting. Your ratings are remembered and improve future reviews for that chatroom.
-- **Commute-to-desk handoff**: Use `/submit` to kick off a long refactor before you leave your desk. On your commute, monitor it in the Jobs tab. When you arrive, run `/handoff mac` to continue the conversation in a full terminal with full context intact.
-- **Preview before push**: Run `/preview --start` to auto-launch your dev server and open a live preview on your phone — useful for a final visual check before running `/pr create`.
-- **Console logs for debugging**: In the preview sheet, tap the terminal icon to see JavaScript console output. Tap "Send errors to Claude" to get a diagnosis without leaving the app.
-- **Annotate UI bugs**: In the preview sheet, tap the camera icon, draw on the screenshot, and send it to Claude with a description. Claude reads the annotation and proposes a specific CSS fix.
-- **Job tab filter**: Use the color-coded pill tabs in the Jobs panel (All / Jobs / Race / Agents / Scheduled) to quickly find what you're looking for when many jobs are in flight.
-- **Orange flag hints**: As you type flags like `--agents 4` or `--models claude,codex`, the flag names turn orange in the input bar — a quick visual confirmation that the app recognizes the flag before you send.
-- **Git graph for branch navigation**: Run `/git` to see a visual timeline of commits and branches. Tap any branch name to check it out — no need to remember branch names or type git commands manually.
-- **Codebase health before a refactor**: Run `/health` before starting a large refactor to get a quick snapshot of LOC, TODO count, and uncommitted changes. Run it again after to compare.
-- **Server monitor during deployments**: Keep `/monitor` open during a deploy to watch CPU and memory react in real time. The sparkline chart shows whether load normalizes after a restart.
-- **Semantic code search**: Use `/search` with plain English questions instead of regex — e.g. `/search where is the payment flow handled` or `/search find all API rate limit logic`. Claude ranks and explains the top matches.
-- **Worktree mode for safe experiments**: Add `--vcs` to any `/batch` run to give each agent its own git branch. If the results are bad, delete the branches with no impact on your working tree. If they are good, the merge happens automatically.
-- **Routing presets for cost control**: Use `--routing budget` for exploratory research tasks where speed and cost matter more than quality, and `--routing quality` for production code generation where accuracy is critical.
-- **Agent reasoning as a sanity check**: After any background job completes, open the job detail and read the Agent Reasoning card. If the agent misunderstood the task, the reasoning card usually shows why — which helps you write a clearer prompt next time.
-- **Resolve merge conflicts after worktree batch runs**: After `/batch --vcs`, if the auto-merge produces conflicts, run `/conflicts` to get per-file AI resolution suggestions. Tap Apply on each resolved file — no need to open a terminal.
-- **Monitor long test suites without polling**: Run `/notify when tests finish` before starting a long test run, then put your phone down. CatClaw sends a push notification the moment the test process exits — no need to check the Jobs tab manually.
-- **Plan mode before risky refactors**: Toggle `/plan`, then describe the refactor. Review the file list and risk notes before anything is written. If the scope looks wrong, adjust your prompt and plan again — costs nothing until you tap Execute.
-- **Inject API docs without copy-paste**: Use `@web https://docs.example.com/api` to pull a reference page directly into your message. Pair it with a code question and Claude sees the spec alongside your source file.
-- **Pin your config file for every message**: Run `/pin src/config.ts` in a chatroom that touches configuration constantly. The file content is always in context — no need to attach it manually each time.
-- **Weekly analytics review**: Run `/dashboard` at the start of each week to see which commands you use most, how much you've spent on tokens, and whether your job success rate is trending up or down. Drill into "failed" to see which job types need better prompts.
-- **Build a deployment pipeline**: Create a `deploy.json` workflow with steps for linting, testing, building, and deploying. Steps that can run in parallel (lint + type-check) share a wave; the deploy step depends on build. Run `/workflow deploy` to execute the full pipeline with a live DAG view.
-- **Auto-recovery saves retries**: When a job fails due to a network blip or missing npm package, CatClaw retries automatically. Open the job detail to see the retry lineage card — it shows the original failure reason and what the recovery prompt changed. This is especially useful for long `/batch` runs where individual workers may hit transient errors.
-- **Auth recovery is one tap**: If the Claude chatroom shows an auth banner, it will automatically switch to the Terminal tab. Just type `claude`, then `/login`, and follow the OAuth flow — no need to remember which tab to go to or what command to run.
-- **AI changelog in seconds**: Run `/changelog HEAD~10..HEAD` after a week of commits to get structured release notes grouped by Features, Improvements, and Bug Fixes. Paste directly into your GitHub release or CHANGELOG.md — no manual categorization needed.
-- **Generate tests from plain English**: Use `/gentest the login flow with invalid credentials` instead of writing boilerplate. CatClaw auto-detects your test framework and generates tests you can review and approve before they're written to disk.
-- **Run a security audit before shipping**: Type `/security` before any release. It checks npm/pip/cargo audit, scans for hardcoded API keys, finds `.env` files tracked in git, and identifies `.gitignore` gaps — Claude prioritizes findings and suggests fixes.
-- **Capture tribal knowledge before a hire**: Run `/tribal` in a project before onboarding a new developer. The background job documents hidden gotchas, architecture decisions, and naming conventions that aren't in any README — save the output to a CONTRIBUTING.md.
-- **Spec before code**: Use `/spec Add OAuth2 login with JWT` to generate a formal requirements doc before any agent touches code. Review the EARS-notation requirements and acceptance criteria, then tap Execute to dispatch agents.
-- **Ask architectural questions in plain English**: Run `/graph what depends on the PaymentService class` instead of grepping imports manually. CatClaw maps your file tree and import graph to give a specific answer with line references.
-- **Automate on file changes**: Set up `/hooks add auto-test "*.swift" "run tests for changed files"` to automatically dispatch a test job every time you save a Swift file. Combine with `/notify when tests finish` for a fully automated feedback loop.
-- **Smart suggestions for faster follow-ups**: After any response, tap one of the 3 chips above the input bar to ask an instant follow-up — no typing needed. Chips change based on context: error responses show "How do I fix this?", code responses show "Explain this code" and "Are there any bugs?", test responses show "Add more edge cases".
-- **Long-press Send for silent background jobs**: Hold the Send button for half a second to submit your message as a background job instead of a chatroom turn. The conversation stays clean and the job result appears in the Jobs tab when it finishes — great for tasks you don't need to watch in real time.
-- **Swipe down to compact**: Swipe down on the input bar to trigger `/compact`, which summarizes the conversation so far and frees up context tokens. Useful when a long session starts to slow down.
-- **Split-screen for quick checks**: Tap the split-rectangle icon in the chatroom banner to open the mini terminal below the chat. Run `git status`, `ls`, or `npm test` without switching tabs. Drag the handle to resize the panel and tap the icon again to close it.
-- **Branching for side-by-side comparisons**: Long-press any message → "Branch from here" to fork the conversation. Try one approach in Branch 1 and a different approach in Branch 2, then use the purple branch picker to switch between them. Tap "Clear branches" to discard all forks and return to the main thread.
-- **Implicit memory from corrections**: When you say "no, I meant X" or "that's wrong, actually", CatClaw detects the correction phrase and auto-saves the fact to memory — same as `/remember` but without any command. Over time this builds a personal preference profile that Claude uses automatically.
-- **JSON tables for structured data**: Ask Claude to return results as a JSON array (e.g. "Give me a JSON array of the 5 largest countries with name, population, and area") and the code block auto-renders as a formatted table. Useful for comparing model specs, API endpoints, or any tabular data.
+- **Auto-reconnect after sleep**: Phone slept? WiFi dropped? CatClaw silently restores the SSH connection when you come back -- no manual intervention needed
+- **SFTP path to chatroom**: Long-press any folder in Files --> **Copy Path**, paste into chatroom **Info --> Project Directory**. Done.
+- **Session continuity**: Once Claude runs its first command, the project directory locks for that session. Sleep, disconnect, reconnect -- it just works.
+- **Context Document**: Write standing instructions in the chatroom's Context Document. Claude reads them every turn.
+- **iCloud Sync**: Sync connection profiles across all your Apple devices automatically.
+- **Home Screen Widget**: Add the **Quick Connect** widget for one-tap SSH from your home screen.
+- **Mosh for bad connections**: On flaky WiFi or high latency? Switch to Mosh transport -- UDP-based, survives IP changes, instant local echo.
+- **watchOS**: Dictate jobs from your wrist, monitor progress, get completion alerts.
+- **Pin important messages**: Long-press --> **Pin**. Use the pin filter to show only what matters.
+- **SSH config import**: Import all your `~/.ssh/config` profiles at once -- no re-typing hostnames and keys.
+- **Commute-to-desk handoff**: `/submit` a refactor before you leave. Monitor on the train. `/handoff mac` at your desk. Full context preserved.
+- **Preview before push**: `/preview --start` --> check the UI on your phone --> `/pr create`. Ship with confidence.
+- **Annotate UI bugs visually**: In the preview, tap camera, circle the broken element, send to Claude. Get a CSS fix back.
+- **Orange flag hints**: Flags like `--agents 4` turn orange in the input bar as you type -- CatClaw confirms it parsed your intent.
+- **`/health` before and after**: Run `/health` before a refactor for a baseline. Run it again after. Compare LOC, TODO count, and file count.
+- **`/monitor` during deploys**: Watch CPU and memory react in real time. The sparkline chart shows if load normalizes.
+- **`/search` in plain English**: Ask "where is auth handled?" instead of writing regex. Claude ranks and explains the matches.
+- **`--vcs` for safe experiments**: Give each agent its own git branch. Bad results? Delete the branches. Good results? Auto-merged.
+- **`--routing budget` for research**: Save money on exploratory tasks. Use `--routing quality` when accuracy matters.
+- **Agent reasoning as debugging**: If an agent misunderstood you, the Reasoning card shows exactly where. Write a better prompt next time.
+- **`/notify` to stop polling**: `/notify when tests finish` --> put your phone down. Push notification when done.
+- **`/plan` costs nothing**: Review the plan. Adjust. Plan again. No code is written until you tap Execute.
+- **`@web` for API docs**: Pull a reference page into your prompt. Claude sees the spec alongside your code.
+- **`/pin` for key files**: `/pin src/config.ts` and it is in every message's context automatically. Unpin when you switch areas.
+- **Weekly `/dashboard`**: See which commands you use most, token spend trends, and job success rates. Drill into failures to improve your prompts.
+- **`/workflow` for deployment**: Define lint --> test --> build --> deploy as a JSON DAG. Run it with one command, watch the live graph.
+- **Auto-recovery**: Job failed from a network blip? CatClaw retries automatically. Check the retry lineage card to see what changed.
+- **`/changelog` in seconds**: Run `/changelog v1.4.0..HEAD` and paste structured release notes straight into GitHub.
+- **`/gentest` from English**: "the login flow with invalid credentials" --> tests in your framework, ready to review.
+- **`/security` before shipping**: One command, four checks: deps, secrets, `.env` leaks, `.gitignore` gaps. Prioritized results.
+- **`/tribal` before onboarding**: Document the gotchas, decisions, and naming conventions that live in your team's heads -- not your README.
+- **`/spec` before agents**: Generate formal requirements first. Then execute with agents who know exactly what to build.
+- **`/graph` for architecture**: "What depends on PaymentService?" -- answered with file paths and line numbers. No grep needed.
+- **`/hooks` for continuous feedback**: Auto-test on every save. Auto-lint on every change. Push notification on failure. Fully hands-free.
+- **Tap, don't type**: Smart suggestion chips after every response. "How do I fix this?" is one tap away.
+- **Long-press Send**: Hold for 0.5s to submit as a background job. The chat stays clean; results arrive in the Jobs tab.
+- **Swipe down to compact**: Context getting full? Swipe down on the input bar. Conversation summarized, tokens freed.
+- **Split-screen terminal**: Check `git status` without leaving the chat. Drag to resize. Tap to dismiss.
+- **Branch to compare**: Fork at any message, try two approaches, switch between them. "Clear branches" when you have a winner.
+- **Implicit memory**: Say "no, we use camelCase" once. CatClaw remembers it for every future session. No `/remember` needed.
+- **JSON tables**: Ask for results as a JSON array and they render as a scrollable table. Great for comparing options.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1480,15 +1466,15 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| **v1.0** | March 16, 2026 | Initial release (US/Canada). SSH terminal, Claude AI chatroom, SFTP, background jobs, scheduled jobs, iPad multi-window, watchOS companion. |
-| **v1.1.0** | March 25, 2026 | Agent Teams (`/team`), `/batch` multi-agent orchestration, smart commands, SFTP create folder/file, 8-page welcome tour, SSH auto-reconnect hardening, cross-session memory improvements. |
-| **v1.1.1** | April 2, 2026 | iPhone slide-out drawer sidebar, iPad sidebar fix, adaptive background job polling, Agent Teams discovery improvements, SSH robustness, keyboard polish, `/help` redesign, background heartbeat notifications. Now available in **80+ countries worldwide**. |
-| **v1.2.0** | April 2026 | Multi-model race (`/race`) with thinking lenses, GitHub PR workflow (`/pr`) with AI code review and review learning, bidirectional session handoff (`/handoff`), live web preview (`/preview`), smart model routing, git worktree isolation (`--vcs`), agent reasoning banners, per-job cost tracking, trajectory timeline, per-project skill variants, subagent isolation, progressive skill disclosure, auto-compaction, smart memory search. |
-| **v1.3.0** | April 2026 | Visual git branch graph (`/git`), codebase health dashboard (`/health`), live server monitor (`/monitor`), AI semantic code search (`/search`), voice input (`/voice`). Git worktree mode and smart model routing now fully documented with examples. Agent reasoning banner available on all background job results. |
-| **v1.4.0** | April 2026 | AI merge conflict resolver (`/conflicts`), smart notifications (`/notify`), enhanced plan mode (`/plan` with Execute button), `@web` URL context injection, file context pinning (`/pin`/`/unpin`). |
-| **v1.5.0** | April 2026 | Analytics dashboard (`/dashboard`), workflow pipelines (`/workflow`) with visual DAG execution, auto-recovery for failed jobs (error classification + auto-retry + retry lineage), auth error auto-switch to Terminal tab with recovery banner. Auto-approve skill banner removed. |
-| **v1.6.0** | April 2026 | AI changelog generation (`/changelog`), test generation from plain English (`/gentest`), deep security scan (`/security`), tribal knowledge extraction (`/tribal`), spec-driven development (`/spec`), codebase graph queries (`/graph`), file-change agent hooks (`/hooks`). |
-| **v1.7.0** | April 2026 | Smart follow-up suggestions, gesture shortcuts (long-press Send, swipe-to-compact), split-screen mini terminal, conversation branching, JSON table cards, auto-context from terminal errors, implicit memory learning from corrections, cat mascot state animations, distinct haptic patterns. |
+| **v1.7.0** | April 2026 | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON tables, auto-context from errors, implicit learning, cat mascot animations, haptic feedback. |
+| **v1.6.0** | April 2026 | `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` -- seven new analysis and automation commands. |
+| **v1.5.0** | April 2026 | `/dashboard` analytics, `/workflow` pipelines with visual DAG, auto-recovery for failed jobs, auth error auto-recovery. |
+| **v1.4.0** | April 2026 | `/conflicts` merge resolver, `/notify` smart notifications, enhanced `/plan` mode, `@web` URL injection, `/pin` file pinning. |
+| **v1.3.0** | April 2026 | `/git` visual branch graph, `/health` dashboard, `/monitor` live stats, `/search` semantic code search, `/voice` input. |
+| **v1.2.0** | April 2026 | `/race` multi-model comparison, `/pr` GitHub workflow, `/handoff` session handoff, `/preview` live web preview, `--vcs` worktree mode, `--routing` model routing, agent reasoning, cost tracking. |
+| **v1.1.1** | April 2, 2026 | iPhone drawer sidebar, adaptive polling, Agent Teams polish, SSH robustness. Now in **80+ countries**. |
+| **v1.1.0** | March 25, 2026 | `/team` agent teams, `/batch` multi-agent orchestration, smart commands, welcome tour. |
+| **v1.0** | March 16, 2026 | Initial release. SSH terminal, Claude chatroom, SFTP, background jobs, iPad multi-window, watchOS. |
 
 ---
 
@@ -1579,8 +1565,8 @@ When ClawTerminal is backgrounded with running jobs, the system checks periodica
 
 ## Contributing
 
-Found an error or want to add a tip? Open a pull request against this repo. For app bugs or feature requests, open an issue on the [main app repo](https://github.com/LiqunChen0606/clawterminal).
+Found a typo? Want to share a workflow tip? Pull requests are welcome. For app bugs or feature requests, open an issue on the [main app repo](https://github.com/LiqunChen0606/clawterminal).
 
 ---
 
-ClawTerminal — SSH + Claude AI for iOS
+**CatClaw** -- Your Mac's best friend on mobile. [Download on the App Store](https://apps.apple.com/us/app/clawterminal/id6759690902)

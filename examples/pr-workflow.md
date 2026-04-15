@@ -1,6 +1,8 @@
-# /pr — GitHub PR Workflow Examples
+# /pr -- GitHub PR Workflow
 
-Full GitHub pull request lifecycle from your phone. Requires `gh` CLI installed and authenticated on your Mac.
+> **Why this matters:** You are on the train. Your teammate's PR needs a review before the morning standup. CatClaw lets you create PRs, review code, check CI, and train the reviewer -- all from your phone.
+
+Full GitHub pull request lifecycle over SSH. Requires `gh` CLI installed and authenticated on your Mac.
 
 ```bash
 # Install on your Mac (one-time)
@@ -140,9 +142,20 @@ Shows the status of all CI checks and workflows for PR #42. Useful for a quick "
 
 ---
 
+---
+
+## Pro Tips
+
+- **Rate early, rate often.** The first review is always noisy. Spend 2 minutes rating items on your first 2-3 reviews -- the learning pays off for every review after that.
+- **Use different chatrooms for different repos.** Review learning is per-chatroom. A strict TypeScript frontend and a relaxed Python backend should have separate chatrooms with separate learned preferences.
+- **Focus on bugs first.** If you only have time for one setting, use `/pr focus security,error-handling` and thumb-down everything else. The reviewer becomes a reliable bug-finder, not a style-nagger.
+- **Chain with `/preview`.** After `/pr create`, run `/preview --start` to do a final visual check before asking for reviews.
+
+---
+
 ## Notes
 
-- `gh` must be installed on your Mac, not on your iPhone — ClawTerminal runs it over SSH
-- The project directory in the chatroom's Info tab must point to the correct git repo
-- Works with GitHub only (not GitLab or Bitbucket — `gh` is GitHub-specific)
+- `gh` runs on your Mac over SSH, not on your iPhone
+- The chatroom's Project Directory must point to the correct git repo
+- Works with GitHub only (not GitLab or Bitbucket -- `gh` is GitHub-specific)
 - Authentication uses whatever account you logged into with `gh auth login` on your Mac

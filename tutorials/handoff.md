@@ -1,6 +1,6 @@
 # Tutorial: Session Handoff with `/handoff`
 
-`/handoff` lets you continue a Claude coding session on a different device without losing any context — project directory, conversation history, current task, or session state. This tutorial covers both directions: phone to Mac and Mac to phone.
+> It is 5:45 PM. You have been deep in a refactoring session at your desk for two hours. Time to leave. You do not want to lose context -- the conversation history, the project directory, the running job. You pick up your phone, type `/handoff`, tap your active session, and walk out the door. On the train, you continue the conversation exactly where you left off. That is handoff.
 
 ---
 
@@ -249,3 +249,11 @@ Use `/handoff` to switch between your own devices. Use **Host / Join** in the to
 Both directions work seamlessly because the session state lives on your Mac, not on your phone. ClawTerminal just points at it from wherever you are.
 
 See [examples/handoff.md](../examples/handoff.md) for copy-paste-ready examples.
+
+---
+
+## What's Next?
+
+- **[Live Web Preview](preview.md)** -- After handing off to your phone, preview your web app's UI changes directly on the device you are holding.
+- **[GitHub PR Workflow](pr-workflow.md)** -- Picked up a session on your phone? Create a PR from the train before you forget.
+- **[Background Jobs](../examples/background-jobs.md)** -- Kick off long tasks with `/submit` before a handoff -- they run independently and you can pick up the results from either device.

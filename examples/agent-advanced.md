@@ -1,5 +1,7 @@
 # Advanced Agent Features
 
+> **Why these matter:** When a single agent is not enough, these features let you run parallel agents safely (each in its own git branch), pick the right model for each role (save 60% on research tasks), and understand *why* your agents made the decisions they did.
+
 ## Git Worktree Mode
 
 ```

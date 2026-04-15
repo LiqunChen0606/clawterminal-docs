@@ -1,6 +1,8 @@
 # Tutorial: Live Web Preview with `/preview`
 
-`/preview` opens a live, interactive browser preview of the dev server running on your Mac — directly on your iPhone or iPad, tunneled through SSH. It's the first mobile tool that gives you a real live web preview while you're coding. This tutorial covers everything from your first preview to advanced debugging with console logs and screenshot annotation.
+> You just finished a UI component at your desk. You want to see how it actually looks on a phone screen -- not a browser DevTools simulation, but the real thing, held in your hand. You type `/preview --start` and your dev server launches in the background, an SSH tunnel opens, and your iPhone shows a live preview of `localhost:3000`. You spot a layout overflow at 390px that would have shipped to production. You circle it, send it to Claude, and get a CSS fix in 10 seconds.
+
+This tutorial covers everything from your first preview to multi-port full-stack apps, responsive testing, console log debugging, and screenshot annotation.
 
 ---
 
@@ -395,3 +397,11 @@ Before running `/pr create`, use this checklist:
 ```
 
 See [examples/preview.md](../examples/preview.md) for copy-paste-ready examples.
+
+---
+
+## What's Next?
+
+- **[GitHub PR Workflow](pr-workflow.md)** -- After your visual check passes, run `/pr create` to ship the PR without leaving the app.
+- **[Session Handoff](handoff.md)** -- Found issues in the preview? Hand off to your Mac for a full-keyboard debugging session.
+- **[AI Analysis & Automation](ai-analysis.md)** -- Use `/security` before shipping to catch vulnerabilities, or `/gentest` to generate tests for the feature you just previewed.

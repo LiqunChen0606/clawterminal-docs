@@ -1,6 +1,6 @@
-# /handoff — Session Handoff Examples
+# /handoff -- Session Handoff
 
-Seamlessly move a Claude conversation between your phone and your Mac — or from your Mac back to your phone — without losing context, project directory, or conversation history.
+> **Why this matters:** You started a refactor at your desk and need to catch a train. Or you kicked off a job on your phone and want to continue with a real keyboard. Handoff lets you switch devices without losing a single line of context.
 
 ---
 
@@ -111,9 +111,19 @@ Start work at your desk, continue on your phone:
 
 ---
 
+---
+
+## Pro Tips
+
+- **Kick off before you leave.** `/submit --ckpt` a big task before heading out. Monitor on the train. `/handoff mac` when you arrive. Best workflow for commuters.
+- **Both devices stay live.** After a phone-to-Mac handoff, your phone chatroom still works. Both point at the same session -- just avoid sending from both simultaneously.
+- **Combine with `/team`.** If you have a multi-wave `/team` run going, `/handoff` shows all active sessions including individual wave agents. Tap the synthesizer to watch the final merge live.
+
+---
+
 ## Notes
 
-- Both directions use Claude's `--resume <sessionID>` flag — the session state lives on your Mac, ClawTerminal just points at it from either device
+- Both directions use Claude's `--resume <sessionID>` flag -- the session state lives on your Mac, CatClaw just points at it from either device
 - No additional setup needed beyond an active SSH connection
-- The phone session's project directory, model selection, and enabled skills all carry over
-- The Mac tmux session name follows the pattern `claw_handoff_<roomID>` and is visible in `tmux ls`
+- Project directory, model selection, and enabled skills all carry over
+- The Mac tmux session name follows the pattern `claw_handoff_<roomID>` (visible in `tmux ls`)

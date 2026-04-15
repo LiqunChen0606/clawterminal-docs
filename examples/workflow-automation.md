@@ -1,6 +1,6 @@
 # Workflow Automation
 
-Examples for `/conflicts`, `/notify`, `/plan`, `@web`, and `/pin` — features that reduce friction in common development workflows.
+> **Why these matter:** These five features eliminate the small annoyances that interrupt your flow. Resolve merge conflicts with AI instead of a diff tool. Get push notifications when your tests finish instead of polling. Preview what Claude will change before it changes anything. Pull API docs into your prompt without copy-pasting. Keep key files in context automatically.
 
 ---
 

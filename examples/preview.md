@@ -1,6 +1,6 @@
-# /preview — Live Web Preview Examples
+# /preview -- Live Web Preview
 
-Open a live browser preview of your Mac's dev server on your iPhone or iPad via SSH port forwarding. Works with any HTTP server — React, Vue, Next.js, Flask, Rails, Go, etc.
+> **Why this matters:** You just pushed a UI change and want to see it on a real phone screen before merging. `/preview` tunnels your dev server to your iPhone in one command -- no ngrok, no deploy, no waiting.
 
 ---
 
@@ -179,14 +179,26 @@ ClawTerminal scans in this order for the port:
 ## Troubleshooting
 
 **Preview shows a blank page**
+
 - Make sure your dev server is actually running on your Mac (`curl localhost:3000` in Terminal)
 - Try `/preview --port <correct-port>` with the explicit port
 - Use `/preview stop` then `/preview --port 3000` to restart the tunnel
 
 **"Connection refused" in preview**
-- The server may have crashed — check the terminal on your Mac
+
+- The server may have crashed -- check the terminal on your Mac
 - Use `/preview --start` to auto-relaunch
 
 **Preview works but looks wrong on mobile**
-- The dev server may be serving desktop-only assets — tap the viewport icon to switch to iPhone mode (390px)
+
+- The dev server may be serving desktop-only assets -- tap the viewport icon to switch to iPhone mode (390px)
 - Make sure your CSS has proper `@media` queries or a responsive meta viewport tag
+
+---
+
+## Pro Tips
+
+- **Always check iPhone viewport before merging.** Many desktop-first bugs only appear at 390px width. One tap saves a hotfix.
+- **Screenshot + annotate is faster than describing.** Circle the broken element, write "this overflows", send to Claude. You get a specific CSS fix, not a generic suggestion.
+- **Console logs beat Safari Web Inspector for quick debugging.** You do not need to plug in your Mac or open a separate debugger -- the console panel captures everything.
+- **Multi-port for full-stack apps.** `/preview --port 3000,8080` gives you tabs for both frontend and API. Check CORS, check rendering, all in one session.

@@ -1,6 +1,8 @@
-# /race — Multi-Model Comparison Examples
+# /race -- Multi-Model Comparison
 
-`/race` runs the same prompt through 2–4 AI models simultaneously so you can compare responses side-by-side. Use it when you want a second opinion, want to benchmark model styles, or are unsure which approach is best before committing.
+> **Why this matters:** Every AI model has blind spots. Racing multiple models on the same prompt catches mistakes, reveals trade-offs, and saves you from committing to the wrong approach.
+
+`/race` dispatches the same prompt to 2-4 AI models simultaneously and presents the results side-by-side. Pick the winner, accept it into your chatroom, and move on.
 
 ---
 
@@ -127,12 +129,23 @@ Each result card has an **Accept** button. Tap it to insert that model's respons
 
 ---
 
+---
+
+## Pro Tips
+
+- **Be specific.** "Database options" produces vague races. "Compare PostgreSQL vs ClickHouse for 50M time-series events/day with 2-year retention" gives each model something concrete to reason about.
+- **Use Adversarial before proposing designs.** Run `/race --lenses adversarial your-plan-here` before your next architecture review. Better to hear the objections from AI than from your team lead.
+- **Accept and continue.** After accepting a race response, you can keep chatting -- Claude builds on the accepted answer naturally.
+- **Race documentation, not just code.** `/race --lenses pragmatic,user-first Write the README intro for our CLI tool` finds the clearest explanation before you write it yourself.
+
+---
+
 ## Requirements
 
 - Each model in `--models` must be installed and authenticated on your Mac
-- `claude` — requires [Claude Code](https://docs.anthropic.com/en/docs/claude-code): `npm install -g @anthropic-ai/claude-code && claude /login`
-- `codex` — requires the OpenAI Codex CLI: `npm install -g @openai/codex`
-- `gemini` — requires the Gemini CLI: `npm install -g @google/generative-ai-cli`
-- `aider` — requires Aider: `pip install aider-chat`
+- `claude` -- requires [Claude Code](https://docs.anthropic.com/en/docs/claude-code): `npm install -g @anthropic-ai/claude-code && claude /login`
+- `codex` -- requires the OpenAI Codex CLI: `npm install -g @openai/codex`
+- `gemini` -- requires the Gemini CLI: `npm install -g @google/generative-ai-cli`
+- `aider` -- requires Aider: `pip install aider-chat`
 
 See the [Multi-CLI Tool Support tutorial](../tutorials/multi-cli-tools.md) for full setup instructions.

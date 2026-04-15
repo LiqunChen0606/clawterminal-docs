@@ -1,8 +1,10 @@
 # UX & Intelligence Features
 
+> **Why these matter:** Small interactions add up. Smart suggestions save you from retyping "how do I fix this?" fifty times a day. Gesture shortcuts turn a two-step process into one gesture. Implicit learning means you correct Claude once and it remembers forever. These are the features that make CatClaw feel like it knows you.
+
 ## Smart Follow-Up Suggestions
 
-After Claude responds, 3 tappable chips appear above the input bar. Tap any chip to send instantly — no typing needed.
+After Claude responds, 3 tappable chips appear above the input bar. One tap sends the question -- no typing needed.
 
 Chips adapt based on the content of the response:
 
