@@ -13,6 +13,17 @@
 
 | Feature | What it does | Learn More |
 |---------|-------------|------------|
+| **Interactive Tutorials** | `/tutorial` launches 6 guided tracks (43 steps) that validate your real commands as you go — beginner, terminal, workflows, agents, devops, power. Also in **Settings → Learn ClawTerminal** | [Examples](examples/tutorials.md) · [Tutorial](tutorials/interactive-tutorials.md) |
+| **Context-Aware AI** | 4 on-device sensors inject time of day, calendar, motion/activity, and battery into every prompt. Chip bar shows active signals. Claude adapts tone and length to the moment | [Examples](examples/context-aware-ai.md) · [Tutorial](tutorials/context-aware-ai.md) |
+| **Frugal Mode** | `/frugal` per-chatroom, or `!` prefix for one-off sends — strips skills, memory, pinned files, and tells Claude to just act. Cheapest, fastest, most direct answers | [Examples](examples/frugal-mode.md) · [Tutorial](tutorials/frugal-mode.md) |
+| **Rubber Duck Mode** | `/duck` turns Claude into a Socratic rubber duck — only asks probing questions, never gives answers. For bug debugging, design reviews, and pressure-testing your reasoning | [Examples](examples/rubber-duck.md) · [Tutorial](tutorials/rubber-duck.md) |
+| **Daily Standup Generator** | `/standup` writes your Yesterday/Today/Blockers note in 10 seconds from chatroom activity + git log. Auto-copies to clipboard. Local-only fallback if no API key | [Examples](examples/standup.md) · [Tutorial](tutorials/standup-generator.md) |
+| **Ambient Sound Design** | 4 subtle iOS system sounds for AI thinking, job complete, job failed, streaming start. Opt-in, per-event, off by default. Respects silent mode | [Examples](examples/ambient-sound.md) · [Tutorial](tutorials/ambient-sound.md) |
+| **What If Simulator** | `/whatif <command>` predicts 3 likely outcomes of a shell command before you run it — green/yellow/red severity bars, probability %. Uses git status context | [Examples](examples/what-if.md) · [Tutorial](tutorials/what-if-simulator.md) |
+| **Code Postcards** | Long-press any message → **Share as Postcard** → 1080×1080 PNG with syntax highlighting and gradient backdrop. One-tap share to Twitter, Discord, Slack | [Examples](examples/code-postcards.md) · [Tutorial](tutorials/code-postcards.md) |
+| **Dev Wrapped** | `/wrapped` or `/wrapped month` — Spotify-Wrapped-style 9-page swipeable recap of your week: top commands, spend, peak hour, topics, longest session, share card | [Examples](examples/wrapped.md) · [Tutorial](tutorials/dev-wrapped.md) |
+| **Screenshot Memory** | `/screenshot` captures the current chatroom view, auto-tags it locally. `/screenshots` opens a searchable gallery. Visual bookmarks for "that beautiful explanation" | [Examples](examples/screenshot-memory.md) · [Tutorial](tutorials/screenshot-memory.md) |
+| **Proactive AI Insights** | 4 background detectors (weekday failures, command repetition, session-length trends, cost spikes) fire notifications when patterns emerge. Opt-in, 72h dedup | [Examples](examples/proactive-insights.md) · [Tutorial](tutorials/proactive-insights.md) |
 | **Dream Mode** | `/dream` — autonomous preference learning. CatClaw analyzes your conversation patterns overnight and builds a living profile of your skills, style, and focus areas — injected into every future session automatically | [Examples](examples/dream.md) · [Tutorial](tutorials/dream.md) |
 | **Session Recap** | `/recap` — message count, job stats, recent topics, session cost at a glance | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
 | **Context Window Meter** | `/context` — visual progress bar with percentage and actionable suggestions before you hit the limit | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
@@ -186,6 +197,17 @@ Copy-paste-ready recipes for every CatClaw feature. Each file covers one area wi
 | [UX & Intelligence Features](examples/ux-features.md) | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON table cards, auto-context from terminal, implicit learning, cat mascot, haptic patterns |
 | [Session Intelligence](examples/session-intelligence.md) | `/recap`, `/context`, `/effort`, `/btw`, `/retry`, `/personality` — control how Claude thinks, responds, and remembers within a session |
 | [Dream Mode](examples/dream.md) | `/dream`, `/dream now`, `/dream reset` — autonomous preference learning, profile evolution over time, combining with `/personality` and `/effort` |
+| [Interactive Tutorials](examples/tutorials.md) | `/tutorial`, `/tutorial <track>`, `/tutorial reset` — in-app guided learning with real-command validation |
+| [Context-Aware AI](examples/context-aware-ai.md) | Time, calendar, motion, and battery signals injected into prompts — chip bar, privacy settings, real before/after comparisons |
+| [Frugal Mode](examples/frugal-mode.md) | `/frugal` toggle and `!` prefix — strip context for cheap, fast, direct answers |
+| [Rubber Duck Mode](examples/rubber-duck.md) | `/duck` Socratic debugging — example session with probing questions |
+| [Standup Generator](examples/standup.md) | `/standup` — auto-write Yesterday/Today/Blockers from chatroom + git log |
+| [Ambient Sound](examples/ambient-sound.md) | 4 iOS system sounds, popular combinations, silent-mode behavior |
+| [What If Simulator](examples/what-if.md) | `/whatif <command>` examples for destructive, dangerous, and deceptively-safe commands |
+| [Code Postcards](examples/code-postcards.md) | Share as Postcard workflow, social use cases, multi-block postcards |
+| [Dev Wrapped](examples/wrapped.md) | `/wrapped` 9-page recap — real example with activity, spend, topics, longest session |
+| [Screenshot Memory](examples/screenshot-memory.md) | `/screenshot` and `/screenshots` — capture, tag, search, real scenarios |
+| [Proactive AI Insights](examples/proactive-insights.md) | 4 detectors with real notification examples and weekly rhythm |
 
 ---
 
@@ -243,6 +265,17 @@ Deep dives into individual features. Each tutorial walks you through setup, usag
 | [UX & Intelligence Features](tutorials/ux-features.md) | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON table cards, auto-context, implicit learning — when and why to use each, productivity combinations |
 | [Session Intelligence](tutorials/session-intelligence.md) | `/recap`, `/context`, `/effort`, `/btw`, `/retry`, `/personality` — master your conversation flow with commands that give you control over how Claude thinks, responds, and remembers |
 | [Dream Mode](tutorials/dream.md) | How Dream Mode learns your patterns overnight, how the profile compounds over days and weeks, privacy details, and how to combine it with `/personality`, `/effort`, and `/soul` for a fully personalized assistant |
+| [Interactive Tutorials](tutorials/interactive-tutorials.md) | `/tutorial` launches 6 guided tracks (beginner, terminal, workflows, agents, devops, power) with automatic step validation on real commands |
+| [Context-Aware AI](tutorials/context-aware-ai.md) | 4 on-device sensors (time, calendar, motion, battery) that inject signals into every prompt so Claude adapts tone and length to the moment |
+| [Frugal Mode](tutorials/frugal-mode.md) | `/frugal` per-chatroom, `!` prefix for one-offs — strip skills, memory, pinned files for the cheapest, fastest, most direct answers |
+| [Rubber Duck Mode](tutorials/rubber-duck.md) | `/duck` turns Claude into a Socratic rubber duck — only asks probing questions, never gives answers |
+| [Daily Standup Generator](tutorials/standup-generator.md) | `/standup` writes Yesterday/Today/Blockers in 10 seconds from chatroom activity + git log |
+| [Ambient Sound Design](tutorials/ambient-sound.md) | 4 subtle iOS system sounds for AI thinking, job complete, failed, streaming start — opt-in, per-event |
+| [What If Simulator](tutorials/what-if-simulator.md) | `/whatif <command>` predicts 3 likely outcomes of a shell command before you run it, color-coded by severity |
+| [Code Postcards](tutorials/code-postcards.md) | Long-press any message → Share as Postcard → 1080×1080 PNG with syntax highlighting and gradient |
+| [Dev Wrapped](tutorials/dev-wrapped.md) | `/wrapped` — Spotify-Wrapped-style 9-page recap of your week: top commands, spend, peak hour, longest session |
+| [Screenshot Memory](tutorials/screenshot-memory.md) | `/screenshot` captures chatroom view with auto-tagging; `/screenshots` opens searchable gallery |
+| [Proactive AI Insights](tutorials/proactive-insights.md) | 4 background pattern detectors (weekday failures, command repetition, session length, cost spikes) — notifications when patterns emerge |
 
 ---
 

@@ -22,7 +22,6 @@ These commands are handled by ClawTerminal itself and work in both CLI and API m
 
 | Command | Flags | Description | Example |
 |---------|-------|-------------|---------|
-| `/context` | — | Show current session: project directory, session ID, model | `/context` |
 | `/status` | — | Show SSH connection state and chatroom info | `/status` |
 | `/cost` | — | Show estimated token usage and cost for this session | `/cost` |
 | `/doctor` | — | Run diagnostics: SSH health, tmux session, Claude binary, session ID | `/doctor` |
@@ -45,11 +44,75 @@ These commands are handled by ClawTerminal itself and work in both CLI and API m
 | `/forget <keyword>` | — | Remove memories matching the keyword | `/forget pnpm` |
 | `/memories` | — | Open the Memory Library to browse and manage saved memories | `/memories` |
 
+### Session intelligence
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/recap` | — | Session summary: message count, job stats, recent topics, session cost | `/recap` |
+| `/context` | — | Visual context window usage bar with percentage and suggestions | `/context` |
+| `/effort low\|medium\|high` | — | Dial thinking depth without switching models | `/effort high` |
+| `/btw <question>` | — | Quick one-sentence side question without derailing the main conversation | `/btw what port does Postgres use by default?` |
+| `/retry` | — | Remove the last exchange and re-send for a different response | `/retry` |
+| `/personality [name]` | — | Switch agent persona: `senior`, `mentor`, `reviewer`, `architect`, `hacker`, or `default`. No argument lists all. | `/personality architect` |
+| `/soul <description>` | — | Define a persistent agent identity for this chatroom that survives session resets | `/soul You are a senior engineer at a fintech startup. Security is never optional.` |
+| `/think [question]` | — | Request an explicit reasoning chain; thinking blocks render as collapsible in the message bubble | `/think Should we use JWT or session cookies?` |
+| `/trace` | — | Re-render the last agent's full thinking trace in collapsible blocks | `/trace` |
+
+### Learning mode commands
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/duck` | — | Switch to Socratic rubber-duck personality — Claude only asks probing questions, never gives direct answers | `/duck` |
+| `/duck off` | — | Exit rubber-duck mode and return to normal Claude | `/duck off` |
+| `/tutorial` | — | List all interactive tutorial tracks | `/tutorial` |
+| `/tutorial <track>` | — | Start a specific track: `beginner`, `terminal`, `workflows`, `agents`, `devops`, or `power` | `/tutorial beginner` |
+| `/tutorial reset` | — | Reset progress for all tutorial tracks | `/tutorial reset` |
+
+### Dream Mode
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/dream` or `/dream show` | — | View your learned preference profile | `/dream show` |
+| `/dream now` | — | Run a dream cycle immediately (Haiku SSH call) | `/dream now` |
+| `/dream reset` | — | Clear the profile and start fresh | `/dream reset` |
+
+### Frugal Mode
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/frugal` | — | Toggle chatroom-level Frugal Mode on/off. Strips skills, memory, pinned files, dream profile, device context, tribal knowledge | `/frugal` |
+| `!<message>` | — | One-off frugal send — applies Frugal Mode to this single message without changing the chatroom setting | `!what's the default Postgres port?` |
+
 ### Help
 
 | Command | Flags | Description |
 |---------|-------|-------------|
 | `/help` | — | List all available slash commands |
+
+---
+
+## Developer productivity
+
+### Standup & reporting
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/standup` | — | Auto-write a 3-section standup (Yesterday / Today / Blockers) from the last 24h of chatroom activity + `git log`. Clipboard-ready. Local fallback without API key | `/standup` |
+| `/wrapped` or `/wrapped week` | — | Spotify-Wrapped-style 9-page swipeable recap of the last 7 days — top commands, spend, peak hour, topics, longest session, share card | `/wrapped` |
+| `/wrapped month` | — | Same as above, 30-day window | `/wrapped month` |
+
+### Shell safety
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/whatif <command>` | — | Predict the 3 most likely outcomes of a shell command before you run it. Color-coded severity (green/yellow/red) with probability %. Uses git status context | `/whatif git reset --hard HEAD~3` |
+
+### Visual memory
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/screenshot` | — | Capture the current chatroom view as a PNG; auto-tag by topic locally | `/screenshot` |
+| `/screenshots` | — | Open the screenshot gallery with thumbnails, search, filters | `/screenshots` |
 
 ---
 
