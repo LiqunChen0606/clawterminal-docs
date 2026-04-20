@@ -7,12 +7,13 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.8.0 (April 2026)
+**Latest Version:** v1.9.0 (April 2026)
 
-### What's New in v1.8.0
+### What's New in v1.9.0
 
 | Feature | What it does | Learn More |
 |---------|-------------|------------|
+| **Dream Mode** | `/dream` — autonomous preference learning. CatClaw analyzes your conversation patterns overnight and builds a living profile of your skills, style, and focus areas — injected into every future session automatically | [Examples](examples/dream.md) · [Tutorial](tutorials/dream.md) |
 | **Session Recap** | `/recap` — message count, job stats, recent topics, session cost at a glance | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
 | **Context Window Meter** | `/context` — visual progress bar with percentage and actionable suggestions before you hit the limit | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
 | **Effort Control** | `/effort low\|medium\|high` — dial thinking depth from quick answers to thorough deep-dives | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
@@ -120,6 +121,7 @@ Claude Code has "Remote Control" (SSH tunnel to claude.ai) and "Channels" (Slack
 | **Context window meter** | `/context` — visual usage bar with percentage and suggestions before you hit the limit | No | No |
 | **Effort control** | `/effort low\|medium\|high` — tune thinking depth per question without changing models | No | No |
 | **Personality switching** | `/personality senior\|mentor\|reviewer\|architect\|hacker` — switch agent persona mid-session | No | No |
+| **Dream Mode** | Autonomous overnight preference learning — CatClaw builds a living profile of your skills, style, and focus files that gets injected into every future session. No other tool does this. | No | No |
 
 **Bottom line:** If you want to check on a Claude task from your phone, Remote Control works fine. If you want to *actually develop* from your phone -- run agents, review PRs, preview web apps, manage files, and never lose work when your phone sleeps -- CatClaw is purpose-built for that.
 
@@ -175,6 +177,7 @@ Copy-paste-ready recipes for every CatClaw feature. Each file covers one area wi
 | [AI Analysis & Automation](examples/ai-analysis.md) | `/changelog` release notes, `/gentest` test generation, `/security` audit, `/tribal` knowledge extraction, `/spec` requirements, `/graph` codebase queries, `/hooks` file-change automation |
 | [UX & Intelligence Features](examples/ux-features.md) | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON table cards, auto-context from terminal, implicit learning, cat mascot, haptic patterns |
 | [Session Intelligence](examples/session-intelligence.md) | `/recap`, `/context`, `/effort`, `/btw`, `/retry`, `/personality` — control how Claude thinks, responds, and remembers within a session |
+| [Dream Mode](examples/dream.md) | `/dream`, `/dream now`, `/dream reset` — autonomous preference learning, profile evolution over time, combining with `/personality` and `/effort` |
 
 ---
 
@@ -231,6 +234,7 @@ Deep dives into individual features. Each tutorial walks you through setup, usag
 | [AI Analysis & Automation](tutorials/ai-analysis.md) | `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` — step-by-step walkthroughs and real-world pipelines |
 | [UX & Intelligence Features](tutorials/ux-features.md) | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON table cards, auto-context, implicit learning — when and why to use each, productivity combinations |
 | [Session Intelligence](tutorials/session-intelligence.md) | `/recap`, `/context`, `/effort`, `/btw`, `/retry`, `/personality` — master your conversation flow with commands that give you control over how Claude thinks, responds, and remembers |
+| [Dream Mode](tutorials/dream.md) | How Dream Mode learns your patterns overnight, how the profile compounds over days and weeks, privacy details, and how to combine it with `/personality`, `/effort`, and `/soul` for a fully personalized assistant |
 
 ---
 
@@ -1145,6 +1149,10 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/btw <question>` | Ask a **quick side question** without derailing the conversation. Claude uses full context but keeps the answer to 1–2 sentences. |
 | `/retry` | Remove the last exchange (your message + Claude's response) and **re-send** your message to get a different approach. |
 | `/personality <name>` | Switch Claude's **agent persona** for this chatroom. Options: `senior` (opinionated, pushes back), `mentor` (patient, uses analogies), `reviewer` (meticulous, correctness-focused), `architect` (systems thinker, scalability), `hacker` (ship fast, iterate), `default`. Run `/personality` with no argument to list all personas. |
+| `/dream` | View your **learned preference profile** — skills, communication style, current focus areas, key project files, and workflow patterns derived from your conversation history. |
+| `/dream show` | Same as `/dream` — display the full profile card. |
+| `/dream now` | Trigger a **dream cycle immediately** — runs a Haiku-powered analysis of your recent messages and updates the profile on the spot. Useful after a productive session. |
+| `/dream reset` | Clear all learned preferences for this chatroom and start fresh. |
 | `/help` | List all available slash commands |
 
 ### @ References
@@ -1384,6 +1392,11 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **`/retry` beats re-typing**: If Claude took the wrong angle, `/retry` is faster than editing and resending. No copy-paste needed.
 - **Persona stack for deep work**: `/effort high` + `/personality architect` before a design session. Switch to `/personality reviewer` when you want a critical eye.
 - **`/personality hacker` for prototypes**: Get the simplest code that works. Switch to `/personality reviewer` to audit it before shipping.
+- **Enable Dream Mode early**: Turn on **Settings → AI Intelligence → Dream Mode** on day one. The profile compounds — the longer you use CatClaw, the more personalized every session becomes.
+- **`/dream now` after big sessions**: After a long coding session, run `/dream now` to capture fresh patterns before you close the app. The overnight cycle runs at ~2 AM, but you can force it anytime.
+- **`/dream show` to check what Claude knows**: Before starting a new conversation branch or handing off to an agent, check your profile. It shows exactly what context is being injected automatically.
+- **`/dream reset` when context drifts**: If you switch projects or the profile no longer reflects what you're working on, reset it and let Dream Mode re-learn from scratch.
+- **Dream + `/personality` stack**: Dream Mode sets the baseline (your actual skill level, style, and focus). `/personality` layers a role on top. Together, they make every session feel like a teammate who knows you and knows their job.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1495,6 +1508,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| **v1.9.0** | April 2026 | Dream Mode — autonomous overnight preference learning. CatClaw builds a living profile of your skills, style, and workflow patterns and injects it into every session automatically. |
 | **v1.8.0** | April 2026 | Session recap, context window meter, effort control, quick side questions, retry last message, agent personas. |
 | **v1.7.0** | April 2026 | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON tables, auto-context from errors, implicit learning, cat mascot animations, haptic feedback. |
 | **v1.6.0** | April 2026 | `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` -- seven new analysis and automation commands. |
