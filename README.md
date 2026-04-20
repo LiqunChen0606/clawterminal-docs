@@ -20,6 +20,11 @@
 | **Side Questions** | `/btw [question]` — ask a quick question without derailing your main conversation | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
 | **Retry Last Message** | `/retry` — remove the last exchange and re-send for a different response | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
 | **Agent Personas** | `/personality` — switch between senior, mentor, reviewer, architect, and hacker modes | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
+| **Agent Soul** | `/soul` — define a persistent agent identity that survives session resets and is injected into every conversation in this chatroom | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
+| **Explicit Reasoning** | `/think [question]` — request an explicit reasoning chain; `/trace` to replay the last agent's full thinking trace in collapsible blocks | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
+| **Enhanced Hooks** | `/hooks` now supports pause/resume per hook, trigger-count display, and conditional expressions | [Examples](examples/ai-analysis.md) |
+| **Smart Memory Categories** | `/remember` auto-classifies new memories as project context, user preference, or session insight — no manual tagging needed | [Examples](examples/memory-skills.md) |
+| **Countdown Ring on Send** | Hold the send button and a circular countdown ring animates before triggering your gesture shortcut — with haptic feedback per action type | [Examples](examples/ux-features.md) |
 | **Multi-Model Race** | Pit Claude vs Codex vs Gemini on the same prompt -- pick the winner | [Examples](examples/race.md) · [Tutorial](tutorials/race.md) |
 | **GitHub PR Workflow** | Create PRs, AI code review, CI checks -- all from your phone | [Examples](examples/pr-workflow.md) · [Tutorial](tutorials/pr-workflow.md) |
 | **Session Handoff** | Start on your phone, continue on your Mac (or vice versa) | [Examples](examples/handoff.md) · [Tutorial](tutorials/handoff.md) |
@@ -122,6 +127,9 @@ Claude Code has "Remote Control" (SSH tunnel to claude.ai) and "Channels" (Slack
 | **Effort control** | `/effort low\|medium\|high` — tune thinking depth per question without changing models | No | No |
 | **Personality switching** | `/personality senior\|mentor\|reviewer\|architect\|hacker` — switch agent persona mid-session | No | No |
 | **Dream Mode** | Autonomous overnight preference learning — CatClaw builds a living profile of your skills, style, and focus files that gets injected into every future session. No other tool does this. | No | No |
+| **Agent soul & personas** | `/soul` defines a persistent identity; `/personality` switches roles (senior/mentor/reviewer/architect/hacker) mid-session | No | No |
+| **Explicit reasoning** | `/think` requests a visible reasoning chain; `/trace` replays the last agent's full thinking blocks | No | No |
+| **Smart memory categories** | `/remember` auto-classifies memories as project context, preference, or insight — no manual tagging required | No | No |
 
 **Bottom line:** If you want to check on a Claude task from your phone, Remote Control works fine. If you want to *actually develop* from your phone -- run agents, review PRs, preview web apps, manage files, and never lose work when your phone sleeps -- CatClaw is purpose-built for that.
 
@@ -1153,6 +1161,9 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/dream show` | Same as `/dream` — display the full profile card. |
 | `/dream now` | Trigger a **dream cycle immediately** — runs a Haiku-powered analysis of your recent messages and updates the profile on the spot. Useful after a productive session. |
 | `/dream reset` | Clear all learned preferences for this chatroom and start fresh. |
+| `/soul [identity]` | Define a **persistent agent identity** for this chatroom — injected at the start of every preamble and preserved across session resets. Run `/soul` with no argument to view the current identity. Clear with `/soul reset`. |
+| `/think [question]` | Request an **explicit reasoning chain** — Claude walks through its thinking step by step before answering. Thinking blocks are shown as collapsible indigo cards in the message bubble. |
+| `/trace` | Show the **full thinking trace** from the last agent response — all thinking blocks rendered in sequence, collapsible, in the order they were generated. |
 | `/help` | List all available slash commands |
 
 ### @ References
@@ -1508,7 +1519,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| **v1.9.0** | April 2026 | Dream Mode — autonomous overnight preference learning. CatClaw builds a living profile of your skills, style, and workflow patterns and injects it into every session automatically. |
+| **v1.9.0** | April 2026 | Dream Mode (autonomous overnight preference learning), agent soul and identity persistence, explicit reasoning with `/think` and `/trace`, enhanced hooks with pause/resume and conditionals, smart memory auto-categorization, countdown ring on long-press send with haptic patterns. |
 | **v1.8.0** | April 2026 | Session recap, context window meter, effort control, quick side questions, retry last message, agent personas. |
 | **v1.7.0** | April 2026 | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON tables, auto-context from errors, implicit learning, cat mascot animations, haptic feedback. |
 | **v1.6.0** | April 2026 | `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` -- seven new analysis and automation commands. |
