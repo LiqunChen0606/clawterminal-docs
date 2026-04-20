@@ -85,9 +85,13 @@ These commands are handled by ClawTerminal itself and work in both CLI and API m
 
 ### Help
 
-| Command | Flags | Description |
-|---------|-------|-------------|
-| `/help` | — | List all available slash commands |
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/help` | — | List all available slash commands | `/help` |
+| `/docs` | — | Open the in-app docs browser (tutorials + examples, offline bundle, tap Refresh to pull latest from GitHub) | `/docs` |
+| `/docs tutorials` | — | Open the docs browser filtered to the Tutorials category | `/docs tutorials` |
+| `/docs examples` | — | Open the docs browser filtered to the Examples category | `/docs examples` |
+| `/docs <query>` | — | Open the docs browser pre-filtered by substring search on titles + summaries | `/docs frugal` |
 
 ---
 
