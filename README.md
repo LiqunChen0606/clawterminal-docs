@@ -7,12 +7,18 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.7.0 (April 2026)
+**Latest Version:** v1.8.0 (April 2026)
 
-### What's New in v1.7.0
+### What's New in v1.8.0
 
 | Feature | What it does | Learn More |
 |---------|-------------|------------|
+| **Session Recap** | `/recap` — message count, job stats, recent topics, session cost at a glance | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
+| **Context Window Meter** | `/context` — visual progress bar with percentage and actionable suggestions before you hit the limit | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
+| **Effort Control** | `/effort low\|medium\|high` — dial thinking depth from quick answers to thorough deep-dives | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
+| **Side Questions** | `/btw [question]` — ask a quick question without derailing your main conversation | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
+| **Retry Last Message** | `/retry` — remove the last exchange and re-send for a different response | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
+| **Agent Personas** | `/personality` — switch between senior, mentor, reviewer, architect, and hacker modes | [Examples](examples/session-intelligence.md) · [Tutorial](tutorials/session-intelligence.md) |
 | **Multi-Model Race** | Pit Claude vs Codex vs Gemini on the same prompt -- pick the winner | [Examples](examples/race.md) · [Tutorial](tutorials/race.md) |
 | **GitHub PR Workflow** | Create PRs, AI code review, CI checks -- all from your phone | [Examples](examples/pr-workflow.md) · [Tutorial](tutorials/pr-workflow.md) |
 | **Session Handoff** | Start on your phone, continue on your Mac (or vice versa) | [Examples](examples/handoff.md) · [Tutorial](tutorials/handoff.md) |
@@ -110,6 +116,10 @@ Claude Code has "Remote Control" (SSH tunnel to claude.ai) and "Channels" (Slack
 | **Split-screen terminal** | Collapsible mini SSH terminal below the chatroom; drag to resize; no tab-switching needed | No | No |
 | **Conversation branching** | Fork at any message, switch between branches to compare approaches | No | No |
 | **JSON table cards** | JSON arrays in code blocks auto-render as scrollable tables with headers | No | No |
+| **Session recap** | `/recap` — message count, job stats, topics, and cost for the current session | No | No |
+| **Context window meter** | `/context` — visual usage bar with percentage and suggestions before you hit the limit | No | No |
+| **Effort control** | `/effort low\|medium\|high` — tune thinking depth per question without changing models | No | No |
+| **Personality switching** | `/personality senior\|mentor\|reviewer\|architect\|hacker` — switch agent persona mid-session | No | No |
 
 **Bottom line:** If you want to check on a Claude task from your phone, Remote Control works fine. If you want to *actually develop* from your phone -- run agents, review PRs, preview web apps, manage files, and never lose work when your phone sleeps -- CatClaw is purpose-built for that.
 
@@ -164,6 +174,7 @@ Copy-paste-ready recipes for every CatClaw feature. Each file covers one area wi
 | [Workflow Automation](examples/workflow-automation.md) | `/conflicts` merge conflict resolver, `/notify` smart notifications, `/plan` enhanced dry-run, `@web` URL injection, `/pin` file pinning |
 | [AI Analysis & Automation](examples/ai-analysis.md) | `/changelog` release notes, `/gentest` test generation, `/security` audit, `/tribal` knowledge extraction, `/spec` requirements, `/graph` codebase queries, `/hooks` file-change automation |
 | [UX & Intelligence Features](examples/ux-features.md) | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON table cards, auto-context from terminal, implicit learning, cat mascot, haptic patterns |
+| [Session Intelligence](examples/session-intelligence.md) | `/recap`, `/context`, `/effort`, `/btw`, `/retry`, `/personality` — control how Claude thinks, responds, and remembers within a session |
 
 ---
 
@@ -219,6 +230,7 @@ Deep dives into individual features. Each tutorial walks you through setup, usag
 | [Smart Notifications](tutorials/smart-notifications.md) | Notifications for job completion, long responses, and to-do completion |
 | [AI Analysis & Automation](tutorials/ai-analysis.md) | `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` — step-by-step walkthroughs and real-world pipelines |
 | [UX & Intelligence Features](tutorials/ux-features.md) | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON table cards, auto-context, implicit learning — when and why to use each, productivity combinations |
+| [Session Intelligence](tutorials/session-intelligence.md) | `/recap`, `/context`, `/effort`, `/btw`, `/retry`, `/personality` — master your conversation flow with commands that give you control over how Claude thinks, responds, and remembers |
 
 ---
 
@@ -1125,6 +1137,14 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/workflow [name]` | Run a named multi-step **pipeline** defined in `workflows.json`. Steps with no dependencies run in parallel; dependent steps wait. Rendered as a live DAG. |
 | `/workflow list` | List all saved workflow pipelines. |
 | `/workflow save [name]` | Save the last N slash commands as a new pipeline. |
+| `/recap` | Show a **session summary** — message count, background job stats, recent topics, and cumulative session cost. Great for orienting yourself after stepping away. |
+| `/context` | Show a **visual context window usage bar** — percentage used, token estimate, and actionable suggestions (compact, unpin files, start a new room). |
+| `/effort low` | Switch to **concise mode** — Claude gives direct answers with minimal elaboration. Best for quick lookups and factual questions. |
+| `/effort medium` | Switch to **balanced mode** — the default. Claude balances thoroughness with brevity. |
+| `/effort high` | Switch to **thorough mode** — Claude thinks deeply, considers edge cases, and explains its reasoning. Best for architectural decisions and complex debugging. |
+| `/btw <question>` | Ask a **quick side question** without derailing the conversation. Claude uses full context but keeps the answer to 1–2 sentences. |
+| `/retry` | Remove the last exchange (your message + Claude's response) and **re-send** your message to get a different approach. |
+| `/personality <name>` | Switch Claude's **agent persona** for this chatroom. Options: `senior` (opinionated, pushes back), `mentor` (patient, uses analogies), `reviewer` (meticulous, correctness-focused), `architect` (systems thinker, scalability), `hacker` (ship fast, iterate), `default`. Run `/personality` with no argument to list all personas. |
 | `/help` | List all available slash commands |
 
 ### @ References
@@ -1356,6 +1376,14 @@ Enabled MCP servers are listed as available tools in every Claude chatroom.
 - **Branch to compare**: Fork at any message, try two approaches, switch between them. "Clear branches" when you have a winner.
 - **Implicit memory**: Say "no, we use camelCase" once. CatClaw remembers it for every future session. No `/remember` needed.
 - **JSON tables**: Ask for results as a JSON array and they render as a scrollable table. Great for comparing options.
+- **`/recap` on return**: Stepped away for a few hours? `/recap` shows message count, recent topics, and session cost — orient yourself before diving back in.
+- **`/context` before long prompts**: Check how full your context is before pasting a big file. Over 80%? Run `/compact` first.
+- **`/effort high` for architecture**: Starting a design discussion? Set `/effort high` so Claude thinks through edge cases and trade-offs, not just the happy path.
+- **`/effort low` for lookups**: "What's the default port for Redis?" doesn't need a treatise. `/effort low` keeps answers snappy.
+- **`/btw` without derailing**: Check a quick fact mid-conversation without losing your train of thought. "What's the Swift equivalent of Python's `map`?" in one line.
+- **`/retry` beats re-typing**: If Claude took the wrong angle, `/retry` is faster than editing and resending. No copy-paste needed.
+- **Persona stack for deep work**: `/effort high` + `/personality architect` before a design session. Switch to `/personality reviewer` when you want a critical eye.
+- **`/personality hacker` for prototypes**: Get the simplest code that works. Switch to `/personality reviewer` to audit it before shipping.
 
 ### Keep Your Mac Awake for SSH
 
@@ -1459,6 +1487,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 - **[Cross-Session AI Memory](tutorials/cross-session-memory.md)** — Save facts with `/remember`, auto-injected into every chatroom session
 - **[Shared Chatroom](tutorials/shared-chatroom.md)** — Share your AI session via room codes for real-time watch-only viewing
 - **[AI Analysis & Automation](tutorials/ai-analysis.md)** — `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` — step-by-step walkthroughs, real-world pipelines, and tips for each command
+- **[Session Intelligence](tutorials/session-intelligence.md)** — `/recap`, `/context`, `/effort`, `/btw`, `/retry`, `/personality` — master conversation flow with commands that control how Claude thinks, responds, and remembers
 
 ---
 
@@ -1466,6 +1495,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| **v1.8.0** | April 2026 | Session recap, context window meter, effort control, quick side questions, retry last message, agent personas. |
 | **v1.7.0** | April 2026 | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON tables, auto-context from errors, implicit learning, cat mascot animations, haptic feedback. |
 | **v1.6.0** | April 2026 | `/changelog`, `/gentest`, `/security`, `/tribal`, `/spec`, `/graph`, `/hooks` -- seven new analysis and automation commands. |
 | **v1.5.0** | April 2026 | `/dashboard` analytics, `/workflow` pipelines with visual DAG, auto-recovery for failed jobs, auth error auto-recovery. |
