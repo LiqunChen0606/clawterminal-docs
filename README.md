@@ -13,7 +13,7 @@
 
 | Feature | What it does | Learn More |
 |---------|-------------|------------|
-| **In-App Docs** | Browse tutorials and examples inside the app, even offline. `/docs` or Settings → Help & Documentation. Tap any example's "Try in chatroom" button to copy the command. Tap Refresh to pull the latest from GitHub. | [Examples](examples/in-app-docs.md) · [Tutorial](tutorials/in-app-docs.md) |
+| **Learn Hub** | One unified, searchable place for interactive tutorials, written docs, and examples. Tap the book icon in the chatroom toolbar, or use `/docs`, `/tutorial`. Type to search across everything. | [Examples](examples/learn-hub.md) · [Tutorial](tutorials/learn-hub.md) |
 | **Interactive Tutorials** | `/tutorial` launches 6 guided tracks (43 steps) that validate your real commands as you go — beginner, terminal, workflows, agents, devops, power. Also in **Settings → Learn ClawTerminal** | [Examples](examples/tutorials.md) · [Tutorial](tutorials/interactive-tutorials.md) |
 | **Context-Aware AI** | 4 on-device sensors inject time of day, calendar, motion/activity, and battery into every prompt. Chip bar shows active signals. Claude adapts tone and length to the moment | [Examples](examples/context-aware-ai.md) · [Tutorial](tutorials/context-aware-ai.md) |
 | **Frugal Mode** | `/frugal` per-chatroom, or `!` prefix for one-off sends — strips skills, memory, pinned files, and tells Claude to just act. Cheapest, fastest, most direct answers | [Examples](examples/frugal-mode.md) · [Tutorial](tutorials/frugal-mode.md) |
