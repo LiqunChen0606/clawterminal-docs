@@ -101,6 +101,8 @@ Install, uninstall, or check the status of third-party AI CLI tools on your Mac 
 | `/notifier install` | — | Install a launchd daemon on your Mac that fires native macOS notifications when background jobs complete (no cloud, no APNs). Polls `/tmp/.claw_out_*.txt` every 2s for completion sentinels | `/notifier install` |
 | `/notifier uninstall` | — | Bootout the launchd agent and remove `~/.clawnotifier` and the launch agent plist | `/notifier uninstall` |
 | `/notifier status` | — | Check `launchctl list` for the daemon and tail the daemon log | `/notifier status` |
+| `/notifier setup` | — | Open the APNs setup wizard — Mac-hosted Apple Push Notifications for instant native iPhone banners. Requires an Apple Developer account + .p8 auth key | `/notifier setup` |
+| `/notifier telegram` | — | Open the Telegram bot setup wizard — universal instant iPhone push via your own Telegram bot. No Apple Developer account required | `/notifier telegram` |
 | `/simpletes` | — | Show the SimpleTES description and the list of subcommands | `/simpletes` |
 | `/simpletes install` | — | Install SimpleTES on your Mac via `git clone` + `uv sync` (auto-installs `uv` if missing). Pairs with `/research` for evaluation-driven discovery | `/simpletes install` |
 | `/simpletes uninstall` | — | Remove `~/.simpletes` | `/simpletes uninstall` |
