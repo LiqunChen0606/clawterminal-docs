@@ -13,6 +13,7 @@
 
 | Feature | What it does | Learn More |
 |---------|-------------|------------|
+| **Mac Notifications + Research Mode** | `/notifier install` adds a tiny Mac daemon that fires native macOS notifications when background jobs complete (no cloud, no APNs). New `/research <task>` runs SimpleTES on your Mac for evaluation-driven discovery — Haiku translates the task into init_program + evaluator files automatically. Per-chatroom Super Research Mode toggle reminds you the command is unlocked. | [Examples](examples/research-mode.md) · [Tutorial](tutorials/research-mode.md) |
 | **Tool Installers** | One-tap install or uninstall third-party AI CLIs on your Mac. `/openclaw install`, `/hermes install`, `/openclaw uninstall`, etc. Confirmation card previews the exact command before it runs. | [Examples](examples/tool-installers.md) · [Tutorial](tutorials/tool-installers.md) |
 | **Learn Hub** | One unified, searchable place for interactive tutorials, written docs, and examples. Tap the book icon in the chatroom toolbar, or use `/docs`, `/tutorial`. Type to search across everything. | [Examples](examples/learn-hub.md) · [Tutorial](tutorials/learn-hub.md) |
 | **Interactive Tutorials** | `/tutorial` launches 6 guided tracks (43 steps) that validate your real commands as you go — beginner, terminal, workflows, agents, devops, power. Also in **Settings → Learn ClawTerminal** | [Examples](examples/tutorials.md) · [Tutorial](tutorials/interactive-tutorials.md) |

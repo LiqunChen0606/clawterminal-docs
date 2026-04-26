@@ -97,8 +97,24 @@ Install, uninstall, or check the status of third-party AI CLI tools on your Mac 
 | `/hermes install` | — | Install the Hermes Agent CLI via the upstream `install.sh` script | `/hermes install` |
 | `/hermes uninstall` | — | Remove the `~/.local/bin/hermes` symlink and the `~/.hermes-agent/` venv | `/hermes uninstall` |
 | `/hermes status` | — | Print the Hermes binary path and version | `/hermes status` |
+| `/notifier` | — | Show the ClawNotifier description and the list of subcommands | `/notifier` |
+| `/notifier install` | — | Install a launchd daemon on your Mac that fires native macOS notifications when background jobs complete (no cloud, no APNs). Polls `/tmp/.claw_out_*.txt` every 2s for completion sentinels | `/notifier install` |
+| `/notifier uninstall` | — | Bootout the launchd agent and remove `~/.clawnotifier` and the launch agent plist | `/notifier uninstall` |
+| `/notifier status` | — | Check `launchctl list` for the daemon and tail the daemon log | `/notifier status` |
+| `/simpletes` | — | Show the SimpleTES description and the list of subcommands | `/simpletes` |
+| `/simpletes install` | — | Install SimpleTES on your Mac via `git clone` + `uv sync` (auto-installs `uv` if missing). Pairs with `/research` for evaluation-driven discovery | `/simpletes install` |
+| `/simpletes uninstall` | — | Remove `~/.simpletes` | `/simpletes uninstall` |
+| `/simpletes status` | — | Confirm SimpleTES is installed by listing the package via `uv pip list` | `/simpletes status` |
 
-**Repos:** [openclaw/openclaw](https://github.com/openclaw/openclaw) · [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent)
+**Repos:** [openclaw/openclaw](https://github.com/openclaw/openclaw) · [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) · [wq-will/SimpleTES](https://github.com/wq-will/SimpleTES)
+
+### Research
+
+Evaluation-driven discovery via SimpleTES on your Mac. Requires `/simpletes install` first.
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/research <task>` | — | Translate a natural-language research task into SimpleTES `init_program.py` + `evaluator.py` via Haiku, present them in a confirmation sheet with adjustable knobs (`--num-chains`, `--k-candidates`, `--total-budget`), then dispatch the search as a background job on your Mac | `/research find a more space-efficient bloom filter` |
 
 ### Help
 
