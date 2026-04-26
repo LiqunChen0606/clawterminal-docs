@@ -83,6 +83,23 @@ These commands are handled by ClawTerminal itself and work in both CLI and API m
 | `/frugal` | — | Toggle chatroom-level Frugal Mode on/off. Strips skills, memory, pinned files, dream profile, device context, tribal knowledge | `/frugal` |
 | `!<message>` | — | One-off frugal send — applies Frugal Mode to this single message without changing the chatroom setting | `!what's the default Postgres port?` |
 
+### Tool Installers
+
+Install, uninstall, or check the status of third-party AI CLI tools on your Mac via SSH. Each subcommand opens a confirmation card with the exact shell command preview before anything runs; on confirm, the work dispatches as a background job (output streams to the Jobs tab, push notification on completion).
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/openclaw` | — | Show the OpenClaw description, repo link, and the list of subcommands | `/openclaw` |
+| `/openclaw install` | — | Install the OpenClaw CLI globally via npm and run the onboarding daemon installer | `/openclaw install` |
+| `/openclaw uninstall` | — | Stop the OpenClaw launchd daemon and `npm uninstall -g openclaw` | `/openclaw uninstall` |
+| `/openclaw status` | — | Print the OpenClaw binary path and version | `/openclaw status` |
+| `/hermes` | — | Show the Hermes Agent description, repo link, and the list of subcommands | `/hermes` |
+| `/hermes install` | — | Install the Hermes Agent CLI via the upstream `install.sh` script | `/hermes install` |
+| `/hermes uninstall` | — | Remove the `~/.local/bin/hermes` symlink and the `~/.hermes-agent/` venv | `/hermes uninstall` |
+| `/hermes status` | — | Print the Hermes binary path and version | `/hermes status` |
+
+**Repos:** [openclaw/openclaw](https://github.com/openclaw/openclaw) · [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent)
+
 ### Help
 
 | Command | Flags | Description | Example |

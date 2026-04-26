@@ -13,6 +13,7 @@
 
 | Feature | What it does | Learn More |
 |---------|-------------|------------|
+| **Tool Installers** | One-tap install or uninstall third-party AI CLIs on your Mac. `/openclaw install`, `/hermes install`, `/openclaw uninstall`, etc. Confirmation card previews the exact command before it runs. | [Examples](examples/tool-installers.md) · [Tutorial](tutorials/tool-installers.md) |
 | **Learn Hub** | One unified, searchable place for interactive tutorials, written docs, and examples. Tap the book icon in the chatroom toolbar, or use `/docs`, `/tutorial`. Type to search across everything. | [Examples](examples/learn-hub.md) · [Tutorial](tutorials/learn-hub.md) |
 | **Interactive Tutorials** | `/tutorial` launches 6 guided tracks (43 steps) that validate your real commands as you go — beginner, terminal, workflows, agents, devops, power. Also in **Settings → Learn ClawTerminal** | [Examples](examples/tutorials.md) · [Tutorial](tutorials/interactive-tutorials.md) |
 | **Context-Aware AI** | 4 on-device sensors inject time of day, calendar, motion/activity, and battery into every prompt. Chip bar shows active signals. Claude adapts tone and length to the moment | [Examples](examples/context-aware-ai.md) · [Tutorial](tutorials/context-aware-ai.md) |
