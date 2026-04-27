@@ -112,11 +112,22 @@ Install, uninstall, or check the status of third-party AI CLI tools on your Mac 
 
 ### Research
 
-Evaluation-driven discovery via SimpleTES on your Mac. Requires `/simpletes install` first.
+Evaluation-driven discovery via parallel propose-evaluate-refine. Two modes: **Native** (default — runs in-app via the Anthropic API, no install required) and **SimpleTES (Mac)** (runs `~/.simpletes` for code-execution evaluators; requires `/simpletes install` first).
 
 | Command | Flags | Description | Example |
 |---------|-------|-------------|---------|
-| `/research <task>` | — | Translate a natural-language research task into SimpleTES `init_program.py` + `evaluator.py` via Haiku, present them in a confirmation sheet with adjustable knobs (`--num-chains`, `--k-candidates`, `--total-budget`), then dispatch the search as a background job on your Mac | `/research find a more space-efficient bloom filter` |
+| `/research <task>` | — | Open the research sheet with a Mode picker (Native vs SimpleTES). **Native mode (default):** in-app propose-evaluate-refine loop via the Anthropic API — about $0.005–0.02 per run on Haiku, with live progress and a full trajectory graph in the result sheet. Best for text-heavy tasks (prompt engineering, naming, design exploration). **SimpleTES mode:** Haiku translates the task into `init_program.py` + `evaluator.py` and dispatches a propose-evaluate-refine search as a background job on your Mac — pick this for code-execution evaluators with measurable metrics. | `/research find a more space-efficient bloom filter` |
+
+### Search Mode
+
+Per-chatroom toggle that routes every regular user message through the Native Research Engine instead of single-shot Claude. When on, each send becomes a parallel propose-evaluate-refine search and the best result is returned with a score + cost. The indigo 🔍 chip in the mode banner shows the room is in search mode.
+
+| Command | Flags | Description | Example |
+|---------|-------|-------------|---------|
+| `/search on` | — | Enable Search Mode for this chatroom — every regular message becomes a parallel propose-evaluate-refine search via the Native Research Engine. Tap the result to open the trajectory graph (chains × rounds, best attempt highlighted in gold). | `/search on` |
+| `/search off` | — | Disable Search Mode — messages return to single-shot Claude. | `/search off` |
+
+You can also enable Search Mode at room creation: tap **+** to open the new-chatroom sheet and tick the third toggle ("Search Mode — every message becomes a parallel search").
 
 ### Help
 
