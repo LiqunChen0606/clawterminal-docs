@@ -13,8 +13,9 @@
 
 | Feature | What it does | Learn More |
 |---------|-------------|------------|
+| **Trajectory Library** | Pin the winner from any `/research` run or Search Mode result into your chatroom's preamble. Every follow-up message Claude sees is grounded by that pinned conclusion — no re-explaining, no drift. Up to 3 pins per chatroom; the 📌 N chip shows active pins. Tap the chip to manage or unpin. Pins survive Frugal Mode. | [Examples](examples/trajectory-library.md) · [Tutorial](tutorials/trajectory-library.md) |
 | **Search Mode + Trajectory Graph** | Flip `/search on` in any chatroom (or tick the toggle when you create a new one). Every message becomes a parallel propose-evaluate-refine search instead of a single-shot answer — three chains explore different angles, rounds refine the best ones. Tap the result to open the new trajectory graph: chains as columns, refinement rounds as rows, best attempt highlighted in gold with a ★. The indigo 🔍 chip in the mode banner reminds you the room is in search mode. | [Examples](examples/search-mode.md) · [Tutorial](tutorials/search-mode.md) |
-| **Native Research Engine** | `/research` no longer needs SimpleTES installed on your Mac. The new in-app loop runs propose-evaluate-refine entirely against the Claude API — about $0.01 per run on Haiku, with live progress and a full trajectory graph in the result sheet. Best for text-heavy research like prompt engineering, design exploration, and strategic planning. SimpleTES (Mac) mode is still one tap away in the picker for code-execution evaluators. | [Examples](examples/native-research.md) · [Tutorial](tutorials/native-research.md) |
+| **Native Research Engine** | `/research` no longer needs SimpleTES installed on your Mac. The new in-app loop runs propose-evaluate-refine entirely against the Claude API — about $0.01 per run on Haiku, with live progress and a full trajectory graph in the result sheet. Best for text-heavy research like prompt engineering, design exploration, and strategic planning. SimpleTES (Mac) mode is still one tap away in the picker for code-exploration evaluators. | [Examples](examples/native-research.md) · [Tutorial](tutorials/native-research.md) |
 | **Mac-hosted APNs Push** | `/notifier setup` walks you through a 5-step wizard (Apple Developer portal → download .p8 key → Mac config → device-token registration → test push). Your own Mac then posts directly to Apple's push servers, so iPhone gets real native push banners when background jobs finish. No third-party cloud, no relay server. Requires a paid Apple Developer account — single-developer use only. | [Examples](examples/telegram-notifications.md) · [Tutorial](tutorials/telegram-notifications.md) |
 | **Telegram Bot Notifications** | `/notifier telegram` opens a 4-step wizard: create a bot via Telegram's @BotFather, paste the token, send your bot a message, save. Your Mac then routes every job-completion through your own bot — instant iPhone push via the Telegram app. No Apple Developer account, no certificates, no cloud server, no $99/yr. | [Examples](examples/telegram-notifications.md) · [Tutorial](tutorials/telegram-notifications.md) |
 | **Mac Notifications + Research Mode** | `/notifier install` adds a tiny Mac daemon that fires native macOS notifications when background jobs complete (no cloud, no APNs). New `/research <task>` runs SimpleTES on your Mac for evaluation-driven discovery — Haiku translates the task into init_program + evaluator files automatically. Per-chatroom Super Research Mode toggle reminds you the command is unlocked. | [Examples](examples/research-mode.md) · [Tutorial](tutorials/research-mode.md) |
@@ -215,6 +216,9 @@ Copy-paste-ready recipes for every CatClaw feature. Each file covers one area wi
 | [Dev Wrapped](examples/wrapped.md) | `/wrapped` 9-page recap — real example with activity, spend, topics, longest session |
 | [Screenshot Memory](examples/screenshot-memory.md) | `/screenshot` and `/screenshots` — capture, tag, search, real scenarios |
 | [Proactive AI Insights](examples/proactive-insights.md) | 4 detectors with real notification examples and weekly rhythm |
+| [Search Mode](examples/search-mode.md) | `/search on` chatrooms — 7 scenarios including naming, design tradeoffs, taglines, policy brainstorming, prompt iteration, when NOT to use it, and reading the trajectory graph |
+| [Native Research](examples/native-research.md) | `/research` Native mode — designing system prompts, naming features, App Store copy, strategic options, taglines, when NOT to use it (SimpleTES territory), fast product design iteration |
+| [Trajectory Library](examples/trajectory-library.md) | Pinning research winners — auth architecture, product naming, code review principles, ADRs, multi-decision design sessions, when NOT to pin, reading the score before pinning |
 
 ---
 
@@ -283,6 +287,9 @@ Deep dives into individual features. Each tutorial walks you through setup, usag
 | [Dev Wrapped](tutorials/dev-wrapped.md) | `/wrapped` — Spotify-Wrapped-style 9-page recap of your week: top commands, spend, peak hour, longest session |
 | [Screenshot Memory](tutorials/screenshot-memory.md) | `/screenshot` captures chatroom view with auto-tagging; `/screenshots` opens searchable gallery |
 | [Proactive AI Insights](tutorials/proactive-insights.md) | 4 background pattern detectors (weekday failures, command repetition, session length, cost spikes) — notifications when patterns emerge |
+| [Search Mode](tutorials/search-mode.md) | How the propose-evaluate-refine loop works, when to use it, the Trajectory Graph, cost and latency, tips for getting the most out of each search |
+| [Native Research Engine](tutorials/native-research.md) | Two modes (Native vs SimpleTES), knob configuration, cost breakdown, the Trajectory Graph, when to use `/research` vs Search Mode |
+| [Trajectory Library](tutorials/trajectory-library.md) | Pinning research winners into the chatroom preamble, the 📌 chip, cap-3 eviction dialog, Frugal Mode interaction, verifying a pin is working |
 
 ---
 
