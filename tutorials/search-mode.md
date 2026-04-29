@@ -1,85 +1,107 @@
 # Search Mode — Tutorial
 
-> Most chats with an AI feel like asking a single oracle: you type, it answers, you refine, it answers again. Search Mode flips that on its head. Flip the toggle and every message you send becomes a small parallel search — three chains explore different angles at once, the best ones get refined, and the strongest result lands as your reply. You don't change how you type; you just get answers that have already been pressure-tested before they reach you.
+> Most questions have one right answer. Some questions are better served by exploring three different angles at once, scoring them, and giving you the best one. Search Mode is how you ask for that. Type `?your question` and ClawTerminal routes it through a parallel propose-evaluate-refine loop — instead of a single-shot reply, you get the strongest candidate from a small field of alternatives.
 
 ---
 
 ## Part 1: What Search Mode Actually Does
 
-When Search Mode is off, sending a message is a single round trip: your text goes to Claude, Claude writes a reply, you see it. Fast and cheap, but it's one shot.
+When you send a regular message, it's a single round trip: your text goes to the AI, the AI replies, done. Fast, cheap, and usually fine.
 
-When Search Mode is on, every regular message you send goes through the **Native Research Engine** instead. The engine runs a small propose-evaluate-refine loop:
+When you prefix a message with `?`, that message gets routed through the **Search engine** instead. The engine runs a small propose-evaluate-refine loop:
 
-1. **Propose** — three independent chains generate three different candidate replies in parallel. Same prompt, three angles.
-2. **Evaluate** — another Claude call rates all the candidates against the original task and assigns a score.
+1. **Propose** — three independent chains generate three different candidate replies in parallel. Same task, three angles.
+2. **Evaluate** — a scoring call rates all the candidates against the original task and assigns a score from 0 to 1.
 3. **Refine** — the top-K candidates seed a refinement round; each gets a follow-up pass that tries to improve on it.
-4. **Pick** — the highest-scoring final attempt is posted as your assistant reply, complete with a score badge and the dollar cost of the search.
+4. **Pick** — the highest-scoring final attempt is posted as the assistant reply, complete with a score badge and cost.
 
-Defaults are tuned for chat frequency: 3 chains × depth 2 × K=2, total budget about 12 Haiku calls. That's roughly $0.005–0.02 per message on Haiku 4.5. Slower than single-shot (a search takes ~5–15 seconds) but the answers are noticeably better for open-ended questions.
-
-The best part: **you don't change how you type.** Just send a message. The chip in the mode banner reminds you the room is doing search instead of single-shot.
+The `?` prefix is the only trigger. There is no chatroom-wide toggle — every `?` message is a deliberate choice to trade a few seconds and a small amount of money for a pressure-tested answer.
 
 ---
 
 ## Part 2: When to Use It
 
-Search Mode shines for questions where "the right answer" is fuzzy and exploration helps. It's overkill — and slow — for lookups.
+Search Mode shines for questions where "the right answer" is fuzzy and exploration helps. It's overkill — and slower — for lookups.
 
 **Good fits:**
 
-- Naming things (products, branches, variables, files)
+- Naming things (products, branches, variables, features)
 - Drafting a tagline, headline, or commit message
 - Exploring design tradeoffs ("Postgres vs DynamoDB for event sourcing — what should I weigh?")
 - Brainstorming approaches before you commit to one
-- Prompt engineering — iterating on how to ask Claude something
-- Strategy questions where you want a few angles considered, not just the first one
+- Prompt engineering — iterating on how to phrase something for Claude
+- Strategy questions where you want a few angles considered, not just the first
 
 **Not great:**
 
-- "What port does Postgres use by default?" (one-shot lookups)
+- "What port does Postgres use by default?" (one-shot lookup)
 - "Fix this stack trace" (you want a direct answer, not a search)
 - Long agentic work that needs tool use (search runs are stateless text-only)
 - Anything where speed matters more than depth
 
-A useful rule: if you'd benefit from getting three different answers and picking your favorite, Search Mode does that for you automatically. If the question has one right answer, just chat normally.
+A useful rule: if you'd benefit from getting three different answers and picking your favorite, the `?` prefix does that automatically. If the question has one right answer, just send normally.
 
 ---
 
-## Part 3: How to Enable
+## Part 3: How to Trigger It
 
-Two paths.
-
-**At room creation:** tap **+** in the room tab bar. The new-chatroom sheet shows three toggles — Frugal, Super Research, and **Search Mode**. Tick Search Mode. Tap Create. The new room opens with the indigo 🔍 chip already visible.
-
-**At runtime in any room:**
+**Inline, per message:** start your message with `?`.
 
 ```
-/search on
+?what's the best name for this Swift protocol that validates SSHconnection health?
 ```
 
-A toast confirms, the 🔍 chip appears in the mode banner above the input field, and from the next message onward you're in Search Mode. Flip it off the same way:
+That single message becomes a search. The next message you send normally goes back to single-shot — no mode to flip off.
+
+**Long-press send:** tap and hold the send button → choose **Send with Search** from the context menu. This sends the current message through the search engine once without any prefix typing. Handy if you've already typed your message and just decided it deserves search treatment.
+
+**`??` carve-out:** if you genuinely need a leading `?` as text (say, for a regexp or a markdown table), prefix the message with `??`:
 
 ```
-/search off
+??what regex matches optional trailing punctuation
 ```
 
-The toggle is per-chatroom. You can leave one room in search mode and use another for regular chat without any conflict.
+The double `??` is stripped to a single `?` and the message is sent normally with no search routing.
 
 ---
 
-## Part 4: What You'll See When You Send
+## Part 4: Two Backends — API Key vs CLI Fallback
 
-Type a message and tap send. Your message lands in the conversation as usual. Just below it, a placeholder appears: **🔍 Searching: <your task>** with a small spinner.
+Search Mode has two backends depending on whether you've configured an Anthropic API key in Settings.
+
+**With an API key (Settings → API Key):**
+
+The in-app **Native Research Engine** handles the full loop — parallel Haiku 4.5 calls for proposals, scoring, and refinement. You get a live progress indicator as chains spawn, real scores, a full trajectory tree, and a structured result sheet.
+
+- Time: ~10–15 seconds per send
+- Cost: ~$0.005–0.02 per search (Haiku 4.5, default 3 chains × depth 2 × K=2)
+- Full trajectory graph in the result sheet
+
+**Without an API key (CLI fallback):**
+
+The search is delegated to whatever AI CLI is configured in the chatroom (Claude, Codex, Gemini, or Aider). ClawTerminal sends a search-flavored meta-prompt that instructs the CLI to internally explore three approaches, score them, and report the best. The result is parsed into the same rich result sheet — score badges, ranking — so the UX matches the API-key path.
+
+- Time: ~15–30 seconds (depends on the CLI's own latency)
+- Cost: billed against the CLI's own API usage, not ClawTerminal
+- Same result sheet, same score display; no trajectory graph
+
+Both paths produce the same result sheet. The main difference is the trajectory graph and tighter per-attempt score data — those only exist in the API-key path.
+
+---
+
+## Part 5: What You'll See When You Send
+
+Type a message starting with `?` and tap send. The message lands in the conversation. Just below it, a placeholder appears: **Searching: \<your task\>** with a spinner.
 
 Behind the scenes the engine spawns three chains. Each chain runs depth-2: it generates an initial proposal, scores it, picks the best K=2 to seed a refinement round, generates the refinement, scores again. All in parallel.
 
-Five to fifteen seconds later, the placeholder is replaced with the assistant's actual reply — the highest-scoring final attempt. A small score badge ("score 0.82 · $0.012") sits beneath the reply showing how confident the engine was in this answer and what the search cost.
+Ten to fifteen seconds later, the placeholder is replaced with the assistant's actual reply — the highest-scoring final attempt. A small score badge ("score 0.82 · $0.012") sits beneath the reply showing confidence and cost.
 
-If you want to see the full search — what the other chains explored, which got refined, why the winner won — tap into the result. The new **Trajectory Graph** opens.
+If you want to see the full search — what the other chains explored, which got refined, why the winner won — tap into the result to open the **Trajectory Graph**.
 
 ---
 
-## Part 5: The Trajectory Graph
+## Part 6: The Trajectory Graph
 
 The graph is a small grid:
 
@@ -91,32 +113,49 @@ The graph is a small grid:
   - Red: < 0.4 (weak)
 - **The winning attempt has a gold border and a ★ marker.** That's the one you got back as your reply.
 
-Tap any node and a detail sheet slides up showing that attempt's full content plus Claude's rationale for the score it got. This is genuinely interesting to read — you'll see ideas that almost won and refinements that hurt instead of helped. It's also useful debugging when a search returns something weird: skim the alternatives and you'll often spot a better candidate that just got out-scored.
+Tap any node and a detail sheet slides up showing that attempt's full content plus the scorer's rationale. This is worth reading — you'll see ideas that almost won and refinements that hurt instead of helped.
 
-The graph is collapsible inside the result sheet, but it opens by default.
+The graph is available in the API-key path. CLI-fallback results show ranked alternatives in the result sheet but not the full grid.
 
 ---
 
-## Part 6: Cost & Performance
+## Part 7: The 🔍 Search Tab in the Jobs Panel
 
-Search Mode is not free. Each send costs about **$0.005–$0.02** on Haiku 4.5 with the default settings. For a chat session of 20 messages, that's roughly $0.10–$0.40 — meaningful, but not crazy.
+Every `?prefix` message that runs a search creates a job entry in the Background Jobs panel, under the new **🔍 Search** tab.
+
+Each row in the tab shows:
+
+- The actual question you asked (extracted from the task, not the meta-prompt)
+- Status: Running / Done / Failed
+- Score and cost for completed jobs
+
+Tap a Done row to re-present the full result sheet — so you can revisit a search result after dismissing it, even if you've sent many more messages since.
+
+---
+
+## Part 8: Cost & Performance
+
+A `?prefix` search is not free. With the API-key backend, each search costs about **$0.005–$0.02** on Haiku 4.5 with default settings (3 chains × depth 2 × K=2). For a session where you send 10 `?` messages, that's roughly $0.05–$0.20.
+
+With the CLI fallback, cost is absorbed into the CLI's own billing — you don't see a separate ClawTerminal line item.
 
 What you trade for the cost:
 
 - **Quality on open-ended questions.** The reply has been pressure-tested against alternatives.
-- **Latency.** A single send takes 5–15 seconds instead of 1–3.
+- **Latency.** A search takes 10–30 seconds instead of 1–3.
 - **Determinism.** Same input twice may give different replies — three chains will explore different angles each time. That's a feature for brainstorming, a bug for "give me the same answer again."
 
-If a particular send isn't worth the search budget, flip Search Mode off (`/search off`), send the message, and flip it back on. Or use a separate non-search chatroom for those messages.
+If a message isn't worth the search budget, just send it without the `?`.
 
 ---
 
-## Part 7: Tips
+## Part 9: Tips
 
-- **Use it for the messy parts.** Open the chatroom in Search Mode for the brainstorm, then either copy the result into a normal room for follow-up or flip Search Mode off when you've narrowed in on the path forward.
-- **Read the trajectory when something feels off.** If the winner isn't quite right, the graph often has a near-winner that fits better. Long-press the assistant reply → there's a "Send as Message" affordance from the result sheet that pastes any attempt into the input bar.
-- **Don't combine with Frugal Mode.** Frugal strips the preamble to keep replies cheap and direct; Search adds parallel exploration. They pull in opposite directions, and Search will dominate the cost anyway.
-- **Watch the score, not just the reply.** A reply with score 0.45 means even the engine wasn't confident. That's a hint to rephrase your task before sending another one.
+- **Use `?` for the messy parts.** Draft normally, then send the hard naming/design questions with `?`.
+- **Read the trajectory when something feels off.** If the winner isn't quite right, the graph often has a near-winner that fits better. From the result sheet, any attempt has a "Send as Message" affordance that pastes it into the input bar.
+- **Don't combine with Frugal Mode `!` overrides.** Frugal keeps things direct and cheap; search adds exploration overhead. They pull in opposite directions.
+- **Watch the score, not just the reply.** A reply with score 0.45 means even the engine wasn't confident. Rephrase the task and search again.
+- **`/research <task>`** is still the right tool for long-form, one-off research questions where you want to set chains/budget explicitly. The `?` prefix is for lightweight per-message exploration in your normal chat flow.
 
 ---
 
@@ -124,17 +163,20 @@ If a particular send isn't worth the search budget, flip Search Mode off (`/sear
 
 | Action | How |
 |--------|-----|
-| Enable for a new room | Tick the third toggle in NewRoomSheet |
-| Enable for an existing room | `/search on` |
-| Disable | `/search off` |
-| Inspect a search | Tap the assistant reply with the score badge |
-| See alternatives | Open the trajectory graph in the result sheet |
-| Reuse an alternative | Tap a node in the graph, "Send as Message" from the detail sheet |
+| Run a search on one message | Start the message with `?` |
+| Force search from long-press | Hold send button → **Send with Search** |
+| Use a literal leading `?` | Start with `??` (doubled prefix) |
+| Inspect a search result | Tap the message with the score badge |
+| Revisit an old search | Open Jobs panel → 🔍 Search tab → tap the row |
+| See alternatives / trajectory | Open the trajectory graph in the result sheet |
+| Reuse an alternative | Tap a node in the graph → "Send as Message" |
 
-**Cost:** ~$0.005–$0.02 per send on Haiku 4.5 with defaults (3 chains × depth 2 × K=2 × 12 calls).
+**API-key backend cost:** ~$0.005–$0.02 per search on Haiku 4.5 with defaults.
 
-**Latency:** 5–15 seconds per send.
+**CLI-fallback:** no extra cost to ClawTerminal; billed to the CLI's API account.
 
-**Best for:** open-ended questions, brainstorming, naming, design tradeoffs, prompt iteration.
+**Latency:** 10–15s (API key) or 15–30s (CLI fallback).
+
+**Best for:** naming, brainstorming, design tradeoffs, prompt iteration, drafting.
 
 **Not for:** one-shot lookups, urgent debugging, agentic tool-using work.

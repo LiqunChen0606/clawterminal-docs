@@ -94,12 +94,12 @@ Useful for:
 
 ---
 
-## When to use `/research` vs Search Mode
+## When to use `/research` vs the `?` prefix
 
-- **`/research <task>`** = one-off explicit search for a specific question. Card → knobs → Run.
-- **Search Mode** (`/search on`) = chatroom-wide setting where every message is a search. Faster cadence, no card per send.
+- **`/research <task>`** = one-off explicit search for a specific question. Card → knobs → Run. Best for deliberate, high-budget explorations where you want to tune chains and budget.
+- **`?prefix`** = per-message lightweight search inline in normal chat. No card, no knobs — defaults apply. Best for quick naming, tradeoff, or brainstorm questions you hit while working.
 
-Use `/research` for occasional deep dives. Use Search Mode for an ideation chatroom where everything you type benefits from breadth.
+Use `/research` for occasional deep dives. Use the `?` prefix for on-the-fly exploration without breaking your chat flow.
 
 ---
 

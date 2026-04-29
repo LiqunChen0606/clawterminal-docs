@@ -34,7 +34,7 @@ Native mode is great here because copy quality is subjective. 3 chains try diffe
 
 > *"give me 3 distinct strategies for monetizing a developer tool app — recurring subscription, one-time purchase, freemium — and tell me which fits a niche power-user audience best"*
 
-Search Mode would also work, but `/research` lets you crank up the budget for harder strategic questions. Set chains=4, depth=3, budget=30. The chains explore each strategy in depth before the judge weighs them. Cost: ~$0.04, but you get a defensible answer with explicit reasoning.
+The `?` prefix would also work, but `/research` lets you crank up the budget for harder strategic questions. Set chains=4, depth=3, budget=30. The chains explore each strategy in depth before the judge weighs them. Cost: ~$0.04, but you get a defensible answer with explicit reasoning.
 
 ---
 
