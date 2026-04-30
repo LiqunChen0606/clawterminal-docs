@@ -7,12 +7,13 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.0 (April 2026)
+**Latest Version:** v1.9.1 (April 2026)
 
-### What's New in v1.9.0
+### What's New in v1.9.1
 
 | Feature | What it does | Learn More |
 |---------|-------------|------------|
+| **Skill Extraction from Trajectories** | Turn any research result, `?prefix` exploration, or background-job trajectory into a reusable Skill. **Select** 2-N entries → **Save as Skill (N)** → Haiku classifies as RULE (deliberation) vs RECIPE (steps) and auto-fills name, description, 3-6 keywords, and markdown body. Edit and save. Loads automatically the next time a similar question matches its keywords. Works with an Anthropic API key (3-5s) or via Claude CLI on your Mac (30-60s, no key needed). The rich result view also has a **Job Output** toggle so you can flip back to the raw tmux output for any `?prefix` job. | [Examples](examples/skill-extraction.md) · [Tutorial](tutorials/skill-extraction.md) |
 | **Trajectory Library** | Pin the winner from any `/research` run or Search Mode result into your chatroom's preamble. Every follow-up message Claude sees is grounded by that pinned conclusion — no re-explaining, no drift. Up to 3 pins per chatroom; the 📌 N chip shows active pins. Tap the chip to manage or unpin. Pins survive Frugal Mode. | [Examples](examples/trajectory-library.md) · [Tutorial](tutorials/trajectory-library.md) |
 | **Search Mode + Trajectory Graph** | Start any message with `?` to route it through the parallel propose-evaluate-refine engine — three chains explore different angles, rounds refine the best ones. Tap the result to open the trajectory graph: chains as columns, refinement rounds as rows, best attempt highlighted in gold with a ★. Works with an API key (in-app Haiku, full trajectory) or falls back to the chatroom's CLI for users without one. Long-press send → **Send with Search** for a one-off trigger without typing `?`. | [Examples](examples/search-mode.md) · [Tutorial](tutorials/search-mode.md) |
 | **Native Research Engine** | `/research` no longer needs SimpleTES installed on your Mac. The new in-app loop runs propose-evaluate-refine entirely against the Claude API — about $0.01 per run on Haiku, with live progress and a full trajectory graph in the result sheet. Best for text-heavy research like prompt engineering, design exploration, and strategic planning. SimpleTES (Mac) mode is still one tap away in the picker for code-exploration evaluators. | [Examples](examples/native-research.md) · [Tutorial](tutorials/native-research.md) |
