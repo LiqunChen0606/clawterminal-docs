@@ -212,3 +212,25 @@ This project follows these conventions:
 Tap a skill > **Export** to save it as a JSON file. Share it with teammates who can **Import** it directly.
 
 This is useful for standardizing AI behavior across a team — everyone uses the same security or TDD skill definition.
+
+---
+
+### Audit your skill library (Last fired badge + sort)
+
+Saved skills accumulate. Built-in skills + skills you imported + skills you extracted from trajectories can reach 30+ entries fast, and most chatrooms only meaningfully use a handful. The audit view makes it easy to see which ones are pulling their weight.
+
+1. Open the chatroom toolbar > **🧩 Skills** to bring up Manage Skills.
+2. Each row in the Installed list now shows a small clock icon and a relative-date badge below the description: **"5d ago"**, **"just now"**, **"2w ago"** for skills that have fired recently, or **"Never"** for skills that haven't matched any message yet.
+3. Tap the **arrow.up.arrow.down.circle** icon in the toolbar to switch the sort order:
+   - **Name** — alphabetical (the default).
+   - **Last used** — most recently fired skills at the top, "Never" skills sink to the bottom.
+
+Use the badge to triage:
+
+- A skill that says "Never" after weeks of use probably has keywords too narrow (it never matches the messages you actually send) — open it in the editor and broaden the keyword list, or disable it.
+- A skill that says "3 months ago" might be technically working but not relevant to your current project — toggle it off so it stops eating preamble tokens.
+- Skills with recent fired dates ("just now", "5m") are doing their job — keep them on.
+
+The badge updates whenever a skill's full content is injected into the preamble (i.e., when its keywords match your message). Skills that show up in the always-injected index without their full body don't count as "fired" and won't update the badge.
+
+**Note:** older skills saved before this update show "Never" until the next time they fire. The schema is backward-compatible — no migration needed.
