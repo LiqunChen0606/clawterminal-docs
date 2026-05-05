@@ -7,7 +7,15 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.2 (May 2026)
+**Latest Version:** v1.9.3 (May 2026)
+
+### What's New in v1.9.3 (Early May 2026)
+
+| Feature | What it does | Learn More |
+|---------|-------------|------------|
+| **Apple On-Device LLM Tier** | On iPhone 15 Pro and newer (and M1+ iPads) running iOS 26 with Apple Intelligence enabled, three features now run entirely on-device when you don't have an Anthropic API key set: **Save as Skill** (skill extraction from a trajectory or background job), **`/standup`** (daily standup generator), and **`/whatif`** (shell-command outcome prediction). Free, instant, fully private — Apple's `FoundationModels` framework, nothing leaves the phone. The cascade goes API key first (best quality), then Apple Intelligence on-device, then Claude CLI on your Mac as a final fallback. Toggle: **Settings → AI Intelligence → Apple On-Device LLM** (defaulted ON when supported; the row shows live availability — Available / Apple Intelligence not enabled / device doesn't support / model preparing / requires iOS 26). | [Examples](examples/skill-extraction.md) · [Examples](examples/standup.md) · [Examples](examples/what-if.md) |
+| **iOS 26 Writing Tools** | iOS 26's system Writing Tools (Rewrite / Proofread / Make Friendly / Make Concise / Convert to Table) now appear in the chatroom input bar and the skill editor — both the global skill body and the per-project variant editor. Long-press selected text to invoke. Plain-text only, so the send pipeline never sees rich-text artifacts. Zero behavior change on iOS 17–25. | [Examples](examples/memory-skills.md) |
+| **iOS 26 SpeechAnalyzer for Voice** | `/voice` and the long-press send → **Speak with Search** sheet now use Apple's iOS 26 `SpeechAnalyzer` + `SpeechTranscriber` pipeline on supported devices — better accuracy, lower start-of-speech latency, fully on-device. Older iOS versions transparently keep the previous `SFSpeechRecognizer` path. No setup change; same trigger points. | — |
 
 ### What's New in v1.9.2
 
@@ -1185,7 +1193,7 @@ Type `/` at the start of any message in a chatroom to see available commands. Th
 | `/health` | Run a **codebase health scan** — lines of code, file count, TODO/FIXME count, uncommitted changes, dependencies, last commit age, branch count, and largest file. Results shown in a one-tap dashboard. |
 | `/monitor` | Open a **live server monitor** — real-time CPU usage, memory, disk space, uptime, and load average. Sparkline charts show trends. Tap refresh for latest readings. |
 | `/search <query>` | **AI-powered semantic search** across your codebase. Greps for keywords, then Claude ranks and explains the top 5 most relevant matches. |
-| `/voice` | Start **voice input** — dictate your message and tap send when done. Works in any chatroom or background job. |
+| `/voice` | Start **voice input** — dictate your message and tap send when done. Works in any chatroom or background job. On iOS 26 devices, transcription uses Apple's `SpeechAnalyzer` pipeline for higher accuracy and lower start-of-speech latency; older iOS versions keep the previous `SFSpeechRecognizer` path with no setup change. |
 | `/remember <fact>` | Save a fact to **cross-session memory** — injected into every future chatroom session |
 | `/forget <keyword>` | Remove memories matching the keyword |
 | `/memories` | Open the **Memory Library** to browse, search, and manage saved memories |
@@ -1571,6 +1579,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| **v1.9.3** | May 2026 | Apple Intelligence on-device LLM tier for skill extraction, `/standup`, and `/whatif` (free / instant / private when no Anthropic API key is set on iOS 26 + supported hardware). iOS 26 Writing Tools in the chatroom input and skill editor. iOS 26 `SpeechAnalyzer` powers `/voice` and Speak with Search. |
 | **v1.9.0** | April 2026 | Dream Mode (autonomous overnight preference learning), agent soul and identity persistence, explicit reasoning with `/think` and `/trace`, enhanced hooks with pause/resume and conditionals, smart memory auto-categorization, countdown ring on long-press send with haptic patterns. |
 | **v1.8.0** | April 2026 | Session recap, context window meter, effort control, quick side questions, retry last message, agent personas. |
 | **v1.7.0** | April 2026 | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON tables, auto-context from errors, implicit learning, cat mascot animations, haptic feedback. |

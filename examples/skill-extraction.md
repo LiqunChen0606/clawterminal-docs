@@ -1,6 +1,6 @@
 # Skill Extraction — Examples
 
-> Practical workflows for turning trajectories into reusable Skills. All examples assume you have either an Anthropic API key in Settings or Claude CLI installed on a connected Mac.
+> Practical workflows for turning trajectories into reusable Skills. All examples assume you have one of: an Anthropic API key in Settings, Apple Intelligence enabled on iOS 26 (iPhone 15 Pro and newer, M1+ iPads), or Claude CLI installed on a connected Mac.
 
 ---
 
