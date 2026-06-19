@@ -7,7 +7,16 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.3 (May 2026)
+**Latest Version:** v1.9.4 (June 2026)
+
+### What's New in v1.9.4 (June 2026)
+
+| Feature | What it does | Learn More |
+|---------|-------------|------------|
+| **Every Claude Code command works** | ClawTerminal is now a superset of the Claude Code command surface. Any slash command your `claude` session supports — including new ones added in future CLI releases — is forwarded straight through and rendered in the rich card view, instead of an "Unknown command" error. Interactive-only commands (`/config`, `/mcp`, `/agents`, `/login`, `/model`) offer a one-tap jump to the Terminal tab where they belong. You no longer wait for an app update to use a new CLI command. | — |
+| **`--app` for visual orchestration** | `/team --app [goal]` and `/batch --app [goal]` open ClawTerminal's visual command center (wave/Kanban agent graph). Without `--app`, bare `/team`/`/batch` now forward your goal to Claude's own native subagent orchestration. Type an orchestration flag (`--agents`, `--multi`, …) without `--app` and you get a "did you mean `--app`?" nudge instead of a broken run. | [Examples](examples/agent-teams.md) · [Examples](examples/batch-agents.md) |
+| **QR connect — share a server in one scan** | Set up a connection on one device, then **Share as QR**; scan it on another iPhone or iPad to import the profile instantly — no retyping host, port, and username on a phone keyboard. Private key sharing is strictly opt-in (off by default, with a loud warning) — by default the key is entered on the new device and only the connection details travel in the QR. Collapses the single biggest first-run friction. | [Examples](examples/sftp-files.md) |
+| **Connect Claude without port setup (Beta)** | A new opt-in transport drives a Claude chatroom on your Mac through a documented local bridge instead of an SSH port forward — removing inbound-network configuration. Install with `/channels install` on your Mac (requires a recent Claude Code), then enable it in **Settings → AI Intelligence**. Honest about the tradeoff: it removes the network setup, not the Mac — `claude` still runs on your machine. SSH stays the default and powers the terminal, file browser, and the other AI tools. | — |
 
 ### What's New in v1.9.3 (Early May 2026)
 
