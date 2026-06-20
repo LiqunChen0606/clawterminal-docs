@@ -20,10 +20,27 @@ For cross-tool assignment (Claude for reasoning, Aider for git edits, Gemini for
 /team --multi <your goal>
 ```
 
+---
+
+## Bare `/team` vs `/team --app`
+
+There are now two ways to run a team, and the difference matters:
+
+- **`/team --app <goal>`** opens ClawTerminal's **Visual Command Center** — the wave/Kanban agent graph described in this tutorial, with the animated flow graph, live discovery feed, and per-agent status cards. Use `--app` whenever you want the in-app orchestration and its mobile-first visualization.
+- **Bare `/team <goal>`** (no `--app`) forwards your goal to **Claude's own native subagent orchestration** instead. You get Claude's built-in team behavior rather than ClawTerminal's visual command center.
+
+If you type an orchestration flag (`--agents`, `--multi`, `--vcs`, `--ckpt`, `--routing`, `--skills`) **without** `--app`, ClawTerminal shows a **"did you mean `--app`?"** nudge — those flags configure ClawTerminal's own orchestration, so they're only meaningful alongside `--app`. All of those flags work normally once you add `--app`:
+
+```text
+/team --app --multi --vcs Refactor the payment module to use the repository pattern
+```
+
+The rest of this tutorial describes the `--app` experience — the Visual Command Center, waves, and discovery propagation.
+
 ### Example
 
 ```text
-/team Write a Python calculator with add, subtract, multiply, divide, input validation, and a REPL loop
+/team --app Write a Python calculator with add, subtract, multiply, divide, input validation, and a REPL loop
 ```
 
 ClawTerminal will:
@@ -154,7 +171,7 @@ By default all agents use the chatroom's current CLI tool (usually Claude). With
 | **Aider** | Git-integrated refactoring, multi-file edits with commit tracking |
 
 ```text
-/team --multi Refactor the payment module to use the repository pattern
+/team --app --multi Refactor the payment module to use the repository pattern
 ```
 
 With `--multi`, a Research wave might assign Gemini to read all payment-related files at once, an Implementation wave might assign Aider to make the git-tracked edits, and a Review wave might assign Claude to check architecture correctness.

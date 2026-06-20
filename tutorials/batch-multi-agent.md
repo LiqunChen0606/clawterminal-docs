@@ -43,14 +43,33 @@ The workflow has three phases:
 ## Basic Usage
 
 ```text
-/batch redesign the authentication module
+/batch --app redesign the authentication module
 ```
 
-This spawns the default 3 workers. The Commander breaks your goal into 3 subtasks, each runs as a background job, and the Synthesizer combines their output.
+This spawns the default 3 workers in ClawTerminal's visual command center. The Commander breaks your goal into 3 subtasks, each runs as a background job, and the Synthesizer combines their output.
+
+---
+
+## Bare `/batch` vs `/batch --app`
+
+There are now two ways to run a batch, and the difference matters:
+
+- **`/batch --app <goal>`** opens ClawTerminal's **visual command center** — the Commander → Workers → Synthesizer flow described in this tutorial, with the collapsible job group and per-worker job cards. Use `--app` whenever you want ClawTerminal's own multi-agent orchestration.
+- **Bare `/batch <goal>`** (no `--app`) forwards your goal to **Claude's own native subagent orchestration** instead, rather than ClawTerminal's command center.
+
+If you type an orchestration flag (`--agents`, `--multi`, `--vcs`, `--ckpt`, `--routing`, `--skills`) **without** `--app`, ClawTerminal shows a **"did you mean `--app`?"** nudge — those flags configure ClawTerminal's own orchestration, so they're only meaningful alongside `--app`. Add `--app` and every flag works as documented below:
+
+```text
+/batch --app --agents 5 --multi perform a full security audit of the codebase
+```
+
+The rest of this tutorial describes the `--app` experience.
 
 ---
 
 ## Flags
+
+All of these flags require `--app` (otherwise you get the "did you mean `--app`?" nudge):
 
 | Flag | Description | Default |
 |------|-------------|---------|
@@ -64,7 +83,7 @@ This spawns the default 3 workers. The Commander breaks your goal into 3 subtask
 Control how many worker agents run in parallel. Valid range: 2–10.
 
 ```text
-/batch --agents 5 perform a full security audit of the codebase
+/batch --app --agents 5 perform a full security audit of the codebase
 ```
 
 More agents means finer task decomposition and faster wall-clock time (assuming your Mac can handle the load), but also more token usage. For most tasks, 3–4 agents hit the sweet spot.
@@ -81,7 +100,7 @@ When `--multi` is set, the Commander SSHs to your Mac and detects which CLI tool
 | **Aider** | Git-integrated refactoring, multi-file edits |
 
 ```text
-/batch --agents 4 --multi migrate the database schema from Postgres to SQLite
+/batch --app --agents 4 --multi migrate the database schema from Postgres to SQLite
 ```
 
 The Commander might assign:
@@ -97,7 +116,7 @@ If a tool is not installed on your Mac, the Commander falls back to Claude for t
 All worker jobs get `--ckpt` enabled, so their progress is tracked automatically in the Jobs panel. See [Understanding Agent Checkpoints](agent-checkpoints.md) for how checkpoints work.
 
 ```text
-/batch --agents 3 --ckpt refactor the payment service
+/batch --app --agents 3 --ckpt refactor the payment service
 ```
 
 ### `--skills` — Attach Skills
@@ -105,17 +124,17 @@ All worker jobs get `--ckpt` enabled, so their progress is tracked automatically
 Attach one or more skills (by their alias or display name) to all worker agents. The skills are injected into each worker's system prompt, providing shared context.
 
 ```text
-/batch --agents 3 --skills docker,testing audit the deployment configuration
+/batch --app --agents 3 --skills docker,testing audit the deployment configuration
 ```
 
 ---
 
 ## Combining Flags
 
-All flags can be combined:
+All flags can be combined (with `--app`):
 
 ```text
-/batch --agents 5 --multi --ckpt --skills backend,testing implement OAuth2 login flow
+/batch --app --agents 5 --multi --ckpt --skills backend,testing implement OAuth2 login flow
 ```
 
 This spawns 5 workers, assigns tools based on detected installs, enables auto-checkpoints on all workers, and attaches the `backend` and `testing` skills to each.

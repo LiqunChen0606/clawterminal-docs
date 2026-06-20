@@ -4,6 +4,27 @@
 
 ---
 
+## `--app` vs bare `/batch`
+
+```
+/batch --app <goal>   → ClawTerminal's visual command center (Commander → Workers → Synthesizer)
+/batch <goal>         → forwards the goal to Claude's own native subagent orchestration
+```
+
+Add `--app` whenever you want ClawTerminal's own multi-agent orchestration and its job-group UI. Without `--app`, the goal goes to Claude's built-in subagent behavior instead.
+
+Orchestration flags (`--agents`, `--multi`, `--vcs`, `--ckpt`, `--routing`, `--skills`) only apply to ClawTerminal's own orchestration, so they require `--app`. Type one without `--app` and you'll get a **"did you mean `--app`?"** nudge:
+
+```
+/batch --agents 4 redesign the auth module
+→ did you mean --app? Add it to run in the visual command center:
+  /batch --app --agents 4 redesign the auth module
+```
+
+All the examples below use `--app` to run in ClawTerminal's command center.
+
+---
+
 ## How it works
 
 ```
@@ -29,7 +50,7 @@
 ## 1. Basic: parallel workers with default agent count
 
 ```
-/batch Add error handling to all API endpoints in src/api/
+/batch --app Add error handling to all API endpoints in src/api/
 ```
 
 ClawTerminal spawns 3 workers (the default). The Commander identifies which endpoints exist and assigns groups of them to each worker. Each worker adds try/except blocks, appropriate HTTP error responses, and logging.
@@ -41,7 +62,7 @@ ClawTerminal spawns 3 workers (the default). The Commander identifies which endp
 ## 2. Control agent count with --agents
 
 ```
-/batch --agents 5 Write integration tests for the REST API
+/batch --app --agents 5 Write integration tests for the REST API
 ```
 
 5 workers run in parallel. The Commander assigns one or more API routes to each worker. If the API has 20 endpoints, each worker covers ~4 endpoints.
@@ -54,11 +75,11 @@ ClawTerminal spawns 3 workers (the default). The Commander identifies which endp
 Higher agent count means more parallelism but also more token cost. For most tasks, 4 agents is a practical default.
 
 ```
-/batch --agents 2 Translate all Python docstrings to French
+/batch --app --agents 2 Translate all Python docstrings to French
 ```
 
 ```
-/batch --agents 8 Perform a code quality sweep across the entire codebase: fix linting issues, remove dead code, and add missing type annotations
+/batch --app --agents 8 Perform a code quality sweep across the entire codebase: fix linting issues, remove dead code, and add missing type annotations
 ```
 
 ---
@@ -66,7 +87,7 @@ Higher agent count means more parallelism but also more token cost. For most tas
 ## 3. Auto checkpoints with --ckpt
 
 ```
-/batch --agents 4 --ckpt Build a REST API for user management
+/batch --app --agents 4 --ckpt Build a REST API for user management
 ```
 
 Every worker gets `--ckpt` enabled. In the Jobs panel, each worker's Job Detail shows a checkpoint timeline so you can see exactly how far each agent has progressed.
@@ -74,7 +95,7 @@ Every worker gets `--ckpt` enabled. In the Jobs panel, each worker's Job Detail 
 **Useful for:** Long-running batch jobs where you want granular visibility into each worker's progress, not just the overall status.
 
 ```
-/batch --agents 3 --ckpt Refactor the monolithic UserService into separate read and write services. Output [CHECKPOINT: label] after each major step.
+/batch --app --agents 3 --ckpt Refactor the monolithic UserService into separate read and write services. Output [CHECKPOINT: label] after each major step.
 ```
 
 ---
@@ -84,7 +105,7 @@ Every worker gets `--ckpt` enabled. In the Jobs panel, each worker's Job Detail 
 `--multi` lets the Commander assign different CLI tools to different subtasks based on their strengths. ClawTerminal detects which tools are installed on your Mac before the Commander runs.
 
 ```
-/batch --agents 4 --multi Migrate the database schema from Postgres to SQLite
+/batch --app --agents 4 --multi Migrate the database schema from Postgres to SQLite
 ```
 
 The Commander might assign:
@@ -94,7 +115,7 @@ The Commander might assign:
 - Worker 4 (Claude) — write tests for the migration
 
 ```
-/batch --agents 3 --multi Add comprehensive logging to the backend
+/batch --app --agents 3 --multi Add comprehensive logging to the backend
 ```
 
 Possible assignment:
@@ -112,13 +133,13 @@ Possible assignment:
 ## 5. With skills attached
 
 ```
-/batch --agents 2 --skills tdd Implement shopping cart: add items, remove items, calculate totals, apply discount codes
+/batch --app --agents 2 --skills tdd Implement shopping cart: add items, remove items, calculate totals, apply discount codes
 ```
 
 Both workers get the TDD skill injected into their system prompt, so they follow a test-first approach for each piece of functionality.
 
 ```
-/batch --agents 3 --skills security,backend Audit all API authentication endpoints for security vulnerabilities
+/batch --app --agents 3 --skills security,backend Audit all API authentication endpoints for security vulnerabilities
 ```
 
 All 3 workers have both the `security` and `backend` skills — they check for OWASP issues, timing attacks, and missing authorization checks with the domain knowledge from those skills.
@@ -128,7 +149,7 @@ All 3 workers have both the `security` and `backend` skills — they check for O
 ## 6. Combining all flags
 
 ```
-/batch --agents 5 --multi --ckpt --skills backend,testing Implement OAuth2 login flow with JWT tokens, refresh token rotation, and session revocation
+/batch --app --agents 5 --multi --ckpt --skills backend,testing Implement OAuth2 login flow with JWT tokens, refresh token rotation, and session revocation
 ```
 
 This spawns:

@@ -107,6 +107,7 @@ Install, uninstall, or check the status of third-party AI CLI tools on your Mac 
 | `/simpletes install` | — | Install SimpleTES on your Mac via `git clone` + `uv sync` (auto-installs `uv` if missing). Pairs with `/research` for evaluation-driven discovery | `/simpletes install` |
 | `/simpletes uninstall` | — | Remove `~/.simpletes` | `/simpletes uninstall` |
 | `/simpletes status` | — | Confirm SimpleTES is installed by listing the package via `uv pip list` | `/simpletes status` |
+| `/channels install` | — | Install the Mac-side bridge for the **Channels** transport (Beta) — drives a Claude chatroom through a documented local bridge instead of an SSH port forward, removing inbound-network setup. Requires a recent Claude Code; the confirmation card prints the `claude` launch command + development flag. Enable in **Settings → AI Intelligence** (off by default). Removes the network setup, not the Mac — `claude` still runs locally, and SSH stays the default for the terminal, file browser, and other AI tools | `/channels install` |
 
 **Repos:** [openclaw/openclaw](https://github.com/openclaw/openclaw) · [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) · [wq-will/SimpleTES](https://github.com/wq-will/SimpleTES)
 
@@ -188,23 +189,27 @@ You can also enable Search Mode at room creation: tap **+** to open the new-chat
 | Command | Flags | Description | Example |
 |---------|-------|-------------|---------|
 | `/orchestrate <goal>` | — | Spawn 3 parallel agents (Researcher, Implementer, Reviewer) + a Synthesizer | `/orchestrate Redesign the auth module` |
-| `/batch <goal>` | `--agents N`, `--multi`, `--ckpt`, `--skills alias,...` | Commander decomposes goal → N workers run in parallel → Synthesizer merges results | `/batch --agents 4 Add error handling to all API endpoints` |
-| `/team <goal>` | `--multi` | Wave-based orchestration: Research → Implement → Review, with discoveries propagating between waves | `/team Build a REST API with tests and documentation` |
+| `/batch <goal>` | `--app`, `--agents N`, `--multi`, `--ckpt`, `--skills alias,...` | With `--app`: Commander decomposes goal → N workers run in parallel → Synthesizer merges results in the visual command center. Without `--app`: forwards the goal to Claude's own native subagent orchestration | `/batch --app --agents 4 Add error handling to all API endpoints` |
+| `/team <goal>` | `--app`, `--multi` | With `--app`: wave-based orchestration (Research → Implement → Review) in the Visual Command Center, discoveries propagating between waves. Without `--app`: forwards the goal to Claude's own native subagent orchestration | `/team --app Build a REST API with tests and documentation` |
 
-**`/batch` flags:**
+> **`--app` opens ClawTerminal's own orchestration.** Bare `/team` and `/batch` forward your goal to Claude's native subagent orchestration. The orchestration flags (`--agents`, `--multi`, `--vcs`, `--ckpt`, `--routing`, `--skills`) configure ClawTerminal's own engine, so they require `--app` — typing one without `--app` shows a "did you mean `--app`?" nudge.
 
-| Flag | Description | Example |
-|------|-------------|---------|
-| `--agents N` | Number of parallel worker agents (2–10, default: 3) | `/batch --agents 5 Audit the codebase` |
-| `--multi` | Cross-tool assignment — assigns Claude/Codex/Gemini/Aider to subtasks based on strengths | `/batch --multi --agents 4 Migrate schema` |
-| `--ckpt` | Enable auto-checkpoints on all worker jobs | `/batch --ckpt Refactor payment module` |
-| `--skills alias,...` | Inject named skills into all worker agents | `/batch --skills security Audit the API` |
-
-**`/team` flags:**
+**`/batch` flags** (all require `--app`):
 
 | Flag | Description | Example |
 |------|-------------|---------|
-| `--multi` | Cross-tool assignment within each wave | `/team --multi Build a feature with tests` |
+| `--app` | Run in ClawTerminal's visual command center instead of forwarding to Claude's native orchestration. Required for all flags below | `/batch --app Audit the codebase` |
+| `--agents N` | Number of parallel worker agents (2–10, default: 3) | `/batch --app --agents 5 Audit the codebase` |
+| `--multi` | Cross-tool assignment — assigns Claude/Codex/Gemini/Aider to subtasks based on strengths | `/batch --app --multi --agents 4 Migrate schema` |
+| `--ckpt` | Enable auto-checkpoints on all worker jobs | `/batch --app --ckpt Refactor payment module` |
+| `--skills alias,...` | Inject named skills into all worker agents | `/batch --app --skills security Audit the API` |
+
+**`/team` flags** (require `--app`):
+
+| Flag | Description | Example |
+|------|-------------|---------|
+| `--app` | Run in the Visual Command Center instead of forwarding to Claude's native orchestration. Required for the flag below | `/team --app Build a feature` |
+| `--multi` | Cross-tool assignment within each wave | `/team --app --multi Build a feature with tests` |
 
 ---
 
@@ -236,7 +241,13 @@ You can also enable Search Mode at room creation: tap **+** to open the new-chat
 
 ## CLI pass-through commands (CLI mode only)
 
-These are forwarded directly to the Claude Code CLI running on your Mac. They work only in CLI mode with an active tmux session.
+ClawTerminal is a **superset** of the Claude Code command surface. Any slash command your Mac's `claude` session supports — including commands ClawTerminal has no custom card for, and new ones added in future CLI releases — is forwarded straight through and rendered in the rich card view, instead of an "Unknown command" error. You no longer wait for an app update to use a new CLI command.
+
+Forwarding works only in CLI mode with an active tmux session (there's no CLI to forward to in Direct API mode).
+
+Some Claude Code commands are **interactive-only** — they need a real terminal (TTY). Instead of failing, these show a one-tap "Open in Terminal tab" affordance: `/config`, `/mcp`, `/agents`, `/login`, `/model`.
+
+Common forwarded commands:
 
 | Command | Description | Example |
 |---------|-------------|---------|
@@ -244,9 +255,9 @@ These are forwarded directly to the Claude Code CLI running on your Mac. They wo
 | `/security-review` | Ask Claude to review recent changes for security issues | `/security-review` |
 | `/pr-comments` | Fetch and address open PR review comments | `/pr-comments` |
 | `/review` | Run Claude's built-in code review | `/review` |
-| `/login` | Log in to Anthropic (re-authenticate Claude CLI) | `/login` |
+| `/login` | Log in to Anthropic (re-authenticate Claude CLI) — interactive, opens the Terminal tab | `/login` |
 | `/logout` | Log out of Anthropic | `/logout` |
-| `/mcp` | Manage MCP server connections | `/mcp` |
+| `/mcp` | Manage MCP server connections — interactive, opens the Terminal tab | `/mcp` |
 | `/init` | Create a CLAUDE.md file in the current project directory | `/init` |
 
 ---

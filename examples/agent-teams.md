@@ -6,10 +6,31 @@ Use `/team` when phases have dependencies. Use `/batch` when tasks are independe
 
 ---
 
+## `--app` vs bare `/team`
+
+```
+/team --app <goal>   → ClawTerminal's Visual Command Center (wave/Kanban agent graph)
+/team <goal>         → forwards the goal to Claude's own native subagent orchestration
+```
+
+Add `--app` whenever you want the in-app waves, discovery feed, and per-agent status cards described below. Without `--app`, the goal goes to Claude's built-in team behavior instead.
+
+Orchestration flags (`--agents`, `--multi`, `--vcs`, `--ckpt`, `--routing`, `--skills`) only apply to ClawTerminal's own orchestration, so they require `--app`. Type one without `--app` and you'll get a **"did you mean `--app`?"** nudge:
+
+```
+/team --multi Refactor the auth layer
+→ did you mean --app? Add it to run in the Visual Command Center:
+  /team --app --multi Refactor the auth layer
+```
+
+All the examples below use `--app` to run in the Visual Command Center.
+
+---
+
 ## How waves work
 
 ```
-/team Write a Python calculator with add, subtract, multiply, divide, input validation, and a REPL loop
+/team --app Write a Python calculator with add, subtract, multiply, divide, input validation, and a REPL loop
 
   Wave 1 — Research (runs first)
     Agent A: Scan project for existing math utilities, conventions, Python version
@@ -42,7 +63,7 @@ Use `/team` when phases have dependencies. Use `/batch` when tasks are independe
 ## 1. Basic: single goal, three waves
 
 ```
-/team Write a Python calculator with add, subtract, multiply, divide, input validation, and a REPL loop
+/team --app Write a Python calculator with add, subtract, multiply, divide, input validation, and a REPL loop
 ```
 
 ClawTerminal spawns the Commander, then executes Research → Implementation → Review waves. The Visual Command Center shows the animated flow graph as agents run.
@@ -57,7 +78,7 @@ ClawTerminal spawns the Commander, then executes Research → Implementation →
 ## 2. Complex refactor that needs research before implementation
 
 ```
-/team Refactor the authentication system to use JWT tokens with refresh token rotation
+/team --app Refactor the authentication system to use JWT tokens with refresh token rotation
 ```
 
 **Why `/team` over `/batch`:**
@@ -88,7 +109,7 @@ Wave 3 — Review (knows what was changed):
 ## 3. Multi-tool with --multi flag
 
 ```
-/team --multi Build a REST API with database models, endpoints, tests, and documentation
+/team --app --multi Build a REST API with database models, endpoints, tests, and documentation
 ```
 
 With `--multi`, the Commander assigns different tools to agents based on their strengths:
@@ -113,7 +134,7 @@ Tools detected are those installed on your Mac (`claude`, `aider`, `codex`, `gem
 ## 4. Feature development from scratch
 
 ```
-/team Add a user notification system: email notifications for account events (signup, password reset, order confirmation) with templates and an unsubscribe flow
+/team --app Add a user notification system: email notifications for account events (signup, password reset, order confirmation) with templates and an unsubscribe flow
 ```
 
 **Wave 1 — Research finds:**
