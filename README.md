@@ -7,7 +7,14 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.5 (June 2026)
+**Latest Version:** v1.9.6 (June 2026)
+
+### What's New in v1.9.6 (June 2026)
+
+| Feature | What it does | Learn More |
+|---------|-------------|------------|
+| **Push agent results to a chat app** | After you install Hermes or OpenClaw (`/hermes install` / `/openclaw install`), ClawTerminal offers to forward job results to **Telegram, Discord, or Slack** — tap a chip, paste a bot token or webhook URL, test, and save. It writes a small config + a `notify.sh` wrapper on your Mac that your agentic tools can call when a task finishes. Re-open the setup any time with `/hermes pushsetup` or `/openclaw pushsetup`. | — |
+| **Fast agent routing (Fable 5)** | A new `--routing fast` preset for `/team`, `/batch`, and `/orchestrate` runs every agent on **Claude Fable 5** — the fast 1M-context frontier model — instead of mixing tiers. Pick it when you want speed and a big context across the whole agent team. Joins the existing Quality / Balanced / Budget presets. | [Examples](examples/agent-advanced.md) |
 
 ### What's New in v1.9.5 (June 2026)
 
