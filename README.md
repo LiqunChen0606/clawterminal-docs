@@ -7,7 +7,14 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.4 (June 2026)
+**Latest Version:** v1.9.5 (June 2026)
+
+### What's New in v1.9.5 (June 2026)
+
+| Feature | What it does | Learn More |
+|---------|-------------|------------|
+| **Claude Fable 5** | Anthropic's Fable 5 model (`claude-fable-5`) is now selectable wherever you pick a Claude model — the chatroom model picker and **Settings → CLI Tool Models**. It carries a 1M-token context window, and per-job cost estimates are priced in automatically. | — |
+| **Quiet while the app is open** | Stop getting a completion banner for a job you're already watching. While ClawTerminal is open and in the foreground, on-device and Mac-side notifications for that session are held back; they resume the moment you leave the app. On by default — toggle at **Settings → AI Intelligence → "Quiet While App Is Open."** If you use the Mac notifier daemon, re-run `/notifier install` once to pick it up. | [Tutorial](tutorials/smart-notifications.md) |
 
 ### What's New in v1.9.4 (June 2026)
 
@@ -528,7 +535,7 @@ ClawTerminal integrates Claude AI in two modes:
 
 - Uses the Anthropic API directly from your device
 - Set your API key in **Settings → Claude API Key**
-- Choose your model (Opus 4.6, Sonnet 4.6, Haiku 4.5)
+- Choose your model (Opus 4.6, Sonnet 4.6, Fable 5, Haiku 4.5)
 - Supports streaming, thinking mode, file attachments
 
 ### CLI Mode (My Mac)

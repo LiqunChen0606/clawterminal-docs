@@ -31,12 +31,20 @@ When Claude uses the `todo_write` tool and marks **all tasks as completed**, a n
 
 | Situation | Notification fires? |
 |-----------|-------------------|
-| App is in the foreground, same tab | Yes (banner + sound) |
+| App is in the foreground, viewing the chatroom | Held back while "Quiet While App Is Open" is on (default) |
 | App is in the foreground, different tab | Yes (banner + sound) |
 | App is in the background | Yes (banner + sound) |
 | Screen is locked | Yes (lock screen notification) |
 
-ClawTerminal shows notifications even when the app is in the foreground, so you see them regardless of which tab you are on. The `UNUserNotificationCenter` delegate is configured to present banners and play sounds in all states.
+---
+
+## Quiet While App Is Open
+
+There's no point buzzing you about a job you're already watching. While ClawTerminal is open and in the foreground, completion notifications for that session are held back; they resume the moment you leave the app or lock your screen. This applies both to on-device notifications and to Mac-side push (the notifier daemon honors the same signal).
+
+- **On by default.** Toggle at **Settings → AI Intelligence → "Quiet While App Is Open."** Turn it off to get banners even while you're looking at the app.
+- **If you use the Mac notifier daemon** (`/notifier install`), re-run `/notifier install` once so the daemon learns to stay quiet while you're present.
+- **Self-healing:** if the app is force-quit while open, suppression lifts on its own within a few minutes, so you never miss a notification permanently.
 
 ---
 
