@@ -48,6 +48,23 @@ There's no point buzzing you about a job you're already watching. While ClawTerm
 
 ---
 
+## ntfy — Push With No Account
+
+ntfy is the lowest-friction way to get job-completion notifications on your phone — **no login, no registration, no API key.**
+
+1. Run `/notifier ntfy` in a chatroom.
+2. Pick a **topic** (any hard-to-guess name, e.g. `claw-7f3a9c2e`) — leave the server as `https://ntfy.sh` or point it at your own self-hosted ntfy.
+3. Tap **Test**, then **Save**.
+4. Install the free **ntfy** app from the App Store and **subscribe to the same topic**. That's it — completions now arrive as banners.
+
+Notes:
+- The topic name is the only secret (it's a public namespace), so choose something unguessable, or self-host ntfy for a private server.
+- It slots into the notifier cascade after Apple Push and Telegram, so if you have one of those configured, it stays primary and ntfy is the fallback.
+- ntfy is also a channel in the `/hermes` / `/openclaw` chat-push wizard.
+- If you set up the Mac notifier daemon earlier, re-run `/notifier install` once so it learns the ntfy sender.
+
+---
+
 ## Notification Permissions
 
 ClawTerminal requests notification permission on every launch. If you have not yet granted permission, iOS shows the standard authorization dialog.

@@ -7,7 +7,13 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.6 (June 2026)
+**Latest Version:** v1.9.7 (June 2026)
+
+### What's New in v1.9.7 (June 2026)
+
+| Feature | What it does | Learn More |
+|---------|-------------|------------|
+| **ntfy push — no account needed** | The lowest-friction way to get phone notifications: **no login, no registration, no API key.** Run `/notifier ntfy`, pick an unguessable topic, tap Test — then install the free **ntfy** app and subscribe to the same topic. Your Mac sends each job completion to it. Also available as a channel in the `/hermes` / `/openclaw` chat-push wizard. Works alongside (and falls back from) the existing Apple Push and Telegram options. Tip: the topic name is the only secret, so make it hard to guess — or point it at your own self-hosted ntfy server. | [Tutorial](tutorials/smart-notifications.md) |
 
 ### What's New in v1.9.6 (June 2026)
 
