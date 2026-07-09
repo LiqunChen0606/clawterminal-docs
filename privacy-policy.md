@@ -1,6 +1,6 @@
 # ClawTerminal Privacy Policy
 
-**Effective Date:** April 2, 2026
+**Effective Date:** July 8, 2026
 **App:** CatClaw Terminal (ClawTerminal) — SSH Terminal + AI Chatroom
 **Developer:** Liqun Chen
 **Contact:** [Open an issue](https://github.com/LiqunChen0606/clawterminal-docs/issues)
@@ -12,6 +12,8 @@
 ClawTerminal is designed with privacy as a core principle. All data stays on your device. We do not operate any servers that receive your personal data, and we do not use analytics SDKs, advertising networks, or third-party tracking of any kind.
 
 The only data that leaves your device is content you explicitly send to AI providers (Anthropic, OpenAI, Google) when using the AI chatroom, or to servers you configure yourself (SSH hosts, relay server).
+
+Before any data is sent to a third-party AI provider for the first time, ClawTerminal shows an in-app consent screen that discloses what is sent and who it is sent to, and asks for your permission. AI features are not enabled until you agree, and you can review or withdraw this consent at any time in Settings. On-device processing via Apple Intelligence (iOS 26) is the exception — that content stays on your device and is never sent to a third party.
 
 ---
 
@@ -46,9 +48,16 @@ When you use the AI chatroom in API mode, ClawTerminal sends your messages direc
 - Tool results when MCP servers are in use
 
 This data is sent directly to the provider — it does not pass through any ClawTerminal server. Each provider's data handling is governed by their own privacy policy:
+
 - [Anthropic Privacy Policy](https://www.anthropic.com/privacy)
 - [OpenAI Privacy Policy](https://openai.com/privacy)
 - [Google Privacy Policy](https://policies.google.com/privacy)
+
+**CLI mode (via your Mac).** When you use the AI chatroom in CLI mode, ClawTerminal sends your message over SSH to the Mac or Linux host you configure, where an AI command-line tool you installed (Claude Code, Codex, Gemini, or Aider) processes it. That tool sends the same categories of data listed above to the corresponding provider (Anthropic, OpenAI, or Google) from your machine. ClawTerminal has no server in this path.
+
+**On-device (Apple Intelligence).** On supported devices running iOS 26 with Apple Intelligence, certain features (Save as Skill, /standup, /whatif) can run entirely on-device using Apple's Foundation Models framework. In that case your content stays on the device and is not sent to any third party.
+
+**Consent.** ClawTerminal requests your permission in-app, with a disclosure of what is sent and to whom, before sending your data to a third-party AI provider for the first time. You can withdraw consent at any time in Settings, which disables the AI features that require it.
 
 ### SSH Hosts (User-Configured)
 
