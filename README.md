@@ -7,9 +7,9 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.7 (June 2026) — ships in **App Store v1.5.0**
+**Latest Version:** v1.9.7 (June 2026) — **live on the App Store as ClawTerminal v1.5.0**
 
-> The v1.9.4 through v1.9.7 updates below ship together as **ClawTerminal v1.5.0** on the App Store: no-account ntfy push, chat-app push for Hermes/OpenClaw, "every Claude Code command works", QR connection sharing, Claude Fable 5 + a Fast agent preset, and Quiet-while-app-is-open.
+> The v1.9.4 through v1.9.7 updates below shipped together as **ClawTerminal v1.5.0**, now live on the App Store: no-account ntfy push, chat-app push for Hermes/OpenClaw, "every Claude Code command works", QR connection sharing, Claude Fable 5 + a Fast agent preset, and Quiet-while-app-is-open.
 
 ### What's New in v1.9.7 (June 2026)
 
