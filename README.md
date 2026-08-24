@@ -7,9 +7,17 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.7 (June 2026) — **live on the App Store as ClawTerminal v1.5.0**
+**Latest Version:** v1.9.8 (August 2026) — ships in **App Store v1.5.1**
 
-> The v1.9.4 through v1.9.7 updates below shipped together as **ClawTerminal v1.5.0**, now live on the App Store: no-account ntfy push, chat-app push for Hermes/OpenClaw, "every Claude Code command works", QR connection sharing, Claude Fable 5 + a Fast agent preset, and Quiet-while-app-is-open.
+> App Store status: **ClawTerminal v1.5.0 is live**; the v1.9.8 update below ships as **v1.5.1**. The v1.9.4 through v1.9.7 updates shipped together as v1.5.0: no-account ntfy push, chat-app push for Hermes/OpenClaw, "every Claude Code command works", QR connection sharing, Claude Fable 5 + a Fast agent preset, and Quiet-while-app-is-open.
+
+### What's New in v1.9.8 (August 2026)
+
+| Feature | What it does | Learn More |
+|---------|-------------|------------|
+| **Latest Claude models** | **Claude Opus 4.8** and **Claude Sonnet 5** are selectable everywhere — the chatroom model picker, agent routing presets, and per-job cost estimates. If you had an older model saved, your choice migrates forward automatically. | — |
+| **Smooth streaming (opt-in)** | Watch responses arrive word-by-word instead of in chunks. Turn on at **Settings → AI Intelligence → Smooth Streaming**. Requires Claude Code v2.1.211+ on your Mac — if messages start failing after enabling it, turn it off or update the CLI. | — |
+| **Live subagent progress (opt-in)** | During `/team`, `/batch`, and any agentic run, each subagent's work streams into its card in real time — you see what every agent is doing instead of waiting for the final report. Job trajectories mark subagent steps with a `↳` prefix. **Settings → AI Intelligence → Live Subagent Progress** (same v2.1.211+ requirement). | — |
 
 ### What's New in v1.9.7 (June 2026)
 
