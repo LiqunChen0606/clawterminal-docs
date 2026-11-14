@@ -10,7 +10,7 @@ ClawTerminal fires local notifications in the following situations:
 
 ### 1. Background Job Complete
 
-When a `/submit` background job finishes, you receive a push notification with the job status. This notification includes quick actions:
+When a background job (`/submit`, `/bg`, and the rest) finishes, you receive a push notification with the job status. This notification includes quick actions:
 
 | Action | Description |
 |--------|-------------|
@@ -45,6 +45,12 @@ There's no point buzzing you about a job you're already watching. While ClawTerm
 - **On by default.** Toggle at **Settings → AI Intelligence → "Quiet While App Is Open."** Turn it off to get banners even while you're looking at the app.
 - **If you use the Mac notifier daemon** (`/notifier install`), re-run `/notifier install` once so the daemon learns to stay quiet while you're present.
 - **Self-healing:** if the app is force-quit while open, suppression lifts on its own within a few minutes, so you never miss a notification permanently.
+
+---
+
+## Live Activity & Dynamic Island
+
+While a background job runs, it also shows a **Live Activity** on your Lock Screen and in the Dynamic Island, with status, elapsed time, and cost, so you can check progress without a notification. By default it hides what the job is about; turn on **Settings → AI Intelligence → Job Details on Lock Screen** to show the request too. See [Live Activities & Background Workflows](live-activities-and-background-workflows.md).
 
 ---
 

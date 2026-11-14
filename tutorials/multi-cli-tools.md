@@ -1,12 +1,12 @@
 # Multi-CLI Tool Support
 
-> Use Aider, Codex, or any custom CLI tool alongside Claude in dedicated chatrooms.
+> Use Claude Code, Codex, Gemini CLI, or Aider in dedicated chatrooms, each with its own model choice.
 
 ---
 
 ## Overview
 
-ClawTerminal is not limited to Claude Code. You can create chatrooms that run different CLI tools over SSH, each with its own tmux session, binary detection, and output parsing. This lets you use the best tool for each task without leaving the app.
+ClawTerminal isn't limited to Claude Code. Each chatroom can run a different AI command-line tool on your Mac over SSH, so you can use the best tool for each task without leaving the app.
 
 ---
 
@@ -14,65 +14,83 @@ ClawTerminal is not limited to Claude Code. You can create chatrooms that run di
 
 | Tool | Description | Binary |
 | ---- | ----------- | ------ |
-| **Claude** (default) | Claude Code CLI with full tool use, MCP servers, and `--resume` | `claude` |
+| **Claude** (default) | Claude Code with full tool use, MCP servers, and session resume | `claude` |
+| **Codex** | OpenAI's Codex CLI | `codex` |
+| **Gemini** | Google's Gemini CLI | `gemini` |
 | **Aider** | AI pair programming with git integration | `aider` |
-| **Codex** | OpenAI Codex CLI | `codex` |
-| **Custom** | Any CLI tool you configure | User-defined |
+
+Install whichever tools you want on your Mac. ClawTerminal finds them automatically.
 
 ---
 
-## Setting Up a Tool-Specific Chatroom
+## Switching a Chatroom's Tool
 
-1. Create a new chatroom (tap **+** in the chatroom list)
-2. Tap the **Info (i)** button
-3. Under **CLI Tool**, select the tool you want to use
-4. Set the **Project Directory** to your project's path on your Mac
-5. Start chatting --- the tool runs in its own tmux session
+1. In the chatroom tab bar, **long-press the room's tab**
+2. Open **AI Tool** and pick Claude, Codex, Gemini, or Aider
+3. The room reconnects with the new tool. Start chatting
 
-Each tool type uses its own tmux session name prefix, so multiple tool chatrooms can run simultaneously without interfering with each other.
+Each chatroom is bound to one tool, so create separate rooms for different tools. They all share the same SSH connection to your Mac, so switching between rooms is instant.
+
+---
+
+## Choosing Models
+
+Every tool has its own saved model, used everywhere that tool runs: chat, background jobs, `/race`, and multi-tool `/batch`. Set it in **Settings → CLI Tool Models**, or with `/model` in a chatroom using that tool.
+
+### Claude
+
+| Choice | Notes |
+|--------|-------|
+| **Claude Sonnet 5.5** | Default: fast and capable for everyday work |
+| **Claude Opus 5.5** | Strongest reasoning, for hard problems |
+| **Claude Fable 5.2** | Fast frontier model with a 1M-token context |
+| **Claude Haiku 5.5** | Cheapest and quickest, for simple tasks |
+| **Claude Code default** | Passes no model flag, so Claude Code uses whatever your Mac's own configuration says |
+
+`/model` also accepts Claude Code's aliases (`opus`, `sonnet`, `haiku`, `fable`, `opusplan`, `opus[1m]`) and any `claude-*` model ID. Labels and cost estimates use the model that actually ran, even when you pick an alias or the default.
+
+### Codex, Gemini, and Aider
+
+The first option for each of these tools is **CLI default**: no model flag, so the tool uses its own configured model. This is the safest choice, because it keeps working when a provider retires a model. Each tool also lists its current recommended models (for example Gemini's `auto`, `pro`, `flash`, and `flash-lite` aliases), and **Custom…** lets you type any model ID the tool accepts.
+
+If you had a model saved that has since been retired, it switches to CLI default automatically.
+
+### Thinking depth
+
+`/effort low | medium | high | xhigh | max` sets how hard the model thinks. On Claude it becomes Claude Code's native `--effort` setting. Other tools get an equivalent instruction in the prompt. `/effort default` clears it. See [Session Intelligence](session-intelligence.md).
+
+---
+
+## How Each Tool Runs
+
+ClawTerminal runs each tool in non-interactive mode, with automatic approval so a turn never stalls on a prompt you can't see:
+
+- **Claude:** governed by **Settings → AI Intelligence → Claude Code Autonomy** (Full, Auto with a safety classifier, or Accept edits)
+- **Codex:** runs in a workspace-write sandbox inside your project directory
+- **Gemini:** runs with auto-approval
+- **Aider:** runs with auto-confirm
 
 ---
 
 ## Binary Detection
 
-ClawTerminal automatically detects where the tool binary is installed on your Mac. It searches common paths:
+ClawTerminal looks for each tool on your PATH and in common install locations:
 
-- `/usr/local/bin/`
-- `/opt/homebrew/bin/`
 - `~/.local/bin/`
-- `~/.npm-global/bin/`
-
-The detected path is cached per tool type for fast startup. If detection fails, you can set a custom binary path in the chatroom's Info panel.
-
----
-
-## Custom CLI Tools
-
-For tools not in the built-in list:
-
-1. Create a new chatroom → Info → CLI Tool → **Custom**
-2. Set the **Binary Path** (e.g. `/usr/local/bin/my-tool`)
-3. Set the **Invocation Command** --- the shell command template used to run the tool. Use `{message}` as a placeholder for user input:
-
-```text
-my-tool --prompt "{message}" --output-format json
-```
-
-4. Set the **Project Directory** as usual
+- `/opt/homebrew/bin/`
+- `/usr/local/bin/`
+- `~/.npm-global/bin/` (npm-installed tools)
 
 ---
 
-## Background Jobs with Non-Claude Tools
+## Background Jobs With Other Tools
 
-`/submit` works with all tool types. When you submit a background job from an Aider or Codex chatroom, the job runs using that chatroom's configured tool, not Claude.
-
-The job result is parsed as plain text for non-Claude tools (Claude uses stream-json parsing for richer output).
+`/submit` works with every tool. A job submitted from a Codex, Gemini, or Aider chatroom runs with that room's tool and its saved model, captured when you submit. Results from non-Claude tools are shown as plain text (Claude jobs get the richer trajectory view).
 
 ---
 
 ## Tips
 
-- **One tool per chatroom:** Each chatroom is bound to a single tool type. Create separate chatrooms for Claude, Aider, etc.
-- **Shared SSH connection:** All chatrooms share the same SSH connection to your Mac. Switching between tool chatrooms is instant.
-- **Session persistence:** Like Claude chatrooms, non-Claude tool sessions persist in tmux. If your phone disconnects, the tool keeps running and you can resume on reconnect.
-- **Model switching:** `/model` only applies to Claude and API mode. Other tools use their own model configuration (set via their respective config files on your Mac).
+- **One tool per chatroom.** Name rooms after their tool ("Codex: API refactor") so they're easy to tell apart.
+- **Compare tools with `/race`.** It sends the same prompt to several tools at once, each using its own saved model.
+- **Session persistence.** Every tool runs in tmux on your Mac. If your phone disconnects, the tool keeps running on your Mac.

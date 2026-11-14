@@ -8,16 +8,18 @@
 
 CatClaw now ships with a built-in learning system. Instead of reading a wall of docs and trying to remember which command does what, you run a tutorial and CatClaw walks you through real actions, verifying each step on the live app before moving on.
 
-Six tracks, 43 steps total, all inside the app:
+Eight tracks, 53 steps total, all inside the app:
 
-| Track | What you learn |
-|-------|----------------|
-| **beginner** | First-time essentials: connecting via SSH, opening a chatroom, sending your first message |
-| **terminal** | Power-user terminal features: tabs, extended keyboard, port forwarding, Mosh |
-| **workflows** | Day-to-day workflows: `/submit`, `/plan`, `/pin`, `/search`, `@web` |
-| **agents** | Multi-agent orchestration: `/batch`, `/team`, `/race`, `--vcs`, `--routing` |
-| **devops** | Developer intelligence: `/git`, `/health`, `/monitor`, `/security`, `/changelog` |
-| **power** | Advanced: `/soul`, `/personality`, `/effort`, `/dream`, `/whatif`, `/wrapped` |
+| Track | Level | What you learn |
+|-------|-------|----------------|
+| **beginner** | Beginner | First message, `/help`, `/cost`, `/search`, inline Run buttons, pinning, memory basics |
+| **terminal** | Beginner | Terminal tab, extended keyboard, mini terminal, AI error diagnosis, terminal tabs |
+| **workflows** | Intermediate | `/submit`, `/plan`, `/pin`, `/remember`, `/effort`, `/personality`, `/btw`, `/retry` |
+| **anywhere** | Intermediate | Mac Sessions (`/sessions`), `/model`, `/effort xhigh`/`max`, `/doctor`, queued messages, `/bg` with Live Activities |
+| **agents** | Intermediate | `/batch --app`, `/team --app`, `/race`, the Jobs tab, trajectories, `/orchestrate` |
+| **devops** | Advanced | `/git`, `/health`, `/monitor`, `/security`, `/gentest`, `/changelog`, `/notify`, `/dashboard` |
+| **power** | Advanced | `/dream`, `/soul`, `/bg` workflows, long-press send, branching, `/trace` |
+| **research** | Advanced | `/notifier install`, `/simpletes install`, `/research`, Super Research Mode |
 
 Every tutorial step includes:
 
@@ -36,7 +38,7 @@ Every tutorial step includes:
 /tutorial
 ```
 
-Lists all six tracks with one-line descriptions. Tap any row to start.
+Lists all eight tracks with their step counts.
 
 To jump directly to a track:
 
@@ -44,14 +46,16 @@ To jump directly to a track:
 /tutorial beginner
 /tutorial terminal
 /tutorial workflows
+/tutorial anywhere
 /tutorial agents
 /tutorial devops
 /tutorial power
+/tutorial research
 ```
 
 ### Option B — Settings
 
-Open **Settings → Learn ClawTerminal**. Same track list, with progress bars showing how far you got in each track across past sessions.
+Open **Settings → Learn Hub**, or tap the Learn icon in the chatroom toolbar. Same track list, with progress bars showing how far you got in each track across past sessions.
 
 ### Resetting
 
@@ -67,19 +71,15 @@ Clears all step progress for every track. The next time you open a tutorial, you
 
 ## What a Tutorial Step Looks Like
 
-Say you run `/tutorial beginner`. The first card might say:
+Say you run `/tutorial anywhere`. The first card says:
 
-> **Step 1 of 7 — Connect to your Mac**
+> **Type `/sessions` to see every Claude Code session running on your Mac — including ones you started in Terminal at your desk.**
 >
-> CatClaw needs an SSH connection to your Mac to run commands. Tap the Connections tab at the bottom, then tap **+** to add your first profile.
->
-> _Waiting for you to connect..._
+> _Hint: also in the chatroom's … menu and the drawer._
 
-You tap the Connections tab, add a profile, connect. The instant CatClaw detects an active SSH session, the card advances:
+You type `/sessions` and the Mac Sessions sheet opens. The card shows a quick success message and moves on:
 
-> **Step 2 of 7 — Open a chatroom**
->
-> Now open the Claude tab. This is where the AI magic happens. Tap **New Chat** to create your first chatroom.
+> **Type `/model` to see the models for this room's AI tool. Switch with an ID or an alias — e.g. `/model opus`, `/model fable`, or `/model default`.**
 
 And so on. Each step is a tiny, verifiable action — not a wall of text.
 

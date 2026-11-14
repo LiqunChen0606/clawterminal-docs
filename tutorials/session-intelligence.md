@@ -18,7 +18,7 @@ Session Intelligence is a set of commands built for exactly this moment.
 |---------|-------------|----------------|
 | `/recap` | Session summary: messages, jobs, topics, cost | Returning to a session after a break |
 | `/context` | Context window usage bar with suggestions | Before pasting a large file or starting a long prompt |
-| `/effort low\|medium\|high` | Tune thinking depth | Switching between quick lookups and deep design work |
+| `/effort low\|medium\|high\|xhigh\|max` | Tune thinking depth | Switching between quick lookups and deep design work |
 | `/btw [question]` | One-sentence side question | Checking a fact without losing your flow |
 | `/retry` | Remove last exchange and re-send | When Claude took the wrong angle |
 | `/personality [name]` | Switch agent persona | Adapting Claude's style to the task at hand |
@@ -45,7 +45,7 @@ Session Recap
 Messages: 38 (19 yours · 19 Claude)
 Background jobs: 2 complete · 0 running
 Recent topics: Stripe webhook validation, idempotency keys, error retry logic
-Session cost: $0.61 (Claude Sonnet 4.6)
+Session cost: $0.61 (Claude Sonnet 5.5)
 ─────────────────────────────────
 ```
 
@@ -94,7 +94,7 @@ Claude: "Return `200 OK`. Any 2xx response tells Stripe the webhook was received
 
 One sentence. Done. You move on.
 
-### When to use /effort medium (default)
+### When to use /effort medium
 
 Most day-to-day coding questions. Claude explains the approach without overwhelming you.
 
@@ -116,6 +116,28 @@ and our handler isn't idempotent. Walk me through how to fix this properly.
 ```
 
 Claude works through the full picture: idempotency keys at the database level, the race condition during concurrent retries, the recommended Stripe patterns, and what to test. It's a longer response — but for a production bug that's causing duplicate charges, you want thoroughness.
+
+### When to use /effort xhigh or max
+
+The hardest problems: a subtle concurrency bug, a migration plan for a large codebase, a design with many moving parts. `xhigh` gives extra-deep reasoning, and `max` is the deepest (and slowest). Save them for questions where a wrong answer costs more than waiting a bit longer.
+
+```
+/effort max
+Our job queue occasionally processes the same message twice under load.
+Here's the consumer code. Find every way that can happen.
+```
+
+### Going back to the default
+
+```
+/effort default
+```
+
+This clears your setting and lets Claude Code decide how much to think. Type `/effort` with nothing after it to see the current level.
+
+### How it works
+
+In a Claude CLI chatroom, `/effort` becomes Claude Code's native `--effort` setting, the same control you'd use at your desk, and background jobs started from the room inherit it. Codex, Gemini, and Aider chatrooms get an equivalent instruction in the prompt instead. It needs a recent Claude Code on your Mac. If turns start failing after you set it, run `/effort default` or update Claude Code.
 
 ### Switching mid-session
 

@@ -7,9 +7,26 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.8 (August 2026) — ships in **App Store v1.5.1**
+**Latest Version:** v1.9.9 (November 2026) — ships in the **next App Store update**
 
-> App Store status: **ClawTerminal v1.5.0 is live**; the v1.9.8 update below ships as **v1.5.1**. The v1.9.4 through v1.9.7 updates shipped together as v1.5.0: no-account ntfy push, chat-app push for Hermes/OpenClaw, "every Claude Code command works", QR connection sharing, Claude Fable 5 + a Fast agent preset, and Quiet-while-app-is-open.
+> App Store status: **ClawTerminal v1.5.0 is live**; the v1.9.8 and v1.9.9 updates below ship together in the next App Store update. The v1.9.4 through v1.9.7 updates shipped together as v1.5.0: no-account ntfy push, chat-app push for Hermes/OpenClaw, "every Claude Code command works", QR connection sharing, Claude Fable 5 + a Fast agent preset, and Quiet-while-app-is-open.
+
+### What's New in v1.9.9 (November 2026)
+
+| Feature | What it does | Learn More |
+|---------|-------------|------------|
+| **Connect from anywhere** | Every connect now tries your Mac's home-network address and its Tailscale name and IP **at the same time**, and uses whichever answers. Away from home it just connects, with no profile switching and no 30-second timeout. If Tailscale runs on your Mac, the My Mac tab offers to fill it in with one tap (and warns before your Mac's Tailscale key expires). If Tailscale is off on your iPhone, a card says so and opens the Tailscale app. | [Tutorial](tutorials/connect-anywhere.md) |
+| **Never lose a connection or a message** | Switch between Wi-Fi and cellular and ClawTerminal reconnects by itself, with a status pill showing progress. Dead connections are noticed within seconds after your phone wakes. Messages you send during a reply, or while your Mac is unreachable, wait in a queue and go out automatically, and a reply cut off by a dropped connection picks up again. | [Tutorial](tutorials/connect-anywhere.md) |
+| **Host-key pinning** | ClawTerminal remembers each Mac's SSH host key and warns you if it ever changes (Trust New Key / Cancel), which protects against someone intercepting the connection. On by default: **Settings → Connections → Pin Host Keys**. | [Tutorial](tutorials/connect-anywhere.md#part-6-host-key-pinning) |
+| **Faster replies with Lean Launch (opt-in)** | Starts each reply about a second sooner by loading a saved copy of your Mac's login environment instead of running every shell startup file. **Settings → AI Intelligence → Lean Launch**. | [Tutorial](tutorials/connect-anywhere.md#part-7-faster-replies-with-lean-launch-optional) |
+| **Mac Sessions** | `/sessions` (also in the … menu and the drawer) lists every Claude Code session on your Mac, including ones you started in Terminal, grouped as Working, Needs Input, or Idle. **Continue on iPhone** picks one up as your own copy with its full history. The session at your desk is never changed. Or open it in a Terminal tab, or copy its session ID. | [Tutorial](tutorials/mac-sessions.md) |
+| **Background workflows (`/bg`)** | `/bg <goal>` hands a whole goal to a Claude Code workflow (planning, parallel subagents, checks, final summary) running in its own tmux window on your Mac. `--ultra` for the most thorough run. Workflows get their own section in the Jobs tab with readable step-by-step trajectories. Also: long-press send → **Run as Background Workflow**. | [Tutorial](tutorials/live-activities-and-background-workflows.md) |
+| **Live Activity + Dynamic Island** | Every background job shows status, elapsed time, and cost on the Lock Screen and in the Dynamic Island. A multi-agent run shows as one activity. Job details stay hidden by default; show them with **Settings → AI Intelligence → Job Details on Lock Screen**. | [Tutorial](tutorials/live-activities-and-background-workflows.md) |
+| **Latest Claude models + "Claude Code default"** | **Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, and Fable 5.2** everywhere you pick a model, with current prices. A new **Claude Code default** option uses your Mac's own Claude Code setting. `/model` accepts aliases like `opus`, `opusplan`, and `opus[1m]`, and labels and costs reflect the model that actually ran. Saved choices migrate forward automatically. | [Tutorial](tutorials/multi-cli-tools.md) |
+| **`/effort` up to max** | `/effort low \| medium \| high \| xhigh \| max` now uses Claude Code's native effort setting, and background jobs inherit it. `/effort default` hands the decision back to Claude Code. | [Tutorial](tutorials/session-intelligence.md) |
+| **Codex, Gemini, and Aider fixed** | All three tools run correctly again. Each has a **CLI default** model option (the tool's own configured model), its current recommended models, and **Custom…** for any model ID. `/race` and multi-tool runs use each tool's own model. | [Tutorial](tutorials/multi-cli-tools.md) |
+| **Claude Code Autonomy** | Choose how much Claude Code can do without asking: **Full**, **Auto** (a safety classifier blocks destructive or external actions and approves the rest), or **Accept edits**. **Settings → AI Intelligence**. Blocked actions appear as 🛡️ notices after the reply. `/retry full` re-runs that message once with full autonomy. | — |
+| **Fewer approval prompts in API mode** | When chatting through your own Anthropic API key, file edits no longer ask by default (shell commands still do). **Allow all for this chat** silences the rest for the current conversation. Pick a policy at **Settings → AI Intelligence → API Tool Approval**. | — |
 
 ### What's New in v1.9.8 (August 2026)
 
@@ -291,6 +308,9 @@ Deep dives into individual features. Each tutorial walks you through setup, usag
 |----------|-------------|
 | [GitHub PR Workflow (`/pr`)](tutorials/pr-workflow.md) | Full GitHub PR lifecycle: auto-generate PR title and body, AI-powered code review with severity-colored items (red/yellow/blue/green), CI status checks, and per-chatroom review learning with thumbs-up/down ratings |
 | [Session Handoff (`/handoff`)](tutorials/handoff.md) | Bidirectional handoff between phone and Mac: send your current session to a Mac tmux window, or discover and pick up active Mac sessions on your phone. Uses Claude's `--resume` flag for seamless context continuity |
+| [Mac Sessions (`/sessions`)](tutorials/mac-sessions.md) | See every Claude Code session on your Mac (Working / Needs Input / Idle) and continue any of them on your iPhone as your own copy. The desk session is never changed |
+| [Connect From Anywhere](tutorials/connect-anywhere.md) | Home network and Tailscale tried together on every connect, Tailscale auto-fill, the "Tailscale is off" card, automatic reconnects, never-lose-a-message queue, host-key pinning, and Lean Launch |
+| [Live Activities & Background Workflows (`/bg`)](tutorials/live-activities-and-background-workflows.md) | Hand a whole goal to a Claude Code workflow with `/bg`, then follow every background job on the Lock Screen and in the Dynamic Island |
 | [Live Web Preview (`/preview`)](tutorials/preview.md) | SSH-tunneled live preview of your dev server in-app. Auto-detects port from package.json, .env, or vite.config. Multi-port tab switching, `--start` auto-launch, console log panel, screenshot+annotate, responsive viewport modes |
 
 ### Agent Orchestration
@@ -308,7 +328,7 @@ Deep dives into individual features. Each tutorial walks you through setup, usag
 | [Scheduling Recurring Background Jobs](tutorials/scheduled-jobs.md) | Set up hourly, daily, or weekly job schedules with automatic re-submission |
 | [Understanding Agent Checkpoints](tutorials/agent-checkpoints.md) | Track progress of long-running jobs with manual `[CHECKPOINT]` markers or automatic `--ckpt` detection |
 | [Using ClawTerminal on iPad](tutorials/ipad-multi-window.md) | NavigationSplitView sidebar, Stage Manager multi-window, shared SSH sessions |
-| [Multi-CLI Tool Support](tutorials/multi-cli-tools.md) | Use Aider, Codex, or custom CLI tools alongside Claude in dedicated chatrooms |
+| [Multi-CLI Tool Support](tutorials/multi-cli-tools.md) | Use Codex, Gemini, or Aider alongside Claude in dedicated chatrooms, each with its own model (CLI default, recommended models, or a custom ID) |
 | [Cross-Session AI Memory](tutorials/cross-session-memory.md) | Persistent `/remember` facts injected into every chatroom session automatically |
 | [Shared Chatroom (Session Sharing)](tutorials/shared-chatroom.md) | Share your AI chatroom session via room codes — guests watch in real-time |
 
@@ -328,7 +348,7 @@ Deep dives into individual features. Each tutorial walks you through setup, usag
 | [UX & Intelligence Features](tutorials/ux-features.md) | Smart suggestions, gesture shortcuts, split-screen terminal, conversation branching, JSON table cards, auto-context, implicit learning — when and why to use each, productivity combinations |
 | [Session Intelligence](tutorials/session-intelligence.md) | `/recap`, `/context`, `/effort`, `/btw`, `/retry`, `/personality` — master your conversation flow with commands that give you control over how Claude thinks, responds, and remembers |
 | [Dream Mode](tutorials/dream.md) | How Dream Mode learns your patterns overnight, how the profile compounds over days and weeks, privacy details, and how to combine it with `/personality`, `/effort`, and `/soul` for a fully personalized assistant |
-| [Interactive Tutorials](tutorials/interactive-tutorials.md) | `/tutorial` launches 6 guided tracks (beginner, terminal, workflows, agents, devops, power) with automatic step validation on real commands |
+| [Interactive Tutorials](tutorials/interactive-tutorials.md) | `/tutorial` launches 8 guided tracks (beginner, terminal, workflows, anywhere, agents, devops, power, research) with automatic step validation on real commands |
 | [Context-Aware AI](tutorials/context-aware-ai.md) | 4 on-device sensors (time, calendar, motion, battery) that inject signals into every prompt so Claude adapts tone and length to the moment |
 | [Frugal Mode](tutorials/frugal-mode.md) | `/frugal` per-chatroom, `!` prefix for one-offs — strip skills, memory, pinned files for the cheapest, fastest, most direct answers |
 | [Rubber Duck Mode](tutorials/rubber-duck.md) | `/duck` turns Claude into a Socratic rubber duck — only asks probing questions, never gives answers |
@@ -435,6 +455,8 @@ Tap **Get Started** on the last page to begin, then follow the **Set Up My Mac**
 [Tailscale](https://tailscale.com) creates a secure private network between your devices so you can SSH to your Mac from **anywhere** — coffee shop, hotel, cellular — without opening ports or configuring a VPN. It's the easiest way to connect ClawTerminal to your Mac remotely.
 
 > **Best path for most users:** Tailscale + Password login. Zero terminal commands needed on your Mac.
+>
+> **Already connected at home?** ClawTerminal detects Tailscale on your Mac and offers to fill it in with one tap, then tries your home network and Tailscale together on every connect. See [Connect From Anywhere](tutorials/connect-anywhere.md).
 
 ---
 
@@ -1591,13 +1613,16 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 - **[Multi-Model Comparison (`/race`)](tutorials/race.md)** — Race 2–4 AI models on the same prompt simultaneously with side-by-side results and an AI-generated comparison summary
 - **[GitHub PR Workflow (`/pr`)](tutorials/pr-workflow.md)** — Auto-generate PRs from git diff, AI code review with severity-colored items and review learning, CI status checks
 - **[Session Handoff (`/handoff`)](tutorials/handoff.md)** — Bidirectional handoff between phone and Mac; start on your commute, continue at your desk without losing context
+- **[Mac Sessions (`/sessions`)](tutorials/mac-sessions.md)** — See every Claude Code session on your Mac and continue any of them on your iPhone as your own copy
+- **[Connect From Anywhere](tutorials/connect-anywhere.md)** — Home network + Tailscale tried together, auto reconnect, never-lose-a-message queue, host-key pinning, Lean Launch
+- **[Live Activities & Background Workflows](tutorials/live-activities-and-background-workflows.md)** — `/bg` Claude Code workflows plus Lock Screen and Dynamic Island progress for every background job
 - **[Live Web Preview (`/preview`)](tutorials/preview.md)** — SSH port-forwarded live web preview of your dev server with auto-detection, auto-start, and one-command teardown
 - **[Agent Teams (`/team`)](tutorials/agent-teams.md)** — Wave-based orchestration with Research → Implement → Review phases, discovery propagation between waves, and visual command center with animated flow graph
 - **[Batch Multi-Agent Orchestration (`/batch`)](tutorials/batch-multi-agent.md)** — Commander + N parallel Workers + Synthesizer, with `--agents`, `--multi` cross-tool assignment, `--ckpt`, and `--skills` flags
 - **[Smart Commands](tutorials/smart-commands.md)** — User-defined slash commands with named parameters, background auto-submit, tool overrides, skill injection, and auto-batch execution
 - **[Scheduling Recurring Background Jobs](tutorials/scheduled-jobs.md)** — Automate repetitive tasks with hourly, daily, weekly, or custom schedules
 - **[Understanding Agent Checkpoints](tutorials/agent-checkpoints.md)** — Track long-running job progress with manual `[CHECKPOINT]` markers or automatic `--ckpt` detection
-- **[Multi-CLI Tool Support](tutorials/multi-cli-tools.md)** — Use Aider, Codex, or custom CLI tools alongside Claude
+- **[Multi-CLI Tool Support](tutorials/multi-cli-tools.md)** — Use Codex, Gemini, or Aider alongside Claude, each with its own model
 - **[Using ClawTerminal on iPad](tutorials/ipad-multi-window.md)** — Sidebar layout, Stage Manager multi-window, shared SSH sessions
 - **[AI Error Diagnosis](tutorials/ai-error-diagnosis.md)** — One-tap terminal error diagnosis via floating "Ask Claude" pill
 - **[Snap & Code: Camera to Code](tutorials/snap-and-code.md)** — Photograph a mockup or error screen, get running code
@@ -1618,6 +1643,8 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| **v1.9.9** | November 2026 | Connect from anywhere (home network + Tailscale tried together, Tailscale auto-fill, automatic reconnect, never-lose-a-message queue, host-key pinning, Lean Launch), Mac Sessions, `/bg` background workflows, Live Activity + Dynamic Island, Claude Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.2 with a "Claude Code default" option, `/effort` up to max, Claude Code Autonomy, fixed Codex/Gemini/Aider. |
+| **v1.9.8** | August 2026 | Opus 4.8 + Sonnet 5, opt-in smooth streaming, opt-in live subagent progress. |
 | **v1.9.3** | May 2026 | Apple Intelligence on-device LLM tier for skill extraction, `/standup`, and `/whatif` (free / instant / private when no Anthropic API key is set on iOS 26 + supported hardware). iOS 26 Writing Tools in the chatroom input and skill editor. iOS 26 `SpeechAnalyzer` powers `/voice` and Speak with Search. |
 | **v1.9.0** | April 2026 | Dream Mode (autonomous overnight preference learning), agent soul and identity persistence, explicit reasoning with `/think` and `/trace`, enhanced hooks with pause/resume and conditionals, smart memory auto-categorization, countdown ring on long-press send with haptic patterns. |
 | **v1.8.0** | April 2026 | Session recap, context window meter, effort control, quick side questions, retry last message, agent personas. |
