@@ -7,9 +7,20 @@
 [![AI](https://img.shields.io/badge/AI-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Aider-purple)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 [![SSH](https://img.shields.io/badge/Protocol-SSH%2FSFTP%2FMosh-green)](https://apps.apple.com/us/app/clawterminal/id6759690902)
 
-**Latest Version:** v1.9.9 (November 2026) — ships in the **next App Store update**
+**Latest Version:** v1.9.10 (November 2026) — ships in the **next App Store update**
 
-> App Store status: **ClawTerminal v1.5.0 is live**; the v1.9.8 and v1.9.9 updates below ship together in the next App Store update. The v1.9.4 through v1.9.7 updates shipped together as v1.5.0: no-account ntfy push, chat-app push for Hermes/OpenClaw, "every Claude Code command works", QR connection sharing, Claude Fable 5 + a Fast agent preset, and Quiet-while-app-is-open.
+> App Store status: **ClawTerminal v1.5.0 is live**; the v1.9.8, v1.9.9, and v1.9.10 updates below ship together in the next App Store update. The v1.9.4 through v1.9.7 updates shipped together as v1.5.0: no-account ntfy push, chat-app push for Hermes/OpenClaw, "every Claude Code command works", QR connection sharing, Claude Fable 5 + a Fast agent preset, and Quiet-while-app-is-open.
+
+### What's New in v1.9.10 (November 2026)
+
+| Feature | What it does | Learn More |
+|---------|-------------|------------|
+| **Keep Claude running between messages (opt-in)** | Each chatroom keeps one Claude Code process running on your Mac instead of starting a new one for every message, so replies start in about 2 seconds instead of 5–9. Every message carries its own ID, so a message is never run twice. Shuts down after 15 idle minutes. **Settings → AI Intelligence → Keep Claude running between messages** (Claude Code 2.1.300+, tmux chatrooms). | [Tutorial](tutorials/faster-replies.md) |
+| **Real progress while you wait** | The status line now shows what's actually happening on your Mac: Connecting → Sent → Claude starting → Ready (model and version) → Thinking → Running a tool → Writing. If a reply stalls before Claude even starts, **Retry on fresh connection** resends exactly that message. | [Tutorial](tutorials/faster-replies.md#part-1-real-progress-while-you-wait) |
+| **Reply timings + `/netdiag`** | **Show Reply Timings** (Settings → AI Intelligence, or long-press a reply) adds a caption like `Mac 0.3s · start 3.9s · model 2.1s · total 6.6s`. `/netdiag` races every route to your Mac with round-trip times, pings SSH, checks Tailscale on your iPhone, shows your Claude Code version and recent reply timings, and can run an optional cold-start test. `/dashboard` shows typical and slow reply times. | [Tutorial](tutorials/faster-replies.md#part-4-netdiag--check-the-path-to-your-mac) |
+| **Alerts for every Mac session** | `/notifier hooks install` adds Claude Code hooks on your Mac (settings backed up first; your own hooks untouched). You get a push when **any** Claude Code session finishes or needs you, including ones you started in Terminal. Tap it to open Mac Sessions on that session. | [Tutorial](tutorials/phone-approvals-and-alerts.md) |
+| **Allow / Deny from the Lock Screen** | Risky shell commands (`rm -rf`, `git push --force`, `sudo`, `DROP TABLE` …) wait for your answer on the Lock Screen, with Face ID. A Deny holds even when a session bypasses permission prompts. Pushes leave out command text unless you turn it on, secrets are always masked, and nothing buzzes while you're using the Mac. **Settings → Mac Session Alerts**. | [Tutorial](tutorials/phone-approvals-and-alerts.md#part-4-how-approvals-behave) |
+| **Safer notifier pushes** | A job message starting with `@` is now always sent as plain text by the Mac notifier (ntfy and Apple Push), never read as a file on your Mac. If you use the notifier daemon, re-run `/notifier install` once. | [Tutorial](tutorials/smart-notifications.md) |
 
 ### What's New in v1.9.9 (November 2026)
 
@@ -309,7 +320,9 @@ Deep dives into individual features. Each tutorial walks you through setup, usag
 | [GitHub PR Workflow (`/pr`)](tutorials/pr-workflow.md) | Full GitHub PR lifecycle: auto-generate PR title and body, AI-powered code review with severity-colored items (red/yellow/blue/green), CI status checks, and per-chatroom review learning with thumbs-up/down ratings |
 | [Session Handoff (`/handoff`)](tutorials/handoff.md) | Bidirectional handoff between phone and Mac: send your current session to a Mac tmux window, or discover and pick up active Mac sessions on your phone. Uses Claude's `--resume` flag for seamless context continuity |
 | [Mac Sessions (`/sessions`)](tutorials/mac-sessions.md) | See every Claude Code session on your Mac (Working / Needs Input / Idle) and continue any of them on your iPhone as your own copy. The desk session is never changed |
-| [Connect From Anywhere](tutorials/connect-anywhere.md) | Home network and Tailscale tried together on every connect, Tailscale auto-fill, the "Tailscale is off" card, automatic reconnects, never-lose-a-message queue, host-key pinning, and Lean Launch |
+| [Faster Replies](tutorials/faster-replies.md) | Real progress stages while you wait, Keep Claude running between messages for about 2-second replies, the reply-timings caption, and `/netdiag` for a full connection check |
+| [Phone Approvals & Alerts](tutorials/phone-approvals-and-alerts.md) | `/notifier hooks install`: a push when any Claude Code session on your Mac finishes or needs you, plus Allow / Deny for risky commands from the Lock Screen. Private by default, quiet while you're at the Mac |
+| [Connect From Anywhere](tutorials/connect-anywhere.md) | Home network and Tailscale tried together on every connect, Tailscale auto-fill, the "Tailscale is off" card, automatic reconnects, never-lose-a-message queue, host-key pinning, Lean Launch, and `/netdiag` |
 | [Live Activities & Background Workflows (`/bg`)](tutorials/live-activities-and-background-workflows.md) | Hand a whole goal to a Claude Code workflow with `/bg`, then follow every background job on the Lock Screen and in the Dynamic Island |
 | [Live Web Preview (`/preview`)](tutorials/preview.md) | SSH-tunneled live preview of your dev server in-app. Auto-detects port from package.json, .env, or vite.config. Multi-port tab switching, `--start` auto-launch, console log panel, screenshot+annotate, responsive viewport modes |
 
@@ -407,16 +420,25 @@ tmux -V
 
 ### First Launch & Welcome Tour
 
-When you open ClawTerminal for the first time you will see the **Welcome Tour** -- an 8-page interactive walkthrough covering all major features:
+When you open ClawTerminal for the first time you will see the **Welcome Tour** -- a 15-page walkthrough covering all major features:
 
-1. **Welcome to CatClaw** — Overview of the app and what it does
+1. **Welcome to ClawTerminal** — Overview of the app and what it does
 2. **Powerful SSH Terminal** — PTY, tabs, autocomplete, error diagnosis, Mosh, port forwarding
-3. **Multi-Tool AI Chatroom** — Claude, Codex, Gemini, Aider with tool-call cards, diffs, thinking blocks, memory, skills, and commands
-4. **Background Jobs & Agents** — `/submit`, `/batch` with N parallel agents, scheduled jobs, checkpoints
+3. **Multi-Tool AI Chatroom** — Claude, Codex, Gemini, Aider; `/model`, `/effort`, Claude Code Autonomy, memory, skills, and tool cards
+4. **Background Jobs & Agents** — `/submit`, `/bg` workflows, Live Activity + Dynamic Island, `/team` and `/batch`
 5. **SFTP File Browser** — Visual file management, batch operations, Snap & Code
-6. **My Mac Workspace** — Auto-detect via Bonjour, auto-key setup, dual terminal + AI mode, Tailscale
+6. **My Mac Workspace** — Auto-detect via Bonjour, auto-key setup, dual terminal + AI mode, QR sharing
 7. **iPad, Watch & Beyond** — Split view, multi-window, watchOS dictation, shared chatrooms, relay server
-8. **Ready to Go** — Links to Settings and a reminder that you can revisit the tour
+8. **Keep Your Mac Awake** — The one Mac setting that keeps connections alive
+9. **Learn by Doing** — Interactive tutorials and the Learn Hub
+10. **Context-Aware Responses** — Time, calendar, motion, and battery signals (all opt-in)
+11. **Power Tools** — `/frugal`, `/whatif`, `/duck`, `/wrapped`, postcards
+12. **Connect From Anywhere** — Home network and Tailscale tried together, automatic reconnects, never-lose-a-message queue
+13. **Pick Up Your Mac Sessions** — `/sessions` and Continue on iPhone
+14. **Faster Replies, Phone Approvals** — Live progress, Keep Claude running, reply timings and `/netdiag`, alerts for every Mac session, Lock-Screen Allow / Deny
+15. **Ready to Go** — Settings, `/help`, `/doctor`, `/netdiag`, docs, and a reminder that you can revisit the tour
+
+The tour shows again after an update that adds new pages, followed by a short **What's New** summary.
 
 Tap **Get Started** on the last page to begin, then follow the **Set Up My Mac** wizard.
 
@@ -1643,6 +1665,7 @@ See the [tutorials/](tutorials/) directory for in-depth guides on individual fea
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| **v1.9.10** | November 2026 | Faster replies: opt-in Keep Claude running between messages (about 2 s replies, never runs a message twice), real progress stages with Retry on fresh connection, opt-in reply timings, `/netdiag`. Phone alerts for every Claude Code session on the Mac and Lock-Screen Allow/Deny for risky commands via `/notifier hooks install`, private by default. Safer notifier pushes. |
 | **v1.9.9** | November 2026 | Connect from anywhere (home network + Tailscale tried together, Tailscale auto-fill, automatic reconnect, never-lose-a-message queue, host-key pinning, Lean Launch), Mac Sessions, `/bg` background workflows, Live Activity + Dynamic Island, Claude Opus 5.5 / Sonnet 5.5 / Haiku 5.5 / Fable 5.2 with a "Claude Code default" option, `/effort` up to max, Claude Code Autonomy, fixed Codex/Gemini/Aider. |
 | **v1.9.8** | August 2026 | Opus 4.8 + Sonnet 5, opt-in smooth streaming, opt-in live subagent progress. |
 | **v1.9.3** | May 2026 | Apple Intelligence on-device LLM tier for skill extraction, `/standup`, and `/whatif` (free / instant / private when no Anthropic API key is set on iOS 26 + supported hardware). iOS 26 Writing Tools in the chatroom input and skill editor. iOS 26 `SpeechAnalyzer` powers `/voice` and Speak with Search. |

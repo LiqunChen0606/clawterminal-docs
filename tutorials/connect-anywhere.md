@@ -84,12 +84,26 @@ Every reply starts a short-lived shell on your Mac. Normally that shell runs all
 
 ---
 
+## Part 8: Checking the Connection With `/netdiag`
+
+When something feels slow or a connection keeps failing, type **`/netdiag`** in any chatroom. It shows:
+
+- every address ClawTerminal knows for your Mac (home network, Tailscale name, Tailscale IP) and each one's round-trip time, so you can see which route wins
+- whether the current SSH connection is alive
+- whether Tailscale is on on this iPhone
+- your Mac's Claude Code version and the timing of your recent replies
+- an optional cold-start test that measures how long Claude Code takes to start (sends one tiny prompt, about 1¢)
+
+It runs only when you ask. For more ways to speed up replies, see [Faster Replies](faster-replies.md).
+
+---
+
 ## Troubleshooting
 
 | Symptom | Try |
 |---------|-----|
-| Works at home, fails away | Make sure Tailscale is on on your iPhone and running on your Mac. Check that the Remote Access fields are filled in |
+| Works at home, fails away | Make sure Tailscale is on on your iPhone and running on your Mac. Check that the Remote Access fields are filled in. `/netdiag` shows which addresses answer |
 | "Tailscale detected" chip never appears | Tailscale must be installed and running on the Mac. You can also fill in the Remote Access fields by hand |
 | Host Key Changed alert you didn't expect | Tap Cancel, then check the Mac. Only trust the new key once you know why it changed |
-| Everything is slow to start | Try Lean Launch. Run `/doctor` to see the round-trip time |
+| Everything is slow to start | Run `/netdiag` to see which route wins and where the time goes. Try Lean Launch, or [Keep Claude running between messages](faster-replies.md#part-2-keep-claude-running-between-messages-opt-in) |
 | Connection drops when the Mac sleeps | See "Keep Your Mac Awake" in the welcome tour (Settings → About → Welcome Tour) |

@@ -8,14 +8,14 @@
 
 CatClaw now ships with a built-in learning system. Instead of reading a wall of docs and trying to remember which command does what, you run a tutorial and CatClaw walks you through real actions, verifying each step on the live app before moving on.
 
-Eight tracks, 53 steps total, all inside the app:
+Eight tracks, 57 steps total, all inside the app:
 
 | Track | Level | What you learn |
 |-------|-------|----------------|
 | **beginner** | Beginner | First message, `/help`, `/cost`, `/search`, inline Run buttons, pinning, memory basics |
 | **terminal** | Beginner | Terminal tab, extended keyboard, mini terminal, AI error diagnosis, terminal tabs |
 | **workflows** | Intermediate | `/submit`, `/plan`, `/pin`, `/remember`, `/effort`, `/personality`, `/btw`, `/retry` |
-| **anywhere** | Intermediate | Mac Sessions (`/sessions`), `/model`, `/effort xhigh`/`max`, `/doctor`, queued messages, `/bg` with Live Activities |
+| **anywhere** | Intermediate | Mac Sessions (`/sessions`), `/model`, `/effort xhigh`/`max`, `/doctor`, `/netdiag`, Show Reply Timings, Keep Claude running between messages, queued messages, `/bg` with Live Activities, `/notifier hooks` for Mac alerts and Lock-Screen approvals |
 | **agents** | Intermediate | `/batch --app`, `/team --app`, `/race`, the Jobs tab, trajectories, `/orchestrate` |
 | **devops** | Advanced | `/git`, `/health`, `/monitor`, `/security`, `/gentest`, `/changelog`, `/notify`, `/dashboard` |
 | **power** | Advanced | `/dream`, `/soul`, `/bg` workflows, long-press send, branching, `/trace` |
